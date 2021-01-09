@@ -2,8 +2,12 @@
 
 #how to run 
 
-'''bash
+add app :
+'''
 export FLASK_APP=app.py
+'''
+run :
+'''
 flask run 
 '''
 #how to play 
