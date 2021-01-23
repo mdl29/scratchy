@@ -39,3 +39,17 @@ Delete Room:
 ```sh
 curl -X DELETE http://localhost:5000/api/room/0 
 ```
+Get User:
+```sh
+curl http://localhost:5000/api/user/0  | jq
+```
+
+Create User:
+```sh
+curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '{"pseudo": "mon pseudo", "profile image": "mon image de profile"}'
+```
+
+Delete User:
+```sh
+curl -X DELETE http://localhost:5000/api/user/0 
+```

@@ -1,5 +1,10 @@
-class RoomModel:
+class RoomModel :
+    description = ""
     id = ""
     title = ""
-    description = ""
     user = []
+
+     
+
+     
+
