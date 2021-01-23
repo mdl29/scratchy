@@ -1,4 +1,8 @@
 database = {
     "rooms": {
+    },
+    "message":{
+    },
+    "user":{
     }
 }
