@@ -17,4 +17,3 @@ roomExemple.description = "Salon de test"
 database["rooms"]["0"] = roomExemple
 
 api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
-        
