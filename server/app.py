@@ -32,7 +32,7 @@ class RoomRes(Resource):
         roomData = request.get_json()
         room = RoomModel()
         room.id = str(uuid.uuid4())
-        room.title == roomData['title'] if 'title' in roomData else "Default title"
+        room.title = roomData['title'] if 'title' in roomData else "Default title"
         room.description = roomData['description'] if 'description' in roomData else "Default description"
         database["rooms"][room.id] = room
         return room.__dict__
