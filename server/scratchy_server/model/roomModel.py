@@ -3,8 +3,3 @@ class RoomModel :
     id = ""
     title = ""
     user = []
-
-     
-
-     
-

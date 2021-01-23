@@ -3,6 +3,6 @@ database = {
     },
     "users": {
     },
-    "message": {
+    "messages": {
     }
 }

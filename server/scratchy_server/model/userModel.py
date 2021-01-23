@@ -3,5 +3,3 @@ class UserModel:
     pseudo = ""
     profileImage = ""
     roomsId = []
-     
-

@@ -4,4 +4,3 @@ class MessageModel:
     author = ""
     timestamp = int()
     roomId= ""
-    user = []

@@ -14,7 +14,7 @@ class UserRes(Resource):
         userData = request.get_json()
         user = UserModel()
         user.id = uuid.uuid4().hex
-        user.content = userData['pseudo'] if 'pseudo' in userData else "Default User"
+        user.content = userData['pseudo'] if 'pseudo' in userData else "Unknown User"
         user.profileImage = userData['profileImage'] if 'profileImage' in userData else "https://http.cat/204"
 
         database['users'][user.id] = user
