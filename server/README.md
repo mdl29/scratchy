@@ -1,15 +1,22 @@
 # sratchy server
 
-## how to run 
+## how to run package version
 
-add app :
+Install the depedencies :
 ```sh
-export FLASK_APP=app.py
+pip install -r requirements.txt
 ```
-run :
+
+Install the package in developpment :
 ```sh
-flask run 
+python setup.py develop
 ```
+
+Start the serveur :
+```sh
+scratchy-server
+```
+
 ## how to play
 
 Requirements:
