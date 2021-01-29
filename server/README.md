@@ -37,5 +37,34 @@ curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '
 
 Delete Room:
 ```sh
-curl -X DELETE http://localhost:5000/api/room/0 
+curl -X DELETE http://localhost:5000/api/room/0
+```
+Get User:
+```sh
+curl http://localhost:5000/api/user/0  | jq
+```
+
+Create User:
+```sh
+curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '{"pseudo": "mon pseudo", "profileImage": "https://http.cat/204"}'
+```
+
+Delete User:
+```sh
+curl -X DELETE http://localhost:5000/api/user/0
+```
+
+Get Message:
+```sh
+curl http://localhost:5000/api/message/0  | jq
+```
+
+Create Message:
+```sh
+curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"Author": "the author", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}'
+```
+
+Delete Message:
+```sh
+curl -X DELETE http://localhost:5000/api/message/0
 ```
