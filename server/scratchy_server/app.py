@@ -28,10 +28,9 @@ messageExemple.author = "The author"
 messageExemple.roomId = "0"
 messageExemple.timestamp = 0
 
-
-database["rooms"]["0"] = roomExemple
-database["users"]["0"] = userExemple
-database["messages"]["0"] = messageExemple
+# database["rooms"]["0"] = roomExemple
+# database["users"]["0"] = userExemple
+# database["messages"]["0"] = messageExemple
 
 api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
 api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
