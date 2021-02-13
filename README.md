@@ -1,2 +1,3 @@
 # scratchy
-Scratchy, application de tchat projet LPH
+Scratchy, application de tchat projet LPH.
+
