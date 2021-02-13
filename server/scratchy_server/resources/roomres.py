@@ -20,8 +20,8 @@ class RoomRes(Resource):
         room.description = roomData['description'] if 'description' in roomData else "Default description"
 
         # database['rooms'][room.id] = room
-        inserted_room = insert_room(room)
-        return room.__dict__
+        room.save()
+        return room
 
     def delete(self, roomId):
         try:

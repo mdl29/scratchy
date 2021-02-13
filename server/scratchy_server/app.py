@@ -15,7 +15,9 @@ app.config['MONGODB_SETTINGS'] = {
     'db': 'scratchy',
     'username':'root',
     'password':'example',
-    'port': 27017
+    'host': 'localhost',
+    'port': 27017,
+    'authentication_source':'admin'
 }
 db_scratchy.init_app(app)
 api = Api(app)
