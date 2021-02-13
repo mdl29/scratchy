@@ -2,10 +2,6 @@ import uuid
 import json
 from flask_restful import Resource, abort, request
 from scratchy_server.model.roomModel import RoomModel
-from scratchy_server.database import database
-from scratchy_server.database import insert_room
-from scratchy_server.database import get_room
-from scratchy_server.database import delete_room
 
 class RoomRes(Resource):
     def get(self, roomId):
@@ -24,7 +20,7 @@ class RoomRes(Resource):
         room.description = roomData['description'] if 'description' in roomData else "Default description"
 
         # database['rooms'][room.id] = room
-        inserted_room = insert_room(room)
+        room.save()
         return room.__dict__
 
     def delete(self, roomId):
