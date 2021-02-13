@@ -21,7 +21,7 @@ class RoomRes(Resource):
 
         # database['rooms'][room.id] = room
         room.save()
-        return room
+        return room.__dict__
 
     def delete(self, roomId):
         try:
