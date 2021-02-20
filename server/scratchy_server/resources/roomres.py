@@ -2,15 +2,18 @@ import uuid
 import json
 from flask_restful import Resource, abort, request
 from scratchy_server.model.roomModel import RoomModel
+import bson
 
 class RoomRes(Resource):
     def get(self, roomId):
         #if not roomId in database["rooms"]:
         #    abort(404)
         try:
-            return get_room(roomId).__dict__
+            return RoomModel.objects.get(id=roomId).to_json()
         except IndexError as ie:
             abort(404)
+        # RoomModel.objects.get(id='4f4381f4e779897a2c000009')
+        # RoomModel.objects.get(id=bson.objectid.ObjectId('4f4381f4e779897a2c000009'))
 
     def post(self):
         roomData = request.get_json()
@@ -20,12 +23,12 @@ class RoomRes(Resource):
         room.description = roomData['description'] if 'description' in roomData else "Default description"
 
         # database['rooms'][room.id] = room
-        room.save()
-        return room.__dict__
+        room = room.save()
+        return { 'id': str(room.id)}
 
     def delete(self, roomId):
         try:
-            delete_room(roomId)
+            RoomModel.objects.get(id=roomId).delete()
             return {'success':True}
         except IndexError as ie:
             abort(404)
