@@ -5,24 +5,31 @@ from scratchy_server.database import database
 
 class UserRes(Resource):
     def get(self, userId):
-        if not userId in database["users"]:
-            abort(404)
 
-        return database["users"][userId].__dict__
+        try:
+            return UserModel.objects.get(id=userId).to_json()
+        except IndexError as ie:
+            abort(404)
+        # RoomModel.objects.get(id='4f4381f4e779897a2c000009')
+        # RoomModel.objects.get(id=bson.objectid.ObjectId('4f4381f4e779897a2c000009'))
 
     def post(self):
         userData = request.get_json()
         user = UserModel()
-        user.id = uuid.uuid4().hex
-        user.content = userData['pseudo'] if 'pseudo' in userData else "Unknown User"
-        user.profileImage = userData['profileImage'] if 'profileImage' in userData else "https://http.cat/204"
+        # room.id = uuid.uuid4().hex
+        user.pseudo = userData['pseudo'] if 'pseudo' in userData else "unknow pseudo"
+        user.profileImage = userData['profileImage'] if 'profileImage' in userData else "default profile image"
+        user.user = userData['user'] if 'user' in userData else "default"
+        
 
-        database['users'][user.id] = user
-        return user.__dict__
+
+        # database['rooms'][room.id] = room
+        user = user.save()
+        return { 'id': str(user.id)}
 
     def delete(self, userId):
-        if not userId in database["users"]:
+        try:
+            UserModel.objects.get(id=userId).delete()
+            return {'success':True}
+        except IndexError as ie:
             abort(404)
-
-        if userId in database["users"]:
-            del database["users"][userId]
