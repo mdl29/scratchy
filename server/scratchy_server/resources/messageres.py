@@ -9,7 +9,7 @@ class MessageRes(Resource):
     def get(self, messageId):
         try:
             return MessageModel.objects.get(id=messageId).to_json()
-        except IndexError as ie:
+        except MessageModel.DoesNotExist as ie:
             abort(404)
     def post(self):
         messageData = request.get_json()
@@ -25,5 +25,5 @@ class MessageRes(Resource):
         try:
             RoomModel.objects.get(id=messageId).delete()
             return {'success':True}
-        except IndexError as ie:
+        except MessageModel.DoesNotExist as ie:
             abort(404)
