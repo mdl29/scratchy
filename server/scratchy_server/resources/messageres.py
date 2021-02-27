@@ -16,8 +16,8 @@ class MessageRes(Resource):
         messageData = request.get_json()
         message = MessageModel()
         message.content = messageData['content'] if 'content' in messageData else ""
-        message.author = messageData['author'] if 'author' in messageData else "Unknown author"
-        message.roomId = bson.objectid.ObjectId(messageData['roomId']) if 'roomId' in messageData else ObjectId()
+        message.author = bson.objectid.ObjectId(messageData['author']) if 'author' in messageData else bson.objectid.ObjectId()
+        message.roomId = bson.objectid.ObjectId(messageData['roomId']) if 'roomId' in messageData else bson.objectid.ObjectId()
 
         message = message.save()
         return { 'id': str(message.id)}        

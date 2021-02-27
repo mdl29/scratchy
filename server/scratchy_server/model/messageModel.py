@@ -3,6 +3,6 @@ import datetime
 
 class MessageModel(db_scratchy.Document):
     content = db_scratchy.StringField()
-    author = db_scratchy.StringField()
+    author = db_scratchy.ObjectIdField()
     timestamp = db_scratchy.DateTimeField(default=datetime.datetime.utcnow)
     roomId= db_scratchy.ObjectIdField()
