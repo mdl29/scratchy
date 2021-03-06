@@ -24,7 +24,7 @@ class MessageRes(Resource):
 
     def delete(self, messageId):
         try:
-            RoomModel.objects.get(id=messageId).delete()
+            MessageModel.objects.get(id=messageId).delete()
             return {'success':True}
         except MessageModel.DoesNotExist as ie:
             abort(404)
