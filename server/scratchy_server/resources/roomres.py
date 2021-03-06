@@ -1,5 +1,6 @@
 import uuid
 import json
+from flask import Response
 from flask_restful import Resource, abort, request
 from scratchy_server.model.roomModel import RoomModel
 import bson
@@ -9,7 +10,7 @@ class RoomRes(Resource):
         #if not roomId in database["rooms"]:
         #    abort(404)
         try:
-            return RoomModel.objects.get(id=roomId).to_json()
+            return Response(RoomModel.objects.get(id=roomId).to_json(), mimetype="application/json", status=200)
         except IndexError as ie:
             abort(404)
         # RoomModel.objects.get(id='4f4381f4e779897a2c000009')
