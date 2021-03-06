@@ -1,5 +1,6 @@
 import uuid
 import time
+from flask import Response
 from flask_restful import Resource, abort, request
 from scratchy_server.model.messageModel import MessageModel
 from scratchy_server.database import database
@@ -8,7 +9,7 @@ import bson
 class MessageRes(Resource):
     def get(self, messageId):
         try:
-            return MessageModel.objects.get(id=messageId).to_json()
+            return Response(MessageModel.objects.get(id=messageId).to_json(), mimetype="application/json", status=200)
         except MessageModel.DoesNotExist as ie:
             abort(404)
     def post(self):
