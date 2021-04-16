@@ -5,6 +5,14 @@ from flask_restful import Resource, abort, request
 from scratchy_server.model.roomModel import RoomModel
 import bson
 
+
+class RoomsRes(Resource):
+    def get(self):
+        try:
+            return Response(RoomModel.objects().to_json(), mimetype="application/json", status=200)
+        except IndexError as ie:
+            abort(404)
+
 class RoomRes(Resource):
     def get(self, roomId):
         #if not roomId in database["rooms"]:
