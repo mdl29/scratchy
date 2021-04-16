@@ -1,5 +1,6 @@
 import uuid
 from flask import Flask
+from flask_cors import CORS
 from flask_restful import Resource, Api, abort, request
 
 from scratchy_server.resources.roomres import RoomRes
@@ -10,6 +11,7 @@ from scratchy_server import db_scratchy
 # db = MongoEngine()
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['MONGODB_SETTINGS'] = {
     'db': 'scratchy',
