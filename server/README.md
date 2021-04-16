@@ -39,6 +39,7 @@ Delete Room:
 ```sh
 curl -X DELETE http://localhost:5000/api/room/0
 ```
+
 Get User:
 ```sh
 curl http://localhost:5000/api/user/0  | jq
@@ -67,4 +68,9 @@ curl http://localhost:5000/api/message -H "Content-Type: application/json" --dat
 Delete Message:
 ```sh
 curl -X DELETE http://localhost:5000/api/message/0
+```
+
+Get all messages for one RoomId:
+```sh
+curl -v http:/localhost:5000/api/message?roomid=6043978fd68dc3fcbf6079d6
 ```
