@@ -23,11 +23,8 @@ class RoomRes(Resource):
     def post(self):
         roomData = request.get_json()
         room = RoomModel()
-        # room.id = uuid.uuid4().hex
         room.title = roomData['title'] if 'title' in roomData else "Default title"
         room.description = roomData['description'] if 'description' in roomData else "Default description"
-
-        # database['rooms'][room.id] = room
         room = room.save()
         return { 'id': str(room.id)}
 
@@ -37,8 +34,3 @@ class RoomRes(Resource):
             return {'success':True}
         except IndexError as ie:
             abort(404)
-
-##        if not roomId in database["rooms"]:
-##            abort(404)
-#        if roomId in database["rooms"]:
-#            del database["rooms"][roomId]

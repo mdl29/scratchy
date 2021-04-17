@@ -9,7 +9,6 @@ from scratchy_server.resources.messageres import MessageRes
 from scratchy_server import db_scratchy
 import logging
 
-# db = MongoEngine()
 
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
