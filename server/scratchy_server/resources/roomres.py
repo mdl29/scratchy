@@ -6,15 +6,18 @@ from scratchy_server.model.roomModel import RoomModel
 import bson
 
 class RoomRes(Resource):
-    def get(self, roomId):
-        #if not roomId in database["rooms"]:
-        #    abort(404)
-        try:
-            return Response(RoomModel.objects.get(id=roomId).to_json(), mimetype="application/json", status=200)
-        except IndexError as ie:
-            abort(404)
-        # RoomModel.objects.get(id='4f4381f4e779897a2c000009')
-        # RoomModel.objects.get(id=bson.objectid.ObjectId('4f4381f4e779897a2c000009'))
+
+    def get(self, roomId=None):
+        if roomId is None:
+            try:
+                return Response(RoomModel.objects().to_json(), mimetype="application/json", status=200)
+            except IndexError as ie:
+                abort(404)
+        else:        
+            try:
+                return Response(RoomModel.objects.get(id=roomId).to_json(), mimetype="application/json", status=200)
+            except IndexError as ie:
+                abort(404)
 
     def post(self):
         roomData = request.get_json()

@@ -40,6 +40,11 @@ Delete Room:
 curl -X DELETE http://localhost:5000/api/room/0
 ```
 
+Get all rooms:
+```sh
+curl http://localhost:5000/api/room
+```
+
 Get User:
 ```sh
 curl http://localhost:5000/api/user/0  | jq
