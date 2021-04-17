@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>sidpogthuisqdj</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="app">
+            <room_summary v-model:room="roomA"></room_summary>
+            <room_summary v-model:room="roomB"></room_summary>
+        </div>
+        <script>
+            const composantApp = {
+                data() {
+                    
+                }
+            };
+            const roomSummary = {
+                name: 'room_summary',
+                props: ['room'],
+                template: `id: {{room.id}} - nom: {{room.nom}} - description: {{room.description}}`
+            }
+            const app = Vue.createApp(composantApp);
+            app.component('room_summary', roomSummary)
+            app.mount('#app');
+        </script>
+    </body>
+</html>

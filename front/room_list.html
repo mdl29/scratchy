@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/vue@next"></script>
+        <style>
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <room-list v-model:rooms="rooms" v-on:room-selected="displayRoom($event)"></room-list>
+        </div>
+        <script>
+            rooms = [
+                {
+                    "_id": {
+                        "$oid": "6071ac5176e5bd456a859d9d"
+                    },
+                    "description": "ma description",
+                    "title": "Room 1",
+                    "user": []
+                },
+                {
+                    "_id": {
+                        "$oid": "6071ac5176e5bd456a859d9d"
+                    },
+                    "description": "ma description",
+                    "title": "Room 2",
+                    "user": []
+                }
+            ];
+            const roomList = {
+                name: "room-list",
+                props: ["rooms"],
+                emits: ["room-selected"],
+                template: `
+                <div class='room_list_wrapper'>
+                <div class="room_list_item" v-for="room in rooms">
+                <div class="room_list_item_wrapper" @click="$emit(room)">
+                {{room.title}}
+                </div>
+                </div>
+                </div>`
+            };
+            const app = Vue.createApp({
+                data: () => ({
+                    rooms: rooms
+                }),
+                name: "app",
+                methods: {
+                    displayRoom(room) {
+                        // TODO: do whatever
+                        console.log(room);
+                    }
+                },
+            });
+            app.component("room-list", roomList);
+            app.mount("#app");
+        </script>
+    </body>
+</html>
