@@ -3,7 +3,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Resource, Api, abort, request
 
-from scratchy_server.resources.roomres import RoomRes, RoomsRes
+from scratchy_server.resources.roomres import RoomRes
 from scratchy_server.resources.userres import UserRes
 from scratchy_server.resources.messageres import MessageRes
 from scratchy_server import db_scratchy
@@ -27,7 +27,6 @@ api = Api(app)
 
 # database["messages"]["0"] = messageExemple
 
-api.add_resource(RoomsRes, '/api/room', '/api/room')
 api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
 api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
 api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
