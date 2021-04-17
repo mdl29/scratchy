@@ -3,7 +3,6 @@ import time
 from flask import Response
 from flask_restful import Resource, abort, request
 from scratchy_server.model.messageModel import MessageModel
-from scratchy_server.database import database
 import bson
 
 class MessageRes(Resource):
