@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Scratchy</title>
+	<script src="https://unpkg.com/vue@next"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div id="app">
+		<user-list v-bind:user-list="users"></user-list>
+	</div>
+	<script type="text/javascript">
+		const main = {
+			data(){
+				return {
+                    users: [
+                        {
+                            "_id": {
+                            "$oid": "607ae876f59d21d5a50ac3c9"
+                            },
+                            "pseudo": "mon pseudo1",
+                            "user": "default",
+                            "roomsId": []
+                        },
+                        {
+                            "_id": {
+                            "$oid": "607ae876f59d21d5a50ac3c9"
+                            },
+                            "pseudo": "mon pseudo2",
+                            "user": "default",
+                            "roomsId": []
+                        }
+                    ]
+				}
+
+			}	
+
+		};
+		const userList = {
+			name: 'user-list',
+			props: ['user-list'],
+			methods: {
+			},
+			template: `
+			<ul>
+			 <li v-for="user in userList" :key="user.id"> {{user.pseudo}} </li>
+			</ul>
+			`,
+		};
+		app = Vue.createApp(main);
+		app.component('user-list',userList);
+		app.mount('#app');
+	</script>
+</body>
+</html>
