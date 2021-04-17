@@ -4,7 +4,6 @@ from flask import Response
 from flask_restful import Resource, abort, request
 from scratchy_server.model.roomModel import RoomModel
 import bson
-import logging
 
 class RoomRes(Resource):
 

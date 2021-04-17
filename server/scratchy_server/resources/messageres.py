@@ -4,7 +4,6 @@ from flask import Response
 from flask_restful import Resource, abort, request
 from scratchy_server.model.messageModel import MessageModel
 import bson
-import logging
 
 class MessageRes(Resource):
     def get(self, messageId=None):
