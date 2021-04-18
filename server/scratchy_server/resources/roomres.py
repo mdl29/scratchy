@@ -11,16 +11,23 @@ class RoomRes(Resource):
     def get(self, roomId=None):
         if roomId is None:
             try:
-                return Response(RoomModel.objects().to_json(), mimetype="application/json", status=200)
+                response = Response(RoomModel.objects().to_json(), mimetype="application/json", status=200)
             except IndexError as ie:
                 abort(404)
+            else:
+                logging.debug("here are the rooms:")
+                for i in json.loads(response.get_data()):
+                    logging.debug(i["title"])
+                return response
+
+
         else:        
             try:
                 response = Response(RoomModel.objects.get(id=roomId).to_json(), mimetype="application/json", status=200)
             except IndexError as ie:
                 abort(404)
             else:
-                logging.debug("here is %s",json.loads(response.get_data())["title"])
+                logging.debug("here is the room: %s",json.loads(response.get_data())["title"])
                 return response
 
     def post(self):
@@ -32,7 +39,7 @@ class RoomRes(Resource):
 
         # database['rooms'][room.id] = room
         room = room.save()
-        logging.debug("created %s",room.title)
+        logging.debug("created the room: %s",room.title)
         return { 'id': str(room.id)}
 
     def delete(self, roomId):
@@ -41,7 +48,7 @@ class RoomRes(Resource):
         except IndexError as ie:
             abort(404)
         else:
-            logging.debug("currently deleting %s",json.loads(response.to_json())["title"])
+            logging.debug("currently deleting the room: %s",json.loads(response.to_json())["title"])
             try:
                 response.delete()
             except:
