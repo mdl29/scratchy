@@ -22,6 +22,15 @@ Start mongodb:
 <scratchy/docker>$ docker-compose up -d
 ```
 
+---
+**NOTE**
+
+For stopping mongodb, use:
+```sh
+<scratchy/docker>$ docker-compose down
+```
+---
+
 Then read the next section for server part.
 
 ## how to run package version
