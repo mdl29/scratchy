@@ -1,8 +1,8 @@
 <html>
     <head>
         <script src="https://unpkg.com/vue@next"></script>
-        <style>
-        </style>
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/room_list.css">
     </head>
     <body>
         <div id="app">
@@ -25,6 +25,14 @@
                     "description": "ma description",
                     "title": "Room 2",
                     "user": []
+                },
+                {
+                    "_id": {
+                        "$oid": "6071ac5176e5bd456a859d9d"
+                    },
+                    "description": "ma description",
+                    "title": "Room 3",
+                    "user": []
                 }
             ];
             const roomList = {
@@ -33,11 +41,9 @@
                 emits: ["room-selected"],
                 template: `
                 <div class='room_list_wrapper'>
-                <div class="room_list_item" v-for="room in rooms">
-                <div class="room_list_item_wrapper" @click="$emit(room)">
-                {{room.title}}
-                </div>
-                </div>
+                    <div class="room_list_item" v-for="room in rooms" @click="$emit('room-selected', room)">
+                        {{room.title}}
+                    </div>
                 </div>`
             };
             const app = Vue.createApp({
@@ -48,7 +54,7 @@
                 methods: {
                     displayRoom(room) {
                         // TODO: do whatever
-                        console.log(room);
+                        console.log(`selected ${room.title}`, room);
                     }
                 },
             });
