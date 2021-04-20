@@ -41,9 +41,11 @@
                 emits: ["room-selected"],
                 template: `
                 <div class='room_list_wrapper'>
-                    <div class="room_list_item" v-for="room in rooms" @click="$emit('room-selected', room)">
-                        {{room.title}}
-                    </div>
+		    <template v-for="room in rooms">
+                        <div class="room_list_item" :key="room._id.$oid" @click="$emit('room-selected', room)">
+                            {{room.title}}
+                        </div>
+		    </template>
                 </div>`
             };
             const app = Vue.createApp({
