@@ -1,0 +1,27 @@
+.room_list_wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg3);
+    padding-top:10px;
+    padding-bottom:10px;
+    width: fit-content;
+}
+.room_list_item {
+    margin: 3px;
+    padding: 5px;
+    color: rgb(146, 146, 146);
+    transition: all 0.1s;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.room_list_item:hover {
+    color: white;
+}
+/*
+   on active right now, but should change later to another class (eg. .room_list_selected_item)
+   to have it be an indicator of which room is selected.
+ */
+.room_list_item:active {
+    background-color: var(--bg2);
+    color: var(--accent);
+}
