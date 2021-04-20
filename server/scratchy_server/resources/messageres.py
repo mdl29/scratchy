@@ -19,9 +19,9 @@ class MessageRes(Resource):
                 except MessageModel.DoesNotExist as ie:
                     abort(404)
                 else:
-                    logging.debug("here are the message:")
-                    for i in json.loads(response.get_data()):
-                        logging.debug(i["content"])
+                    if logging.getLogger().isEnabledFor(logging.DEBUG):
+                        logging.debug("here are the message:\n%s", "\n".join(map(lambda x : x["content"], json.loads(response.get_data()))))
+
                     return response
         else:
             try:
