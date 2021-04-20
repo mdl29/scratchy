@@ -15,9 +15,8 @@ class RoomRes(Resource):
             except IndexError as ie:
                 abort(404)
             else:
-                logging.debug("here are the rooms:")
-                for i in json.loads(response.get_data()):
-                    logging.debug(i["title"])
+                if logging.getLogger().isEnabledFor(logging.DEBUG):
+                    logging.debug("here are the rooms:\n%s","\n".join(map(lambda x:x["title"],json.loads(response.get_data()))))
                 return response
 
 
