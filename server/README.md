@@ -100,7 +100,7 @@ curl http://localhost:5000/api/message/0  | jq
 
 Create Message:
 ```sh
-curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"Author": "the author", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}'
+curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"author": "the author id", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}'
 ```
 
 Delete Message:

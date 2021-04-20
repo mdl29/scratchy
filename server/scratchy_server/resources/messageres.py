@@ -1,4 +1,5 @@
 import uuid
+import json
 import time
 from flask import Response
 from flask_restful import Resource, abort, request
@@ -14,14 +15,22 @@ class MessageRes(Resource):
             roomId = request.args.get('roomid')
             if roomId:
                 try:
-                    return Response(MessageModel.objects.filter(roomId=roomId).to_json(), mimetype="application/json", status=200)
+                    response = Response(MessageModel.objects.filter(roomId=roomId).to_json(), mimetype="application/json", status=200)
                 except MessageModel.DoesNotExist as ie:
                     abort(404)
+                else:
+                    if logging.getLogger().isEnabledFor(logging.DEBUG):
+                        logging.debug("here are the message:\n%s", "\n".join(map(lambda x : x["content"], json.loads(response.get_data()))))
+
+                    return response
         else:
             try:
-                return Response(MessageModel.objects.get(id=messageId).to_json(), mimetype="application/json", status=200)
+                response = Response(MessageModel.objects.get(id=messageId).to_json(), mimetype="application/json", status=200)
             except MessageModel.DoesNotExist as ie:
                 abort(404)
+            else:
+                logging.debug("here is the message: %s",json.loads(response.get_data())["content"])
+                return response
 
     def post(self):
         messageData = request.get_json()
@@ -30,12 +39,20 @@ class MessageRes(Resource):
         message.author = bson.objectid.ObjectId(messageData['author'])
         message.roomId = bson.objectid.ObjectId(messageData['roomId'])
 
-        message = message.save()        
+        message = message.save()  
+        logging.debug("message: '%s' has been post",message.content)      
         return {'id': str(message.id)}
 
     def delete(self, messageId):
         try:
-            MessageModel.objects.get(id=messageId).delete()
-            return {'success':True}
+            response = MessageModel.objects.get(id=messageId)
         except MessageModel.DoesNotExist as ie:
             abort(404)
+        else:
+            logging.debug("currently deleting the message: %s",json.loads(response.to_json())["content"])
+            try:
+                response.delete()
+            except:
+                return {'success':False}
+            logging.debug("done, %s has been deleted",json.loads(response.to_json())["content"])
+            return {'success':True}
