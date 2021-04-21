@@ -50,6 +50,34 @@ Start the serveur :
 scratchy-server
 ```
 
+##how to delete the data base
+
+* Go to docker directory:
+```sh
+<scratchy root>$ cd docker
+```
+
+* Stop mongodb using docker-compose:
+```sh
+<scratchy/docker>$ docker-compose down
+```
+
+* Remove data file:
+```sh
+<scratchy/docker>$ sudo rm -r data
+```
+
+* Restore git file:
+```sh
+<scratchy/docker>$ git restore data/. gitignore
+```
+
+* Restart mongodb using docker-compose:
+```sh
+<scratchy/docker>$ docker-compose up -d
+```
+
+
 ## how to play
 
 Requirements:
