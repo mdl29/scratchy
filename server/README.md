@@ -78,9 +78,14 @@ Get all rooms:
 curl http://localhost:5000/api/room
 ```
 
-Get User:
+Get User By id:
 ```sh
 curl http://localhost:5000/api/user/0  | jq
+```
+
+Get User By pseudo:
+```sh
+curl http://localhost:5000/api/user?userpseudo=6043978fd68dc3fcbf6079d6  | jq
 ```
 
 Create User:
