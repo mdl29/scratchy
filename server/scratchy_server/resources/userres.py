@@ -4,6 +4,7 @@ from flask import Response
 from flask_restful import Resource, abort, request
 from scratchy_server.model.userModel import UserModel
 import logging
+from mongoengine import NotUniqueError
 
 class UserRes(Resource):
     def get(self, userId):
@@ -25,8 +26,11 @@ class UserRes(Resource):
         user.user = userData['user'] if 'user' in userData else "default"
         
 
-
-        user = user.save()
+        try:
+            user = user.save()
+        except NotUniqueError:
+            logging.debug("the pseudo is already used")
+            abort(409)
         logging.debug("user: '%s' has been created",user.user)
         return { 'id': str(user.id)}
 
