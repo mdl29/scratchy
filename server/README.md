@@ -69,7 +69,7 @@ scratchy-server
 
 * Restore git file:
 ```sh
-<scratchy/docker>$ git restore data/. gitignore
+<scratchy/docker>$ git restore data/.gitignore
 ```
 
 * Restart mongodb using docker-compose:
