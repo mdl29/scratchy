@@ -9,10 +9,10 @@ class UserRes(Resource):
     def get(self, userId=None):
         if userId is None:
             # check parameter (search roomid)
-            userPseudo = request.args.get('userpseudo')
-            if userPseudo:
+            pseudo = request.args.get('pseudo')
+            if pseudo:
                 try:
-                    response = Response(UserModel.objects.get(pseudo=userPseudo).to_json(), mimetype="application/json", status=200)
+                    response = Response(UserModel.objects.get(pseudo=pseudo).to_json(), mimetype="application/json", status=200)
                 except UserModel.DoesNotExist as ie:
                     abort(404)
                 else:
