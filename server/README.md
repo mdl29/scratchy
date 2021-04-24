@@ -101,6 +101,11 @@ Update Room (update title and description)
 curl -X PUT http://localhost:5000/api/room/6071ac5176e5bd456a859d9d -H "Content-Type: application/json" --data '{"title":"un autre titre", "description": "une nouvelle description"}'
 ```
 
+Delete Room:
+```sh
+curl -X DELETE http://localhost:5000/api/room/0
+```
+
 Get all rooms:
 ```sh
 curl http://localhost:5000/api/room
