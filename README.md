@@ -22,3 +22,7 @@ Scratchy, application de tchat projet LPH.
   - [📸 Frontend diagram](doc/front-uml-class-diagram.png)
 
 
+## Tools
+
+ - :wrench: tools documentation directory is [here](doc/tools)
+ - python linter: [flake8](doc/tools/flake8.md)
