@@ -2,6 +2,7 @@
 
 ## install flake8
 
+ [here](../../server/README.md#how-to-run-package-version)
  In the server directory:
 
  Install the depedencies :
