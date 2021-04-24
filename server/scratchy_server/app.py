@@ -1,7 +1,6 @@
-import uuid
 from flask import Flask
 from flask_cors import CORS
-from flask_restful import Resource, Api, abort, request
+from flask_restful import Api
 
 from scratchy_server.resources.roomres import RoomRes
 from scratchy_server.resources.userres import UserRes
@@ -16,11 +15,11 @@ CORS(app)
 
 app.config['MONGODB_SETTINGS'] = {
     'db': 'scratchy',
-    'username':'root',
-    'password':'example',
+    'username': 'root',
+    'password': 'example',
     'host': 'localhost',
     'port': 27017,
-    'authentication_source':'admin'
+    'authentication_source': 'admin'
 }
 db_scratchy.init_app(app)
 api = Api(app)
