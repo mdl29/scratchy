@@ -25,7 +25,7 @@ db_scratchy.init_app(app)
 api = Api(app)
 
 
-# database["messages"]["0"] = messageExemple
+# database["messages"]["0"] = messageExemple
 
 api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
 api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')

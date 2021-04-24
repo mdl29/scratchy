@@ -6,5 +6,3 @@ class UserModel(db_scratchy.Document):
     profilImage = db_scratchy.StringField()
     user = db_scratchy.StringField()
     roomsId = db_scratchy.ListField(db_scratchy.ObjectIdField())
-
-
