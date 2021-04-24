@@ -2,18 +2,7 @@
 
 ## install flake8
 
- [here](../../server/README.md#how-to-run-package-version)
- In the server directory:
-
- Install the depedencies :
-```sh
-pip install -r requirements.txt
-```
-
-Install the package in developpment :
-```sh
-python setup.py develop
-```
+ Install the dependencies and the package [here](../../server/README.md#how-to-run-package-version)
 
 ## how to play
 
