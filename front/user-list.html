@@ -19,7 +19,7 @@
                     users: [
                         {
                             "_id": {
-                            "$oid": "607ae876f59d21d5a50ac3c9"
+                            	"$oid": "607ae876f59d21d5a50ac3c9"
                             },
                             "pseudo": "mon pseudo1",
                             "user": "default",
@@ -27,7 +27,7 @@
                         },
                         {
                             "_id": {
-                            "$oid": "607ae876f59d21d5a50ac3c9"
+                            	"$oid": "607ae876f59d21d5a50ac3c9"
                             },
                             "pseudo": "mon pseudo2",
                             "user": "default",
@@ -42,11 +42,9 @@
 		const userList = {
 			name: 'user-list',
 			props: ['userList'],
-			methods: {
-			},
 			template: `
 			<ul>
-			 <li v-for="user in userList" :key="user.id"> {{user.pseudo}} </li>
+			 <li v-for="user in userList" :key="user._id.$oid"> {{user.pseudo}} </li>
 			</ul>
 			`,
 		};
