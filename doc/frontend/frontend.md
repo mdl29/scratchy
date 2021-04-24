@@ -1,5 +1,15 @@
 # Frontend documentation
 
+  - [📂 **front directory**](front)
+  
+  **How to start it :**
+
+  > run http server in front directory
+
+  ```bash
+  python3 -m http.server
+  ```
+> Open webbrowser at http://localhost:5000
 ## vuejs components :
 
 - activity-navbar :
