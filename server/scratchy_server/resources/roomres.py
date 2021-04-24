@@ -41,6 +41,13 @@ class RoomRes(Resource):
         logging.debug("created the room: %s",room.title)
         return { 'id': str(room.id)}
 
+    def put(self, roomId):
+        roomData = request.get_json()
+        RoomModel.objects.get(id=roomId).update(**roomData)
+        logging.debug("the room has been updated")
+        return {'id': roomId}
+
+
     def delete(self, roomId):
         try:
             response = RoomModel.objects.get(id=roomId)
