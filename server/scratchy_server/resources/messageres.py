@@ -43,6 +43,12 @@ class MessageRes(Resource):
         logging.debug("message: '%s' has been post",message.content)      
         return {'id': str(message.id)}
 
+    def put(self, messageId):
+        messageData = request.get_json()
+        MessageModel.objects.get(id=messageId).update(**messageData)
+        logging.debug("the message has been updated")
+        return {'id': messageId}
+
     def delete(self, messageId):
         try:
             response = MessageModel.objects.get(id=messageId)
