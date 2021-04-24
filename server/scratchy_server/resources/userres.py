@@ -7,15 +7,28 @@ import logging
 from mongoengine import NotUniqueError
 
 class UserRes(Resource):
-    def get(self, userId):
+    def get(self, userId=None):
+        if userId is None:
+            # check parameter (search roomid)
+            pseudo = request.args.get('pseudo')
+            if pseudo:
+                try:
+                    response = Response(UserModel.objects.get(pseudo=pseudo).to_json(), mimetype="application/json", status=200)
+                except UserModel.DoesNotExist as ie:
+                    abort(404)
+                else:
+                    if logging.getLogger().isEnabledFor(logging.DEBUG):
+                        logging.debug("here is the user:\n%s", json.loads(response.get_data()))
 
-        try:
-            response = Response(UserModel.objects.get(id=userId).to_json(), mimetype="application/json", status=200)
-        except IndexError as ie:
-            abort(404)
+                    return response
         else:
-            logging.debug("here is the user: %s",json.loads(response.get_data())["user"])
-            return response
+            try:
+                response = Response(UserModel.objects.get(id=userId).to_json(), mimetype="application/json", status=200)
+            except IndexError as ie:
+                abort(404)
+            else:
+                logging.debug("here is the user: %s",json.loads(response.get_data())["user"])
+                return response
 
     def post(self):
         userData = request.get_json()
