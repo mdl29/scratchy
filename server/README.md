@@ -75,4 +75,3 @@ scratchy-server
 * Restart mongodb using docker-compose:
 ```sh
 <scratchy/docker>$ docker-compose up -d
-```

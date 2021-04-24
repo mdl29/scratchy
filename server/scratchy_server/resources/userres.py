@@ -47,6 +47,12 @@ class UserRes(Resource):
         logging.debug("user: '%s' has been created",user.user)
         return { 'id': str(user.id)}
 
+    def put(self, userId):
+        userData = request.get_json()
+        UserModel.objects.get(id=userId).update(**userData)
+        logging.debug("the user has been updated")
+        return {'id': userId}
+
     def delete(self, userId):
         try:
             response = UserModel.objects.get(id=userId)
