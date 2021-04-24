@@ -6,13 +6,14 @@
   > display description room and if a user wrinting in the input
 
 - messages :
-  >display messages 
+  > Display a list of messages
 
 - room-list :
-  > display all created rooms
+  > display all joined room
+
    
    --> room-entry :
-    > when the user click on the room, he can change her name, description or delete this room
+    > when the user click on the room, he can change it name and description
 
 - room-editor : 
   > when the user click on it, he can create a room
