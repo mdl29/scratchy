@@ -3,6 +3,8 @@
         <script src="https://unpkg.com/vue@next"></script>
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="css/login.css">
+        <link rel="stylesheet" href="css/messages-list.css">
+        <link rel="stylesheet" href="css/message_editor.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
 	    <meta charset="utf-8">
@@ -11,6 +13,7 @@
         <div id="app">
             <login v-on:login="onLogin($event)" v-bind:is-hidden="isConnected"></login>
             <messages v-bind:messages="apiMessages"></messages>
+            <message-editor v-on:send_message="onMessageSend($event)"></message-editor>
         </div>
         <script>
             const login = {
@@ -41,12 +44,39 @@
                     }
                 },
                 template: `
+                <div class="Messages-list">
                 <ul>
-                <li v-for="msg in messages" :key="msg.id"> <b> {{msg.author}} : </b> {{msg.content}} à {{humanDate(msg.timestamp)}}</li>
+                <li class="message" v-for="msg in messages" :key="msg.id"> <span class="messages-author"> {{msg.author}} : </span> {{msg.content}} à {{humanDate(msg.timestamp)}}</li>
                 </ul>
+                </div>
                 `,
 		    };
-            
+            const messageEditor = {
+                name: "message-editor",
+                data: () => ({
+                    content: ""
+                }),
+                methods: {
+                    clear() {
+                        this.content = "";
+                    }
+                },
+                emits: ["send_message"],
+                template: `
+                <div class='message_editor_wrapper'>
+                <textarea v-model="content" class="message_editor_input" />
+                <button @click="$emit('send_message', content);" class="message_editor_button"><div class="message_editor_send_icon"></div></button>
+                </div>`
+            };
+            const userList = {
+                name: 'user-list',
+                props: ['userList'],
+                template: `
+                    <ul>
+                    <li v-for="user in userList" :key="user._id.$oid"> {{user.pseudo}} </li>
+                    </ul>
+                `,
+		    };
             const app = Vue.createApp({
                 name: "app",
                 data: ()=> ({
@@ -55,13 +85,37 @@
                         {id : "459I548383",content: "Bonjour tata", author: "toto",  timestamp: 1618587750035},
                         {id : "4459493924",content: "Salut toto", author: "tata",  timestamp: 1618587750035 },
                     ],
+                    users: [
+                        {
+                            "_id": {
+                            	"$oid": "607ae876f59d21d5a50ac3c9"
+                            },
+                            "pseudo": "mon pseudo1",
+                            "user": "default",
+                            "roomsId": []
+                        },
+                        {
+                            "_id": {
+                            	"$oid": "607ae876f59d21d5a50ac3c9"
+                            },
+                            "pseudo": "mon pseudo2",
+                            "user": "default",
+                            "roomsId": []
+                        }
+                    ],
                     currentUser: undefined,
+    
                 }),
                 methods: {
                     onLogin(username) {
                         // TODO: do whatever
                         console.log(`user ${username}`);
                         this.currentUser = username;
+                    },
+                    onMessageSend(msg) {
+                        // TODO: implement something that calls the api and send the message
+                        console.log(msg);
+                        // TODO somehow call message-editor's clear methof if message was sent correctly
                     }
                 },
                 computed: {
@@ -72,7 +126,9 @@
             });
 
             app.component('login',login);
-            app.component('messages',messages)        
+            app.component('messages',messages)  
+            app.component("message-editor", messageEditor); 
+            app.component('user-list',userList);     
 
             app.mount("#app");
         </script>
