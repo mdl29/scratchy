@@ -50,7 +50,7 @@ Start the serveur :
 scratchy-server
 ```
 
-##how to delete the data base
+## how to delete the data base
 
 * Go to docker directory:
 ```sh
