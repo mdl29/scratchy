@@ -1,0 +1,19 @@
+/*
+ * not sure how this is supposed to look (on the final thing) so not much rn
+ */
+
+
+.user_list_wrapper {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg3);
+    width: fit-content;
+    padding: 5px;
+    margin: 0;
+}
+
+.user_list_item {
+    color: white;
+    margin-top: 5px;
+}
