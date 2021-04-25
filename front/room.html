@@ -5,6 +5,8 @@
 	<script src="https://unpkg.com/vue@next"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
+	<link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/room.css">
 	<meta charset="utf-8">
 </head>
 <body>
@@ -33,8 +35,16 @@
 				}
 			},
 			template: `
-			<ul>
-			 <li v-for="msg in messages" :key="msg.id"> <b> {{msg.author}} : </b> {{msg.content}} à {{humanDate(msg.timestamp)}}</li>
+			<ul class="messages_list_wrapper">
+				<li v-for="msg in messages" class="messages_item" :key="msg.id">
+					<div class="messages_title">
+						<span class="messages_author"> {{msg.author}} </span>
+						<span class="messages_timestamp"> {{humanDate(msg.timestamp)}} </span>
+					</div>
+					<div class="messages_content">
+						{{msg.content}}
+					</div>
+				</li>
 			</ul>
 			`,
 		};
