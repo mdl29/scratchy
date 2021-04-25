@@ -25,4 +25,4 @@ Scratchy, application de tchat projet LPH.
 ## Tools
 
  - :wrench: tools documentation directory is [here](doc/tools)
- - python linter: [flake8](doc/tools/flake8.md)
+ - ![python emoji](logos/python.png "python") python linter: [flake8](doc/tools/flake8.md)
