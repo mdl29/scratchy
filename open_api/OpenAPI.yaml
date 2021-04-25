@@ -1,0 +1,11 @@
+//OpenAPI.yaml
+openapi: 3.0.0
+info:
+  title: Scratchy OpenAPI document
+  dexciption: this API will make our life much more easier
+  version: 0.1.0
+paths:
+  /api/room/{id}:
+    $ref: '/room.yaml'
+  #$ref: '/user.yaml'
+  #$ref: '/message.yaml'
