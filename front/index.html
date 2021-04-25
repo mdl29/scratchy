@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/vue@next"></script>
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/login.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
+	    <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="app">
+            <login v-on:login="onLogin($event)" v-bind:is-hidden="isConnected"></login>
+            <messages v-bind:messages="apiMessages"></messages>
+        </div>
+        <script>
+            const login = {
+                name: "login",
+                data: () => ({
+                    username: ""
+                }),
+                props: ["isHidden"],
+                emits: ["login"],
+                template: `
+                    <div class="login_wrapper" :class="{ login_hidden: isHidden }">
+                        <div class="login_popup">
+                            <div class="login_title">Login</div>
+                            <label class="login_label" for="username">username</label>
+                            <input v-model="username" class="login_input" name="username" type="text" />
+                            <div class="login_submit_wrapper">
+                                <button class="login_submit" @click="$emit('login', username)">login</button>
+                            </div>
+                        </div>
+                    </div>`
+            };
+            const messages = {
+                name: 'messages',
+                props: ['messages'],
+                methods: {
+                    humanDate(ts){
+                        return moment(ts).fromNow();
+                    }
+                },
+                template: `
+                <ul>
+                <li v-for="msg in messages" :key="msg.id"> <b> {{msg.author}} : </b> {{msg.content}} à {{humanDate(msg.timestamp)}}</li>
+                </ul>
+                `,
+		    };
+            
+            const app = Vue.createApp({
+                name: "app",
+                data: ()=> ({
+                    
+                    apiMessages: [
+                        {id : "459I548383",content: "Bonjour tata", author: "toto",  timestamp: 1618587750035},
+                        {id : "4459493924",content: "Salut toto", author: "tata",  timestamp: 1618587750035 },
+                    ],
+                    currentUser: undefined,
+                }),
+                methods: {
+                    onLogin(username) {
+                        // TODO: do whatever
+                        console.log(`user ${username}`);
+                        this.currentUser = username;
+                    }
+                },
+                computed: {
+                    isConnected() {
+                        return this.currentUser !== undefined;
+                    }
+                }
+            });
+
+            app.component('login',login);
+            app.component('messages',messages)        
+
+            app.mount("#app");
+        </script>
+    </body>
+</html>
