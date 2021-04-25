@@ -6,7 +6,9 @@
     </head>
     <body>
         <div id="app">
-            <room-list v-model:rooms="rooms" v-on:room-selected="displayRoom($event)"></room-list>
+            <room-list v-model:rooms="rooms" v-on:room-selected="displayRoom($event)" v-on:room-quit="quitRoom($event)"></room-list>
+            <!--will go away later, just for debugging (and demo)-->
+            <div style="color: white; font-size: 0.74em; text-align: center; max-width: 130px; word-wrap: break-word;">selected room: {{selectedRoom !== undefined ? rooms[selectedRoom].title : "none"}}</div>
         </div>
         <script>
             rooms = [
@@ -20,7 +22,7 @@
                 },
                 {
                     "_id": {
-                        "$oid": "6071ac5176e5bd456a859d9d"
+                        "$oid": "6071ac5176e5bd456a859d9f"
                     },
                     "description": "ma description",
                     "title": "Room 2",
@@ -28,7 +30,7 @@
                 },
                 {
                     "_id": {
-                        "$oid": "6071ac5176e5bd456a859d9d"
+                        "$oid": "6071ac5176e5bd456a859d94"
                     },
                     "description": "ma description",
                     "title": "Room 3",
@@ -38,25 +40,51 @@
             const roomList = {
                 name: "room-list",
                 props: ["rooms"],
-                emits: ["roomSelected"],
+                emits: ["roomSelected", "roomQuit"],
                 template: `
                 <div class='room_list_wrapper'>
-		    <template v-for="room in rooms" :key="room._id.$oid">
-                        <div class="room_list_item" @click="$emit('roomSelected', room)">
-                            {{room.title}}
+		            <template v-for="room in rooms" :key="room._id.$oid">
+                        <div class="room_list_item">
+                            <div class="room_list_room" @click="$emit('roomSelected', room)"> {{room.title}} </div>
+                            <div class="room_list_quit" @click="$emit('roomQuit', room)"><div></div></div>
                         </div>
-		    </template>
+		            </template>
                 </div>`
             };
             const app = Vue.createApp({
                 data: () => ({
-                    rooms: rooms
+                    rooms: rooms,
+                    // will proably go away (or will be changed somewhat)
+                    selectedRoom: undefined
                 }),
                 name: "app",
                 methods: {
+                    // this is just example code
                     displayRoom(room) {
                         // TODO: do whatever
                         console.log(`selected ${room.title}`, room);
+                        let index = -1;
+                        this.rooms.forEach((r, i) => r._id.$oid === room._id.$oid ? index = i : null);
+                        if(index === -1) {
+                            console.warn("Trying to select unknown room, how ?");
+                            return;
+                        }
+                        this.selectedRoom = index;
+                    },
+                    quitRoom(room) {
+                        let index = -1;
+                        this.rooms.forEach((r, i) => r._id.$oid === room._id.$oid ? index = i : null);
+                        if(index === -1) {
+                            console.warn("Trying to delete unknown room, how ?");
+                            return;
+                        }
+                        if(index == this.selectedRoom) {
+                            this.selectedRoom = undefined;
+                        }
+                        if(index < this.selectedRoom) {
+                            this.selectedRoom -= index;
+                        }
+                        this.rooms.splice(index, 1);
                     }
                 },
             });
