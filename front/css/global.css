@@ -7,7 +7,7 @@
     --bg3: #393842;
     --accent: rgb(14, 247, 149);
     --font-size: 25px;
-    --border-radius: 9px;
+    --border-radius: 6px;
 }
 body {
     background-color: var(--bg1);
