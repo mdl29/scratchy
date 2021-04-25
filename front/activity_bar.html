@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/vue@next"></script>
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/activity_bar.css">
+    </head>
+    <body>
+        <div id="app">
+            <activity-bar v-bind:current-room="currentRoom.title" v-bind:is-writing="isWriting"></activity-bar>
+        </div>
+        <script>
+            const activityBar = {
+                name: "activity-bar",
+                props: ["currentRoom", "isWriting"],
+                template: `
+                <div class='activity_bar'>
+                    <div class='activity_bar_room'>{{currentRoom}}</div>
+                    <div v-if="isWriting" class='activity_bar_writing'> writing... </div>
+                </div>`
+            };
+            const app = Vue.createApp({
+                name: "app",
+                data: () => ({
+                    currentRoom: {
+                        "title": "current room's title"
+                    }
+                }),
+                computed: {
+                    isWriting: () => Math.floor(new Date().getTime() / 1000) % 2 == 0
+                },
+            });
+            app.component("activity-bar", activityBar);
+            app.mount("#app");
+        </script>
+    </body>
+</html>
