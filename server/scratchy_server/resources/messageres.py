@@ -4,10 +4,44 @@ from flask_restful import Resource, abort, request
 from scratchy_server.model.messageModel import MessageModel
 import bson
 import logging
+from flask_restful import Api
+from flask_restful_swagger import swagger
+
+app = Flask(__name__)
+
+###################################
+# Wrap the Api with swagger.docs. It is a thin wrapper around the Api class that adds some swagger smarts
+api = swagger.docs(Api(app), apiVersion='0.1')
+###################################
 
 
 class MessageRes(Resource):
 
+	@swagger.operation(
+        notes='the message res swagger',
+        responseClass=ModelClass.__name__,
+        nickname='upload',
+        parameters=[
+            {
+              "name": "body",
+              "description": "the message res",
+              "required": True,
+              "allowMultiple": False,
+              "dataType": ModelClass2.__name__,
+              "paramType": "body"
+            }
+          ],
+        responseMessages=[
+            {
+              "code": 201,
+              "message": "Created. The URL of the created blueprint should be in the Location header"
+            },
+            {
+              "code": 405,
+              "message": "Invalid input"
+            }
+          ]
+    	)
     def get(self, messageId=None):
         print("message Id is ", messageId)
         if messageId is None:
