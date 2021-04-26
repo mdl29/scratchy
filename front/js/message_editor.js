@@ -9,7 +9,7 @@ const messageEditor = {
     methods: {
         clear() {
             this.content = "";
-            onInput();
+            this.onInput();
         },
         onInput() {
             if(this.content.length > 0 && this.oldContent.length === 0) {
