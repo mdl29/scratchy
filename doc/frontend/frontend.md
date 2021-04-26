@@ -27,7 +27,7 @@
 - messages :
   > Display a list of messages
 
-  ![html](../../logos/html.png) [html file](../../front/room.html)
+  ![html](../../logos/html.png) [html file](../../front/messages-list.html)
 
 - room-list :
   > display all joined room
