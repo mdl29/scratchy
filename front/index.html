@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="css/room_list.css">
         <link rel="stylesheet" href="css/room_editor.css">
         <link rel="stylesheet" href="css/user-list.css">
-        <link rel="stylesheet" href="css/room.css">
+        <link rel="stylesheet" href="css/messages-list.css">
         <link rel="stylesheet" href="css/login.css">
     </head>
     <body>
@@ -54,6 +54,7 @@
                 methods: {
                     clear() {
                         this.content = "";
+                        onInput();
                     },
                     onInput() {
                         if(this.content.length > 0 && this.oldContent.length === 0) {
