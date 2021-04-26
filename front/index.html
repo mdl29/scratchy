@@ -1,0 +1,379 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="css/activity_bar.css">
+        <link rel="stylesheet" href="css/message_editor.css">
+        <link rel="stylesheet" href="css/room_list.css">
+        <link rel="stylesheet" href="css/room_editor.css">
+        <link rel="stylesheet" href="css/user-list.css">
+        <link rel="stylesheet" href="css/room.css">
+        <link rel="stylesheet" href="css/login.css">
+    </head>
+    <body>
+        <div id="app">
+            <login v-on:login="onLogin($event)" v-bind:is-hidden="isConnected"></login>
+            <div class="app_vertical_layout">
+                <div class="app_top_horizontal_layout">
+                    <room-list v-model:rooms="rooms" v-on:room-selected="displayRoom($event)" v-on:room-quit="quitRoom($event)"></room-list>
+                    <div class="app_messages_list_wrapper">
+                        <activity-bar v-bind:current-room="currentRoom.title" v-bind:is-writing="isWriting"></activity-bar>
+                        <messages v-bind:messages="messages"></messages>
+                    </div>
+                    <user-list v-bind:users="users"></user-list>
+                </div>
+                <div class="app_bottom_horizontal_layout">
+                    <room-editor v-bind:close-popup="roomEditorClosed" v-on:lock-close="lockRoomEditorClosed()" v-on:create-room="createRoom($event)" v-on:join-room="joinRoom($event)"></room-editor>
+                    <message-editor v-bind:clear-message="clearMessageEditor" v-on:lock-clear-message="lockClearMessageEditor()" v-on:send-message="onMessageSend($event)" v-on:start-writing="isWriting = true" v-on:stop-writing="isWriting = false"></message-editor>
+                </div>
+            </div>
+        </div>
+        <script>
+            const activityBar = {
+                name: "activity-bar",
+                props: ["currentRoom", "isWriting"],
+                template: `
+                <div class='activity_bar'>
+                    <div class='activity_bar_room'>{{currentRoom}}</div>
+                    <div v-if="isWriting" class='activity_bar_writing'> writing... </div>
+                </div>`
+            };
+        </script>
+        <script>
+            const messageEditor = {
+                name: "message-editor",
+                data: () => ({
+                    content: "",
+                    // to know the writing start and end
+                    oldContent: ""
+                }),
+                props: ["clearMessage"],
+                methods: {
+                    clear() {
+                        this.content = "";
+                    },
+                    onInput() {
+                        if(this.content.length > 0 && this.oldContent.length === 0) {
+                            this.$emit('startWriting');
+                        } else if(this.content.length === 0) {
+                            this.$emit('stopWriting');
+                        }
+                        this.oldContent = this.content;
+                    }
+                },
+                watch: {
+                    clearMessage() {
+                        if(this.clearMessage) {
+                            this.clear();
+                            this.$emit('lockClearMessage');
+                        }
+                    }
+                },
+                emits: ["sendMessage", "startWriting", "stopWriting", "lockClearMessage"],
+                template: `
+                <div class='message_editor_wrapper'>
+                <textarea v-model="content" class="message_editor_input" @input="onInput()" />
+                <button @click="$emit('sendMessage', content);" class="message_editor_button"><div class="message_editor_send_icon"></div></button>
+                </div>`
+            };
+        </script>
+        <script>
+            const roomList = {
+                name: "room-list",
+                props: ["rooms"],
+                emits: ["roomSelected", "roomQuit"],
+                template: `
+                <div class='room_list_wrapper'>
+		            <template v-for="(room, index) in rooms" :key="room._id.$oid">
+                        <div class="room_list_item">
+                            <div class="room_list_room" @click="$emit('roomSelected', index)"> {{room.title}} </div>
+                            <div class="room_list_quit" @click="$emit('roomQuit', index)"><div></div></div>
+                        </div>
+		            </template>
+                </div>`
+            };
+        </script>
+        <script>
+            const roomEditor = {
+                name: "room-editor",
+                data: () => ({
+                    isPopupShown: false,
+                    // 0 -> join room
+                    // 1 -> create room
+                    tab: 0,
+                    createRoomTitle: "",
+                    createRoomDescription: "",
+                    joinRoomId: ""
+                }),
+                props: ["closePopup"],
+                methods: {
+                    close() {
+                        this.isPopupShown = false;
+                    },
+                    open() {
+                        this.isPopupShown = true;
+                    }
+                },
+                emits: ["createRoom", "joinRoom", "lockClose"],
+                template: `
+                    <div class="room_editor_start" @click="open()">
+                        <div class="room_editor_plus"></div>
+                    </div>
+                    <div v-if="isPopupShown" class="room_editor_wrapper">
+                        <div class="room_editor_popup">
+                            <div class="room_editor_tabs">
+                                <div :class="{ room_editor_selected_tab: tab == 0 }" @click="tab = 0">join</div>
+                                <div :class="{ room_editor_selected_tab: tab == 1 }" @click="tab = 1">create</div>
+                            </div>
+                            <div class="room_editor_content_wrapper" v-if="tab == 0">
+                                <label class="room_editor_label" for="id">room id</label>
+                                <input name="id" class="room_editor_input" type="text" v-model="joinRoomId"/>
+                                <div class="room_editor_submit_wrapper">
+                                    <button class="room_editor_button room_editor_cancel" @click="close()">cancel</button>
+                                    <button class="room_editor_button room_editor_submit" @click="$emit('joinRoom', joinRoomId)">join</button>
+                                </div>
+                            </div>
+                            <div class="room_editor_content_wrapper" v-if="tab == 1">
+                                <label class="room_editor_label" for="room_title">room title</label>
+                                <input name="room_title" class="room_editor_input" v-model="createRoomTitle" />
+                                <label class="room_editor_label" for="room_desc">room description</label>
+                                <textarea name="room_desc" class="room_editor_input" v-model="createRoomDescription"></textarea>
+                                <div class="room_editor_submit_wrapper">
+                                    <button class="room_editor_button room_editor_cancel" @click="close()">cancel</button>
+                                    <button class="room_editor_button room_editor_submit" @click="$emit('createRoom', {title: createRoomTitle, description: createRoomDescription})">create</button>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                    `,
+                watch: {
+                    closePopup() {
+                        if(this.closePopup) {
+                            this.isPopupShown = false;
+                            this.$emit('lockClose');
+                        }
+                    }
+                }
+            };
+        </script>
+        <script>
+            const userList = {
+                name: 'user-list',
+                props: ['users'],
+                template: `
+                <ul class="user_list_wrapper">
+                    <li class="user_list_item" v-for="user in users" :key="user._id.$oid"> {{user.pseudo}} </li>
+                </ul>
+                `,
+            };
+        </script>
+        <script>
+            const messages = {
+                name: 'messages',
+                props: ['messages'],
+                methods: {
+                    humanDate(ts){
+                        return moment(ts).fromNow();
+                    }
+                },
+                template: `
+                <ul class="messages_list_wrapper">
+                    <li v-for="msg in messages" class="messages_item" :key="msg.id">
+                        <div class="messages_title">
+                            <span class="messages_author"> {{msg.author}} </span>
+                            <span class="messages_timestamp"> {{humanDate(msg.timestamp)}} </span>
+                        </div>
+                        <div class="messages_content">
+                            {{msg.content}}
+                        </div>
+                    </li>
+                </ul>
+                `,
+            };
+        </script>
+        <script>
+            const login = {
+                name: "login",
+                data: () => ({
+                    username: ""
+                }),
+                props: ["isHidden"],
+                emits: ["login"],
+                template: `
+                    <div class="login_wrapper" :class="{ login_hidden: isHidden }">
+                        <div class="login_popup">
+                            <div class="login_title">Login</div>
+                            <label class="login_label" for="username">username</label>
+                            <input v-model="username" class="login_input" name="username" type="text" />
+                            <div class="login_submit_wrapper">
+                                <button class="login_submit" @click="$emit('login', username)">login</button>
+                            </div>
+                        </div>
+                    </div>`
+            };
+        </script>
+        <script>
+            const app = Vue.createApp({
+                name: "app",
+                data: () => ({
+                    selectedRoom: undefined,
+                    isWriting: false,
+                    loggedUser: undefined,
+                    clearMessageEditor: false,
+                    roomEditorClosed: false,
+                    rooms: [
+                        {
+                            "_id": {
+                                "$oid": "6071ac5176e5bd456a859d9d"
+                            },
+                            "description": "ma description",
+                            "title": "Room 1",
+                            "user": []
+                        },
+                        {
+                            "_id": {
+                                "$oid": "6071ac5176e5bd456a859d9f"
+                            },
+                            "description": "ma description",
+                            "title": "Room 2",
+                            "user": []
+                        },
+                        {
+                            "_id": {
+                                "$oid": "6071ac5176e5bd456a859d94"
+                            },
+                            "description": "ma description",
+                            "title": "Room 3",
+                            "user": []
+                        }
+                    ],
+                    users: [
+                        {
+                            "_id": {
+                                "$oid": "607ae876f59d21d5a50ac3c9"
+                            },
+                            "pseudo": "mon pseudo1",
+                            "roomsId": []
+                        },
+                        {
+                            "_id": {
+                                "$oid": "607ae876f59d21d5a50ac3c2"
+                            },
+                            "pseudo": "mon pseudo2",
+                            "roomsId": []
+                        }
+                    ],
+                    messages: [
+                        {_id : {$oid: "459I548383"},content: "Bonjour tata", author: "toto",  timestamp: 1618587750035},
+                        {_id : {$oid: "4459493924"},content: "Salut toto", author: "tata",  timestamp: 1618587750035 },
+                    ]
+                }),
+                methods: {
+                    onMessageSend(msg) {
+                        // TODO: implement something that calls the api and send the message
+                        console.log(`message: ${msg}`);
+                        this.permitClearMessageEditor();
+                        this.messages.push({
+                            _id: {
+                                $oid: new Date().getTime().toString(16)
+                            },
+                            author: this.currentUser.pseudo,
+                            content: msg,
+                            timestamp: Math.floor(new Date().getTime())
+                        });
+                    },
+                    permitClearMessageEditor() {
+                        this.clearMessageEditor = true;
+                    },
+                    lockClearMessageEditor() {
+                        this.clearMessageEditor = false;
+                    },
+                    
+                    permitRoomEditorClosed() {
+                        this.roomEditorClosed = true;
+                    },
+                    lockRoomEditorClosed() {
+                        this.roomEditorClosed = false;
+                    },
+                    // this is just example code
+                    displayRoom(roomIndex) {
+                        // TODO: do whatever
+                        console.log(`selected ${this.rooms[roomIndex].title}: rooms[${roomIndex}]`);
+                        this.selectedRoom = roomIndex;
+                    },
+                    quitRoom(index) {
+                        if(index == this.selectedRoom) {
+                            this.selectedRoom = undefined;
+                        }
+                        // change the selectedRoom index to make it point to the same room
+                        if(index < this.selectedRoom) {
+                            this.selectedRoom--;
+                        }
+                        this.rooms.splice(index, 1);
+                    },
+                    createRoom(roomData) {
+                        // TODO: do whatever
+                        console.log(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
+                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
+                        this.rooms.push({
+                            _id: {
+                                $oid: new Date().getTime().toString(16)
+                            },
+                            title: roomData.title,
+                            description: roomData.description
+                        });
+                        this.permitRoomEditorClosed()
+                    },
+                    joinRoom(id) {
+                        // TODO: do whatever
+                        console.log(`join room '${id}'`);
+                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
+                        this.rooms.push({
+                            _id: {
+                                $oid: id
+                            },
+                            title: "title",
+                            description: ""
+                        });
+                        this.permitRoomEditorClosed()
+                    },
+                    onLogin(username) {
+                        // TODO: do whatever
+                        console.log(`logged in as user '${username}'`);
+                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
+                        this.loggedUser = this.users.length;
+                        this.users.push({
+                            "_id": {
+                                "$oid": new Date().getTime().toString(16)
+                            },
+                            "pseudo": username,
+                            "roomsId": []
+                        })
+                    }
+                },
+                computed: {
+                    currentRoom() {
+                        return this.selectedRoom === undefined ? {_id: null, title: "room not found", description: ""} : this.rooms[this.selectedRoom];
+                    },
+                    currentUser() {
+                        return this.loggedUser === undefined ? {_id: null, pseudo: "user not found", roomsId: []} : this.users[this.loggedUser];
+                    },
+                    isConnected() {
+                        return this.loggedUser !== undefined;
+                    }
+                },
+            });
+            app.component("activity-bar", activityBar);
+            app.component("message-editor", messageEditor);
+            app.component("room-list", roomList);
+            app.component("room-editor", roomEditor);
+            app.component('user-list',userList);
+            app.component('messages',messages);
+            app.component("login", login);
+            app.mount("#app");
+        </script>
+    </body>
+</html>

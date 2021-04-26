@@ -5,6 +5,7 @@
     background-color: var(--bg4);
     margin: 0;
     padding-bottom: 50px;
+    flex-grow: 2;
 }
 
 .messages_item {

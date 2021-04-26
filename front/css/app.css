@@ -1,0 +1,36 @@
+#app {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+
+.app_vertical_layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app_top_horizontal_layout {
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+}
+
+.app_bottom_horizontal_layout {
+    flex-grow: 0;
+    display: flex;
+    padding: 5px;
+    background-color: var(--bg3);
+    box-shadow: rgba(0, 0, 0, 0.335) 0 0 3px;
+}
+
+.app_messages_list_wrapper {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+}
+.app_top_horizontal_layout > *:nth-child(2n+1) {
+    position: relative;
+    z-index: 2;
+    box-shadow: rgb(37, 37, 37) 0 0 3px;
+}
