@@ -1,6 +1,6 @@
-# flake8
+# styelint
 
-## install flake8
+## install stylelint
 
  npm install --save-dev stylelint stylelint-config-standard
 
