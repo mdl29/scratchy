@@ -1,0 +1,97 @@
+---
+openapi: 3.0.0
+info:
+  title: Scratchy OpenAPI document
+  dexciption: this API will make our life much more easier
+  version: 0.1.0
+paths:
+  /api/room/{id}:
+    get:
+      summary: get room by id
+      parameters:
+        - name: id
+        - in: path
+        - required: true
+        - schema:
+          type: string
+        - style: simple
+      response:
+        "200":
+          descritption: "Ok"
+          content:
+            application/json:
+              {
+                "_id": {
+                  "$oid": "60439c35125873ff26d02dc5"
+                },
+                "description": "Une room",
+                "title": "titre",
+                "user": []
+              }
+    put:
+      summary: put info in a room
+      parameters:
+        - name: id
+        - in: path
+        - required: true
+        - schema:
+          type: string
+        - style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      response:
+        "200":
+          descritption: "Ok"
+          content:
+            application/json:
+              {
+                "id": "6086bde0b6ca08fa01078133"
+              }
+    delete:
+      summary: delete a room
+      parameters:
+        - name: id
+        - in: path
+        - required: true
+        - schema:
+          type: string
+        - style: simple
+      response:
+        "200":
+          descritption: "Ok"
+          content:
+            application/json:
+              {
+                "success": true
+              }
+
+
+  /api/room:
+    post:
+      summary: post a room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      response:
+        "200":
+          descritption: "Ok"
+          content:
+            application/json:
+              {
+                "id": "6086bde0b6ca08fa01078133"
+              }
