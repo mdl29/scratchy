@@ -47,3 +47,4 @@ LPH.
 
  - :wrench: tools documentation directory is [here](doc/tools)
  - ![python emoji](logos/python.png "python") python linter: [flake8](doc/tools/flake8.md)
+ - ![css emoji](logos/css.png "css") css linter: [stylelint](doc/tools/stylelint.md)
