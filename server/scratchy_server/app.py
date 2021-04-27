@@ -1,11 +1,13 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_restful import Api
+from flask_restful_swagger_3 import Api
+from flask_restful_swagger_3 import swagger,Resource
 
 from scratchy_server.resources.roomres import RoomRes
 from scratchy_server.resources.userres import UserRes
 from scratchy_server.resources.messageres import MessageRes
 from scratchy_server import db_scratchy
+
 import logging
 
 
@@ -22,12 +24,19 @@ app.config['MONGODB_SETTINGS'] = {
     'authentication_source': 'admin'
 }
 db_scratchy.init_app(app)
-api = Api(app)
+api = Api(app, swagger_prefix_url = '/doc/api')
 
 
 # database["messages"]["0"] = messageExemple
 
-api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
-api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
+#api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
+#api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
 api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
+
+
+
+
+
 logging.info("scratchy is up and ready")
+while True:
+	pass
