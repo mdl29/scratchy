@@ -38,7 +38,7 @@ LPH.
 ## Frontend
 
  - 📂 Frontend documentation's directory  is [here](doc/frontend)  
- - [📝 Frontend Documentation](front/frontend.md)
+ - [📝 Frontend Documentation](doc/frontend/frontend.md)
   - [📸 component sketch](doc/frontend/front.png)
   - [📸 Frontend diagram](doc/front-uml-class-diagram.png)
 
