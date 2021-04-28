@@ -65,5 +65,5 @@ curl -X DELETE http://localhost:5000/api/message/0
 
 Get all messages for one RoomId:
 ```sh
-curl -v http:/localhost:5000/api/message?roomid=6043978fd68dc3fcbf6079d6
+curl -v http://localhost:5000/api/message?roomid=6043978fd68dc3fcbf6079d6
 ```
