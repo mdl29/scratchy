@@ -47,4 +47,4 @@ LPH.
 
  - :wrench: tools documentation directory is [here](doc/tools)
  - ![python emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/python.png "python") python linter: [flake8](doc/tools/flake8.md)
- - yaml linter : [yamllint](doc/tools/yamllint.md)
+ - ![yaml emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/yaml.png "yaml") yaml linter : [yamllint](doc/tools/yamllint.md)
