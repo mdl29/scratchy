@@ -31,7 +31,7 @@ LPH.
 
  - 📂 Backend documentation's directory is [here](doc/backend) 
  - [📝 Backend Documentation](server/README.md)
- - [📝 API Documentation](doc/backend/API-documentation.md)
+ - [📝 API Documentation](server/README.md#how-to-play)
  - [📸 model picture](doc/backend/model.png)
 
 
@@ -46,5 +46,5 @@ LPH.
 ## Tools
 
  - :wrench: tools documentation directory is [here](doc/tools)
- - ![python emoji](logos/python.png "python") python linter: [flake8](doc/tools/flake8.md)
- - yaml linter : [yamllint](doc/tools/yamllint.md)
+ - ![python emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/python.png "python") python linter: [flake8](doc/tools/flake8.md)
+ - ![yaml emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/yaml.png "yaml") yaml linter : [yamllint](doc/tools/yamllint.md)
