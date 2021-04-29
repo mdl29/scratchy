@@ -24,19 +24,17 @@ app.config['MONGODB_SETTINGS'] = {
     'authentication_source': 'admin'
 }
 db_scratchy.init_app(app)
-api = Api(app, swagger_prefix_url = '/doc/api')
+api = Api(app)
 
 
 # database["messages"]["0"] = messageExemple
 
-#api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
+api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
 #api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
-api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
+#api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
 
 
 
 
 
 logging.info("scratchy is up and ready")
-while True:
-	pass
