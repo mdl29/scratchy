@@ -31,7 +31,7 @@ LPH.
 
  - 📂 Backend documentation's directory is [here](doc/backend) 
  - [📝 Backend Documentation](server/README.md)
- - [📝 API Documentation](doc/backend/API-documentation.md)
+ - [📝 API Documentation](server/README.md#how-to-play)
  - [📸 model picture](doc/backend/model.png)
 
 
