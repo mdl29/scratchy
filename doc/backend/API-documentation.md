@@ -15,7 +15,7 @@ curl http://localhost:5000/api/room/0  | jq
 
 Create Room:
 ```sh
-curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '{"title": "mon title", "description": "ma description"}'
+curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '{"title": "mon title", "description": "ma description"}' | jq
 ```
 
 Delete Room:

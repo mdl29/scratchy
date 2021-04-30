@@ -2,13 +2,13 @@ import json
 from flask import Response
 from flask_restful import Resource, abort, request
 import logging
-from marshmallow import Schema
+#from marshmallow import Schema
 from webargs import fields
 from flask_apispec.views import MethodResource
 from scratchy_server import db_scratchy
 import marshmallow_mongoengine as ma
 from flask_apispec import ResourceMeta, Ref, doc, marshal_with, use_kwargs
-
+from marshmallow import fields
 
 
 class RoomModel(db_scratchy.Document):
@@ -21,7 +21,8 @@ class RoomModel(db_scratchy.Document):
 
 class RoomSchema(ma.ModelSchema):
     class Meta:
-        fields = ('title', 'description', 'users')
+        model = RoomModel
+
 
 
 
@@ -33,15 +34,30 @@ class RoomRes(MethodResource):
     # Annotation qui décrit le format du paramètre query GET
     # Utilisé pour que le swagger sache qu'on peut ajouter un filtre roomId="ID"
     # Cf https://webargs.readthedocs.io/en/latest/#usage-and-simple-examples
-    @use_kwargs({'title': fields.Str(),'description': fields.Str()}, location="query")
-    def get(self):
-        return RoomModel.query.filter_by(**kwargs)
 
-    @use_kwargs(RoomSchema)
-    @marshal_with(RoomSchema)
-    def post(self,**kwargs):
-        room = RoomModel(**kwargs).save()
-        return room.id
+    def get(self, roomId=None):
+        if roomId != None:
+            return RoomModel.objects().get_or_404(id = roomId)
+        else:
+            return RoomModel.objects()
+
+    @use_kwargs({"title": fields.Str(), "description": fields.Str(), "users": fields.List(fields.Str())})
+    def post(self, **kwargs):
+        room = RoomModel(**kwargs)
+        room.save()
+        return room
+
+    @use_kwargs({"title": fields.Str(), "description": fields.Str(), "users": fields.List(fields.Str())})
+    def put(self, roomId, **kwargs):
+        room = RoomModel.objects().get_or_404(id = roomId)
+        room.update(**kwargs)
+        return room
+
+    def delete(self, roomId):
+        RoomModel.objects().get_or_404(id = roomId).delete()
+        return None
+
+
 
 
 

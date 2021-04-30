@@ -7,12 +7,14 @@ from scratchy_server.resources.roomres import RoomRes
 from scratchy_server.resources.userres import UserRes
 from scratchy_server.resources.messageres import MessageRes
 from scratchy_server import db_scratchy
-
+import flask.views
+from flask_apispec import FlaskApiSpec
 import logging
 
 
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
+#docs = FlaskApiSpec(app)
 CORS(app)
 
 app.config['MONGODB_SETTINGS'] = {
@@ -25,6 +27,8 @@ app.config['MONGODB_SETTINGS'] = {
 }
 db_scratchy.init_app(app)
 api = Api(app)
+
+#docs.register(RoomRes)
 
 
 # database["messages"]["0"] = messageExemple

@@ -93,17 +93,17 @@ curl http://localhost:5000/api/room/0  | jq
 
 Create Room:
 ```sh
-curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '{"title": "mon title", "description": "ma description"}'
+curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '{"title": "mon title", "description": "ma description"}' | jq
 ```
 
 Update Room (update title and description)
 ```sh
-curl -X PUT http://localhost:5000/api/room/6071ac5176e5bd456a859d9d -H "Content-Type: application/json" --data '{"title":"un autre titre", "description": "une nouvelle description"}'
+curl -X PUT http://localhost:5000/api/room/6071ac5176e5bd456a859d9d -H "Content-Type: application/json" --data '{"title":"un autre titre", "description": "une nouvelle description"}' | jq
 ```
 
 Delete Room:
 ```sh
-curl -X DELETE http://localhost:5000/api/room/0
+curl -X DELETE http://localhost:5000/api/room/0 | jq
 ```
 
 Get all rooms:
