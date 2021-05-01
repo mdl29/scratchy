@@ -88,7 +88,7 @@ On ubuntu/debian, simply run : `sudo apt install curl jq`
 
 Get Room:
 ```sh
-curl http://localhost:5000/api/room/0  | jq
+curl http://localhost:5000/api/room/0 | jq
 ```
 
 Create Room:
@@ -123,18 +123,17 @@ curl http://localhost:5000/api/user?pseudo=toto  | jq
 
 Create User:
 ```sh
-curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '{"pseudo": "mon pseudo", "profileImage": "https://http.cat/204"}'
+curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '{"pseudo": "mon pseudo", "profileImage": "https://http.cat/204"}' | jq
 ```
 
 Update User:
 ```sh
-curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo"}'
-
+curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo"}' | jq
 ```
 
 Delete User:
 ```sh
-curl -X DELETE http://localhost:5000/api/user/0
+curl -X DELETE http://localhost:5000/api/user/0 | jq
 ```
 
 Get Message:
@@ -144,17 +143,17 @@ curl http://localhost:5000/api/message/0  | jq
 
 Create Message:
 ```sh
-curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"author": "the author id", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}'
+curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"author": "the author id", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}' | jq
 ```
 
 Update Message:
 ```sh
-curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"content": "write what you want its your message and now"}'
+curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"content": "write what you want its your message and now"}' | jq
 ```
 
 Delete Message:
 ```sh
-curl -X DELETE http://localhost:5000/api/message/0
+curl -X DELETE http://localhost:5000/api/message/0 | jq
 ```
 
 Get all messages for one RoomId:
