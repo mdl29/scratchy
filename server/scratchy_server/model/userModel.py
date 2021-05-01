@@ -1,6 +1,6 @@
 from scratchy_server import db_scratchy
 import marshmallow as ma
-from scratchy_server.model.objectId import ObjectId
+from scratchy_server.model.objectIdSchema import ObjectIdSchema
 
 
 class UserModel(db_scratchy.Document):

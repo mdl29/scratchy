@@ -1,7 +1,7 @@
 from scratchy_server import db_scratchy
 import datetime
 import marshmallow as ma
-from scratchy_server.model.objectId import ObjectId
+from scratchy_server.model.objectIdSchema import ObjectIdSchema
 
 
 class MessageModel(db_scratchy.Document):

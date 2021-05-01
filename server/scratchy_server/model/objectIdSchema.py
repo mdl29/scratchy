@@ -2,7 +2,7 @@ import marshmallow as ma
 import bson
 
 # created because of incompatibility of marshmallow with object id, the code is copy past from: https://github.com/marshmallow-code/marshmallow/issues/1542
-class ObjectId(ma.fields.Field):
+class ObjectIdSchema(ma.fields.Field):
     """
     Marshmallow field for :class:`bson.ObjectId`
     """
