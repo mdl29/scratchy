@@ -46,8 +46,8 @@ api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
 api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
 
 app.add_url_rule('/api/room/<string:roomId>', view_func=RoomRes.as_view('RoomRes'))
-app.add_url_rule('/api/room/<string:roomId>', view_func=UserRes.as_view('UserRes'))
-app.add_url_rule('/api/room/<string:roomId>', view_func=MessageRes.as_view('MessageRes'))
+app.add_url_rule('/api/user/<string:userId>', view_func=UserRes.as_view('UserRes'))
+app.add_url_rule('/api/message/<string:messageId>', view_func=MessageRes.as_view('MessageRes'))
 
 docs.register(RoomRes, endpoint='RoomRes')
 docs.register(UserRes, endpoint='UserRes')
