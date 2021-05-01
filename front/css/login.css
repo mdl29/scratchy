@@ -75,7 +75,3 @@
 .login_submit:hover {
     filter: brightness(0.8);
 }
-
-.login_hidden {
-    display: none;
-}

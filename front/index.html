@@ -15,19 +15,22 @@
     </head>
     <body>
         <div id="app">
-            <login v-on:login="onLogin($event)" v-bind:is-hidden="isConnected"></login>
+            <login v-on:login="onLogin($event)" v-if="!isConnected"></login>
+            <room-editor v-if="!roomEditorHidden" v-model:hidden="roomEditorHidden" v-on:create-room="createRoom($event)" v-on:join-room="joinRoom($event)"></room-editor>
             <div class="app_vertical_layout">
                 <div class="app_top_horizontal_layout">
                     <room-list v-model:rooms="rooms" v-on:room-selected="displayRoom($event)" v-on:room-quit="quitRoom($event)"></room-list>
                     <div class="app_messages_list_wrapper">
-                        <activity-bar v-bind:current-room="currentRoom.title" v-bind:is-writing="isWriting"></activity-bar>
+                        <activity-bar v-bind:current-room="selectedRoom" v-bind:is-writing="isWriting"></activity-bar>
                         <messages v-bind:messages="messages"></messages>
                     </div>
                     <user-list v-bind:users="users"></user-list>
                 </div>
                 <div class="app_bottom_horizontal_layout">
-                    <room-editor v-bind:close-popup="roomEditorClosed" v-on:lock-close="lockRoomEditorClosed()" v-on:create-room="createRoom($event)" v-on:join-room="joinRoom($event)"></room-editor>
-                    <message-editor v-bind:clear-message="clearMessageEditor" v-on:lock-clear-message="lockClearMessageEditor()" v-on:send-message="onMessageSend($event)" v-on:start-writing="isWriting = true" v-on:stop-writing="isWriting = false"></message-editor>
+                    <div class="app_room_editor_start" @click="roomEditorHidden = false">
+                        <div class="app_room_editor_plus"></div>
+                    </div>
+                    <message-editor v-model:content="currentTypedMessage" v-on:send-message="onMessageSend($event)" v-on:start-writing="isWriting = true" v-on:stop-writing="isWriting = false"></message-editor>
                 </div>
             </div>
         </div>
@@ -39,14 +42,19 @@
         <script src="js/message-list.js"></script>
         <script src="js/login.js"></script>
         <script>
+            /*
+             * this whole component should be mostly (or entirely re-written) 
+             * when scratchy service will be done, to use the api instead of 
+             * dummy data. (oh and the code mostly sucks)
+             */
             const app = Vue.createApp({
                 name: "app",
                 data: () => ({
-                    selectedRoom: undefined,
+                    selectedRoom: null,
                     isWriting: false,
-                    loggedUser: undefined,
-                    clearMessageEditor: false,
-                    roomEditorClosed: false,
+                    loggedUser: null,
+                    roomEditorHidden: true,
+                    currentTypedMessage: "",
                     rooms: [
                         {
                             "_id": {
@@ -95,51 +103,43 @@
                     ]
                 }),
                 methods: {
-                    onMessageSend(msg) {
+                    onMessageSend() {
                         // TODO: implement something that calls the api and send the message
-                        console.log(`message: ${msg}`);
-                        this.permitClearMessageEditor();
+                        console.debug(`message: ${this.currentTypedMessage}`);
+                        // add the message
                         this.messages.push({
                             _id: {
                                 $oid: new Date().getTime().toString(16)
                             },
-                            author: this.currentUser.pseudo,
-                            content: msg,
+                            author: this.loggedUser.pseudo,
+                            content: this.currentTypedMessage,
                             timestamp: Math.floor(new Date().getTime())
                         });
-                    },
-                    permitClearMessageEditor() {
-                        this.clearMessageEditor = true;
-                    },
-                    lockClearMessageEditor() {
-                        this.clearMessageEditor = false;
-                    },
-                    
-                    permitRoomEditorClosed() {
-                        this.roomEditorClosed = true;
-                    },
-                    lockRoomEditorClosed() {
-                        this.roomEditorClosed = false;
+                        // reset
+                        this.currentTypedMessage = "";
                     },
                     // this is just example code
-                    displayRoom(roomIndex) {
+                    // (called when a room is selected)
+                    displayRoom(roomInfo) {
+                        const {room, index} = roomInfo;
                         // TODO: do whatever
-                        console.log(`selected ${this.rooms[roomIndex].title}: rooms[${roomIndex}]`);
-                        this.selectedRoom = roomIndex;
+                        console.debug(`selected ${room.title}: rooms[${index}]`);
+                        this.selectedRoom = room;
                     },
-                    quitRoom(index) {
-                        if(index == this.selectedRoom) {
-                            this.selectedRoom = undefined;
-                        }
-                        // change the selectedRoom index to make it point to the same room
-                        if(index < this.selectedRoom) {
-                            this.selectedRoom--;
-                        }
+                    quitRoom(roomInfo) {
+                        const {room, index} = roomInfo;
                         this.rooms.splice(index, 1);
+                        if(room._id.$oid == this.selectedRoom._id.$oid) {
+                            if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
+                                this.selectedRoom = this.rooms[this.rooms.length-1];
+                            } else { // or just go back to the default of there aren't any rooms
+                                this.selectedRoom = null
+                            }
+                        }
                     },
                     createRoom(roomData) {
                         // TODO: do whatever
-                        console.log(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
+                        console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
                         this.rooms.push({
                             _id: {
@@ -148,11 +148,11 @@
                             title: roomData.title,
                             description: roomData.description
                         });
-                        this.permitRoomEditorClosed()
+                        this.roomEditorHidden = true;
                     },
                     joinRoom(id) {
                         // TODO: do whatever
-                        console.log(`join room '${id}'`);
+                        console.debug(`join room '${id}'`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
                         this.rooms.push({
                             _id: {
@@ -161,31 +161,25 @@
                             title: "title",
                             description: ""
                         });
-                        this.permitRoomEditorClosed()
+                        this.roomEditorHidden = true;
                     },
-                    onLogin(username) {
+                    onLogin(pseudo) {
                         // TODO: do whatever
-                        console.log(`logged in as user '${username}'`);
+                        console.debug(`logged in as user '${pseudo}'`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.loggedUser = this.users.length;
-                        this.users.push({
+                        this.loggedUser = {
                             "_id": {
                                 "$oid": new Date().getTime().toString(16)
                             },
-                            "pseudo": username,
+                            "pseudo": pseudo,
                             "roomsId": []
-                        })
+                        };
+                        this.users.push(this.loggedUser);
                     }
                 },
                 computed: {
-                    currentRoom() {
-                        return this.selectedRoom === undefined ? {_id: null, title: "room not found", description: ""} : this.rooms[this.selectedRoom];
-                    },
-                    currentUser() {
-                        return this.loggedUser === undefined ? {_id: null, pseudo: "user not found", roomsId: []} : this.users[this.loggedUser];
-                    },
                     isConnected() {
-                        return this.loggedUser !== undefined;
+                        return this.loggedUser !== null;
                     }
                 },
             });
