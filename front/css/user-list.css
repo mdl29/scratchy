@@ -11,9 +11,16 @@
     width: fit-content;
     padding: 5px;
     margin: 0;
+    max-width: 130px;
 }
 
 .user_list_item {
     color: white;
     margin-top: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    padding-left: 10px;
+    box-sizing: border-box;
 }
