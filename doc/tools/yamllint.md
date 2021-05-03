@@ -7,13 +7,15 @@
 ## how to play
 
  Run yamllint in a file
+ Be careful the path directly after the -c is where is the config file of yamllint from the root directory you need to change it if you are in another directory
 ```sh
-yamllint path_to_file
+yamllint -c server/scratchy_server/config-yamllint.yaml path_to_file
 ```
- 
+
 Run yamllint in a directory
+Be careful the path directly after the -c is where is the config file of yamllint from the root directory you need to change it if you are in another directory
 ```sh
-yamllint path_to_directory/.
+yamllint -c server/scratchy_server/config-yamllint.yaml path_to_directory/.
 ```
 
  Check the meaning of the error [here](https://yamllint.readthedocs.io/en/stable/rules.html)
