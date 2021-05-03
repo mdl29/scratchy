@@ -20,6 +20,7 @@ class MessageRes(MethodResource):
     def put(self, messageId, **kwargs):
         message = MessageModel.objects().get_or_404(id=messageId)
         message.update(**kwargs)
+        message = MessageModel.objects().get_or_404(id=messageId)
         return message
 
     def delete(self, messageId):

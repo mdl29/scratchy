@@ -12,7 +12,7 @@ class MessageModel(db_scratchy.Document):
 
 
 class MessageSchema(ma.Schema):
-    id = ObjectId()
+    id = ObjectIdSchema()
     content = ma.fields.Str()
     author = ma.fields.Str()
     roomId = ma.fields.Str()

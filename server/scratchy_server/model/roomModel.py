@@ -10,7 +10,7 @@ class RoomModel(db_scratchy.Document):
 
 
 class RoomSchema(ma.Schema):
-    id = ObjectId()
+    id = ObjectIdSchema()
     description = ma.fields.Str()
     title = ma.fields.Str()
-    users = ma.fields.List(ObjectId())
+    users = ma.fields.List(ObjectIdSchema())

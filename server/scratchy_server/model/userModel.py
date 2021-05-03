@@ -10,7 +10,7 @@ class UserModel(db_scratchy.Document):
 
 
 class UserSchema(ma.Schema):
-    id = ObjectId()
+    id = ObjectIdSchema()
     pseudo = ma.fields.Str()
     profileImage = ma.fields.Str()
-    rooms = ma.fields.List(ObjectId())
+    rooms = ma.fields.List(ObjectIdSchema())

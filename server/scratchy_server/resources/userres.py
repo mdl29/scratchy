@@ -21,6 +21,7 @@ class UserRes(MethodResource):
     def put(self, userId, **kwargs):
         user = UserModel.objects().get_or_404(id=userId)
         user.update(**kwargs)
+        user = UserModel.objects().get_or_404(id=userId)
         return user
 
     def delete(self, userId):

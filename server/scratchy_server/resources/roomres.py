@@ -19,6 +19,7 @@ class RoomRes(MethodResource):
     def put(self, roomId, **kwargs):
         room = RoomModel.objects().get_or_404(id=roomId)
         room.update(**kwargs)
+        room = RoomModel.objects().get_or_404(id=roomId)
         return room
 
     def delete(self, roomId):
