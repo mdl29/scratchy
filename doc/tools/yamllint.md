@@ -8,12 +8,12 @@
 
  Run yamllint in a file
 ```sh
-yamllint path_to_file
+yamllint -c path/to/config-yamllint.yaml/in/server path_to_file
 ```
  
 Run yamllint in a directory
 ```sh
-yamllint path_to_directory/.
+yamllint -c path/to/config-yamllint.yaml/in/server path_to_directory/.
 ```
 
  Check the meaning of the error [here](https://yamllint.readthedocs.io/en/stable/rules.html)
