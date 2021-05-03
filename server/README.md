@@ -86,29 +86,24 @@ Requirements:
 
 On ubuntu/debian, simply run : `sudo apt install curl jq`
 
-Get Swagger:
-```sh
-curl http://localhost:5000/swagger/
-```
-
 Get Room:
 ```sh
-curl http://localhost:5000/api/room/0 | jq
+curl http://localhost:5000/api/room/0  | jq
 ```
 
 Create Room:
 ```sh
-curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '{"title": "mon title", "description": "ma description"}' | jq
+curl http://localhost:5000/api/room -H "Content-Type: application/json" --data '{"title": "mon title", "description": "ma description"}'
 ```
 
 Update Room (update title and description)
 ```sh
-curl -X PUT http://localhost:5000/api/room/6071ac5176e5bd456a859d9d -H "Content-Type: application/json" --data '{"title":"un autre titre", "description": "une nouvelle description"}' | jq
+curl -X PUT http://localhost:5000/api/room/6071ac5176e5bd456a859d9d -H "Content-Type: application/json" --data '{"title":"un autre titre", "description": "une nouvelle description"}'
 ```
 
 Delete Room:
 ```sh
-curl -X DELETE http://localhost:5000/api/room/0 | jq
+curl -X DELETE http://localhost:5000/api/room/0
 ```
 
 Get all rooms:
@@ -128,17 +123,18 @@ curl http://localhost:5000/api/user?pseudo=toto  | jq
 
 Create User:
 ```sh
-curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '{"pseudo": "mon pseudo", "profileImage": "https://http.cat/204"}' | jq
+curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '{"pseudo": "mon pseudo", "profileImage": "https://http.cat/204"}'
 ```
 
 Update User:
 ```sh
-curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo"}' | jq
+curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo"}'
+
 ```
 
 Delete User:
 ```sh
-curl -X DELETE http://localhost:5000/api/user/0 | jq
+curl -X DELETE http://localhost:5000/api/user/0
 ```
 
 Get Message:
@@ -148,17 +144,17 @@ curl http://localhost:5000/api/message/0  | jq
 
 Create Message:
 ```sh
-curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"author": "the author id", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}' | jq
+curl http://localhost:5000/api/message -H "Content-Type: application/json" --data '{"author": "the author id", "content": "write what you want its your message","roomId": "the ids of the rooms you are in"}'
 ```
 
 Update Message:
 ```sh
-curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"content": "write what you want its your message and now"}' | jq
+curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"content": "write what you want its your message and now"}'
 ```
 
 Delete Message:
 ```sh
-curl -X DELETE http://localhost:5000/api/message/0 | jq
+curl -X DELETE http://localhost:5000/api/message/0
 ```
 
 Get all messages for one RoomId:
