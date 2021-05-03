@@ -20,8 +20,7 @@ class UserRes(MethodResource):
     @use_kwargs(UserSchema)
     def put(self, userId, **kwargs):
         user = UserModel.objects().get_or_404(id=userId)
-        user.update(**kwargs)
-        user = UserModel.objects().get_or_404(id=userId)
+        user.modify(**kwargs)
         return user
 
     def delete(self, userId):

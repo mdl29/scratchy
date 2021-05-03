@@ -18,8 +18,7 @@ class RoomRes(MethodResource):
     @use_kwargs(RoomSchema)
     def put(self, roomId, **kwargs):
         room = RoomModel.objects().get_or_404(id=roomId)
-        room.update(**kwargs)
-        room = RoomModel.objects().get_or_404(id=roomId)
+        room.modify(**kwargs)
         return room
 
     def delete(self, roomId):
