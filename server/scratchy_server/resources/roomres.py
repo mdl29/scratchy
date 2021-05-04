@@ -1,8 +1,8 @@
 from flask_apispec.views import MethodResource
-from flask_apispec import marshal_with, use_kwargs
+from flask_apispec import marshal_with, use_kwargs, doc
 from scratchy_server.model.roomModel import RoomModel, RoomSchema
 
-
+@doc(tags=['Room'])
 @marshal_with(RoomSchema)
 class RoomRes(MethodResource):
 

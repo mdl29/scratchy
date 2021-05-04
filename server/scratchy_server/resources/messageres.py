@@ -1,9 +1,10 @@
 from scratchy_server.model.messageModel import MessageModel, MessageSchema
 import logging
 from flask_apispec.views import MethodResource
-from flask_apispec import marshal_with, use_kwargs
+from flask_apispec import marshal_with, use_kwargs, doc
 
 
+@doc(tags=['Message'])
 @marshal_with(MessageSchema)
 class MessageRes(MethodResource):
 
