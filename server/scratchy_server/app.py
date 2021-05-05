@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
-from scratchy_server.resources.roomres import RoomRes
-from scratchy_server.resources.userres import UserRes
-from scratchy_server.resources.messageres import MessageRes
+from scratchy_server.resources.roomres import RoomRes, AllRoomRes
+from scratchy_server.resources.userres import UserRes, AllUserRes
+from scratchy_server.resources.messageres import MessageRes, AllMessageRes
 from scratchy_server import db_scratchy
 from flask_apispec.extension import FlaskApiSpec
 import logging
@@ -42,17 +42,27 @@ api = Api(app)
 # database["messages"]["0"] = messageExemple
 
 api.add_resource(RoomRes, '/api/room', '/api/room/<string:roomId>')
+api.add_resource(AllRoomRes, '/api/room', '/api/room')
 api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
+api.add_resource(AllUserRes, '/api/user', '/api/user')
 api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
+api.add_resource(AllMessageRes, '/api/message', '/api/message')
+
 
 # path for the apispec you can have info there: https://flask-apispec.readthedocs.io/en/latest/usage.html
 app.add_url_rule('/api/room/<string:roomId>', view_func=RoomRes.as_view('RoomRes'))
+app.add_url_rule('/api/room', view_func=AllRoomRes.as_view('AllRoomRes'))
 app.add_url_rule('/api/user/<string:userId>', view_func=UserRes.as_view('UserRes'))
+app.add_url_rule('/api/user', view_func=AllUserRes.as_view('AllUserRes'))
 app.add_url_rule('/api/message/<string:messageId>', view_func=MessageRes.as_view('MessageRes'))
+app.add_url_rule('/api/message', view_func=AllMessageRes.as_view('AllMessageRes'))
 
 docs.register(RoomRes, endpoint='RoomRes')
+docs.register(AllRoomRes, endpoint='AllRoomRes')
 docs.register(UserRes, endpoint='UserRes')
+docs.register(AllUserRes, endpoint='AllUserRes')
 docs.register(MessageRes, endpoint='MessageRes')
+docs.register(AllMessageRes, endpoint='AllMessageRes')
 
 
 logging.info("scratchy is up and ready")
