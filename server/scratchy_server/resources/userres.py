@@ -16,7 +16,7 @@ class UserRes(MethodResource):
             return UserModel.objects().get_or_404(id=userId)
         # get by pseudo
         elif pseudo:
-            return UserModel.objects().get_or_404(pseudo=request.args.get('pseudo'))
+            return UserModel.objects().get_or_404(pseudo=pseudo)
 
     @use_kwargs(UserSchema)
     def put(self, userId, **kwargs):

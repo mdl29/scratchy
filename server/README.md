@@ -133,7 +133,7 @@ curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '
 
 Update User:
 ```sh
-curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo"}'
+curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo", "profileImage": "https://http.cat/202"}'
 
 ```
 
@@ -154,7 +154,7 @@ curl http://localhost:5000/api/message -H "Content-Type: application/json" --dat
 
 Update Message:
 ```sh
-curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"content": "write what you want its your message and now"}'
+curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"author": "the new author id", "content": "write what you want its your message and now", "roomId": "the id of the new room you are in"}'
 ```
 
 Delete Message:
