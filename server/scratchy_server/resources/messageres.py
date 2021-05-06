@@ -15,8 +15,7 @@ class MessageRes(MethodResource):
         if messageId != None:
             return MessageModel.objects().get_or_404(id=messageId)
         else:
-            print(MessageModel.objects().filter(roomId=roomId))
-            return MessageModel.objects().filter(roomId=roomId)
+            return MessageModel.objects().filter(roomId=roomId) # doesn't work here but it doesn't worked before need to open an issue
 
     @use_kwargs(MessageSchema)
     def put(self, messageId, **kwargs):
