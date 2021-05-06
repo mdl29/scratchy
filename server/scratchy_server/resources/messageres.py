@@ -1,14 +1,22 @@
 from scratchy_server.model.messageModel import MessageModel, MessageSchema
 from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
+from marshmallow import fields
+from flask_restful import request
 
 
 @doc(tags=['Message'])
 @marshal_with(MessageSchema)
 class MessageRes(MethodResource):
 
-    def get(self, messageId):
-        return MessageModel.objects().get_or_404(id=messageId)
+    @use_kwargs({"roomId": fields.String()}, location="query")
+    def get(self, messageId=None, roomId=None):
+        print(roomId, messageId)
+        if messageId != None:
+            return MessageModel.objects().get_or_404(id=messageId)
+        else:
+            print(MessageModel.objects().filter(roomId=roomId))
+            return MessageModel.objects().filter(roomId=roomId)
 
     @use_kwargs(MessageSchema)
     def put(self, messageId, **kwargs):
@@ -21,7 +29,7 @@ class MessageRes(MethodResource):
         return None
 
 
-class AllMessageRes(MethodResource):
+class NoIdMessageRes(MethodResource):
 
     @doc(tags=['Message'])
     @marshal_with(MessageSchema)

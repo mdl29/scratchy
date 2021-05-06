@@ -21,7 +21,7 @@ class RoomRes(MethodResource):
         return None
 
 
-class AllRoomRes(MethodResource):
+class NoIdRoomRes(MethodResource):
 
     @doc(tags=['Room'])
     @marshal_with(RoomSchema)
