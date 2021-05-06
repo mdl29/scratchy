@@ -9,8 +9,8 @@ from marshmallow import fields
 @marshal_with(UserSchema)
 class UserRes(MethodResource):
 
-    #@use_kwargs({"pseudo": fields.String()}, location="query")
-    def get(self, userId):#=None, pseudo=None):
+    @use_kwargs({"pseudo": fields.String()}, location="query")
+    def get(self, userId=None, pseudo=None):
         # basic case
         if userId != None:
             return UserModel.objects().get_or_404(id=userId)
