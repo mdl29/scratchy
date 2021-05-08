@@ -1,0 +1,35 @@
+.messages_list_wrapper {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg4);
+    margin: 0;
+    padding-bottom: 50px;
+    flex-grow: 2;
+}
+
+.messages_item {
+    margin-top: 20px;
+}
+
+.messages_title {
+    display: flex;
+    align-items: center;
+}
+
+.messages_author {
+    color: var(--accent);
+    margin-right: 20px;
+}
+
+.messages_timestamp {
+    color: var(--bg2);
+    filter: brightness(1.5);
+    font-size: 0.6em;
+}
+
+.messages_content {
+    margin-top: 5px;
+    color: #ddd;
+    font-size: smaller;
+}

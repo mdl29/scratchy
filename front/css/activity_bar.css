@@ -1,0 +1,26 @@
+.activity_bar {
+    width: 100%;
+    display: flex;
+    background-color: var(--bg3);
+    margin: 0;
+    color: white;
+    padding: 10px;
+    align-items: center;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
+.activity_bar_writing {
+    padding-left: 10px;
+    font-size: smaller;
+    color: rgb(168, 168, 168);
+}
+
+.activity_bar_room::before {
+    content: "# ";
+    color: rgb(172, 172, 172);
+}
+
+.activity_bar_writing::before {
+    content: "|";
+}
