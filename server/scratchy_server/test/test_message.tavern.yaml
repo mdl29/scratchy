@@ -3,51 +3,41 @@ test_name: test the message most basic function
 
 # one stage for each request
 stages:
-  - name: Post a room
+  - name: Creating a room
     request:
       url: http://localhost:5000/api/room
       json:
         title: my title
         description: my description
       method: POST
-      headers:
-        content-type: application/json
     response:
-      status_code: 200
       json:
         id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         title: my title
         description: my description
         users: []
-      headers:
-        content-type: application/json
       save:
         json:
           roomId: id  # saving the id for the other function
 
-  - name: Post a user
+  - name: Creating a user
     request:
       url: http://localhost:5000/api/user
       json:
         pseudo: C3PO
         profileImage: https://http.cat/201
       method: POST
-      headers:
-        content-type: application/json
     response:
-      status_code: 200
       json:
         id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         pseudo: C3PO
         profileImage: https://http.cat/201
         rooms: []
-      headers:
-        content-type: application/json
       save:
         json:
           userId: id  # saving the id for the other function
 
-  - name: Post a message
+  - name: Creating a message
     request:
       url: http://localhost:5000/api/message
       json:
@@ -55,17 +45,12 @@ stages:
         author: "{userId}"
         roomId: "{roomId}"
       method: POST
-      headers:
-        content-type: application/json
     response:
-      status_code: 200
       json:
         id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
         roomId: "{roomId}"
-      headers:
-        content-type: application/json
       save:
         json:
           messageId: id  # saving the id for the other function
@@ -75,14 +60,11 @@ stages:
       url: http://localhost:5000/api/message/{messageId}
       method: GET
     response:
-      status_code: 200
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
         roomId: "{roomId}"
-      headers:
-        content-type: application/json
 
   - name: Put a message
     request:
@@ -92,50 +74,36 @@ stages:
         author: "{userId}"
         roomId: "{roomId}"
       method: PUT
-      headers:
-        content-type: application/json
     response:
-      status_code: 200
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
         content: I am repared. Yeaah !!! I am really happy
         author: "{userId}"
         roomId: "{roomId}"
-      headers:
-        content-type: application/json
 
   - name: Delete a message
     request:
       url: http://localhost:5000/api/message/{messageId}
       method: DELETE
     response:
-      status_code: 200
       json:
         {}
-      headers:
-        content-type: application/json
 
   - name: Delete a room
     request:
       url: http://localhost:5000/api/room/{roomId}
       method: DELETE
     response:
-      status_code: 200
       json:
         {}
-      headers:
-        content-type: application/json
 
   - name: Delete a user
     request:
       url: http://localhost:5000/api/user/{userId}
       method: DELETE
     response:
-      status_code: 200
       json:
         {}
-      headers:
-        content-type: application/json
 
 ---
 test_name: test the 404 error
@@ -148,8 +116,6 @@ stages:
       status_code: 404
       json:
         message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
-      headers:
-        content-type: application/json
 
   - name: Put a message
     request:
@@ -159,14 +125,10 @@ stages:
         author: "000000000000000000000000"
         roomId: "000000000000000000000000"
       method: PUT
-      headers:
-        content-type: application/json
     response:
       status_code: 404
       json:
         message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
-      headers:
-        content-type: application/json
 
   - name: Delete a message
     request:
@@ -176,5 +138,3 @@ stages:
       status_code: 404
       json:
         message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
-      headers:
-        content-type: application/json

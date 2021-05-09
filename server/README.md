@@ -77,6 +77,10 @@ scratchy-server
 <scratchy/docker>$ docker-compose up -d
 ```
 
+## how to run unitary test
+```sh
+<scratchy/server/scratchy-server/test>$ python test.py
+```
 
 ## how to play
 
