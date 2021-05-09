@@ -1,4 +1,6 @@
 /*
+!- add axios cdn link in index.html -!
+     	<scritp src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></scritp>
 - start scratchy service : 
     var api = new ScratchyService("http://localhost:5000/api");
 - call a function :
@@ -36,7 +38,7 @@
 
     this.deleteRoom = async function(roomID){
 
-        const reponse = await axios.delete('http://localhost:5000/api/room/'+roomID);
+        const reponse = await axios.delete(apiUrl+'/room/'+roomID);
         return reponse.data;
     };
 
@@ -107,7 +109,7 @@
         return reponse.data;
     };
     this.deleteMessage = async function(messageID){
-        const reponse = await axios.delete('http://localhost:5000/api/message/'+messageID);
+        const reponse = await axios.delete(apiUrl+'/message/'+messageID);
         return reponse.data;
     };
 };
