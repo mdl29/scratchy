@@ -39,6 +39,20 @@ stages:
       headers:
         content-type: application/json
 
+  - name: Get a user by pseudo
+    request:
+      url: http://localhost:5000/api/user?pseudo=jean
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        pseudo: jean
+        profileImage: https://http.cat/201
+        rooms: []
+      headers:
+        content-type: application/json
+
   - name: Put a user
     request:
       url: http://localhost:5000/api/user/{userId}
