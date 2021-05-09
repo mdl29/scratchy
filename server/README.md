@@ -7,6 +7,10 @@ Scratchy is composed of:
 * server: scratchy_server in Python
 * database: mongodb in docker
 
+## Swagger-ui
+
+You can go to http://localhost:5000/swagger-ui/ after launching the server to do your request
+
 ## Start Scratchy Stack
 
 Start mongodb:
@@ -86,14 +90,9 @@ Requirements:
 
 On ubuntu/debian, simply run : `sudo apt install curl jq`
 
-Get Raw Swagger:
+Get Swagger:
 ```sh
 curl http://localhost:5000/swagger/
-```
-
-Get Swagger UI:
-```sh
-curl http://localhost:5000/swagger-ui/
 ```
 
 Get Room:
