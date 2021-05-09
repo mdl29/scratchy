@@ -1,0 +1,248 @@
+---
+test_name: test the room most basic function
+
+# one stage for each request
+stages:
+  - name: Post a room
+    request:
+      url: http://localhost:5000/api/room
+      json:
+        title: my title
+        description: my description
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        title: my title
+        description: my description
+        users: []
+      headers:
+        content-type: application/json
+      save:
+        json:
+          roomId: id  # saving the id for the other function
+
+  - name: Get a room
+    request:
+      url: http://localhost:5000/api/room/{roomId}
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        title: my title
+        description: my description
+        users: []
+      headers:
+        content-type: application/json
+
+  - name: Put a room
+    request:
+      url: http://localhost:5000/api/room/{roomId}
+      json:
+        title: new title
+        description: new description
+      method: PUT
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        title: new title
+        description: new description
+        users: []
+      headers:
+        content-type: application/json
+
+  - name: Delete a room
+    request:
+      url: http://localhost:5000/api/room/{roomId}
+      method: DELETE
+    response:
+      status_code: 200
+      json:
+        {}
+      headers:
+        content-type: application/json
+
+---
+test_name: test the 404 error
+stages:
+  - name: Get a room
+    request:
+      url: http://localhost:5000/api/room/000000000000000000000000  # 24 zero same length as an object id but will never be one
+      method: GET
+    response:
+      status_code: 404
+      json:
+        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+      headers:
+        content-type: application/json
+
+  - name: Put a room
+    request:
+      url: http://localhost:5000/api/room/000000000000000000000000
+      json:
+        title: new title
+        description: new description
+      method: PUT
+      headers:
+        content-type: application/json
+    response:
+      status_code: 404
+      json:
+        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+      headers:
+        content-type: application/json
+
+  - name: Delete a room
+    request:
+      url: http://localhost:5000/api/room/000000000000000000000000
+      method: DELETE
+    response:
+      status_code: 404
+      json:
+        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+      headers:
+        content-type: application/json
+
+---
+test_name: test the room more advanced function
+stages:
+  - name: Post a user
+    request:
+      url: http://localhost:5000/api/user
+      json:
+        pseudo: ali baba
+        profileImage: https://http.cat/201
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        pseudo: ali baba
+        profileImage: https://http.cat/201
+        rooms: []
+      headers:
+        content-type: application/json
+      save:
+        json:
+          userId1: id
+
+  - name: Post another user
+    request:
+      url: http://localhost:5000/api/user
+      json:
+        pseudo: toto
+        profileImage: https://http.cat/201
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        pseudo: toto
+        profileImage: https://http.cat/201
+        rooms: []
+      headers:
+        content-type: application/json
+      save:
+        json:
+          userId2: id
+
+  - name: Post a room
+    request:
+      url: http://localhost:5000/api/room
+      json:
+        title: my title
+        description: my description
+        users: ["{userId1}"]
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        title: my title
+        description: my description
+        users: ["{userId1}"]
+      headers:
+        content-type: application/json
+      save:
+        json:
+          roomId: id
+
+  - name: Get a room
+    request:
+      url: http://localhost:5000/api/room/{roomId}
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        title: my title
+        description: my description
+        users: ["{userId1}"]
+      headers:
+        content-type: application/json
+
+  - name: Put a room
+    request:
+      url: http://localhost:5000/api/room/{roomId}
+      json:
+        title: new title
+        description: new description
+        users: ["{userId2}"]
+      method: PUT
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        title: new title
+        description: new description
+        users: ["{userId2}"]
+      headers:
+        content-type: application/json
+
+  - name: Delete a room
+    request:
+      url: http://localhost:5000/api/room/{roomId}
+      method: DELETE
+    response:
+      status_code: 200
+      json:
+        {}
+      headers:
+        content-type: application/json
+
+  - name: Delete first user
+    request:
+      url: http://localhost:5000/api/user/{userId1}
+      method: DELETE
+    response:
+      status_code: 200
+      json:
+        {}
+      headers:
+        content-type: application/json
+
+  - name: Delete second user
+    request:
+      url: http://localhost:5000/api/user/{userId2}
+      method: DELETE
+    response:
+      status_code: 200
+      json:
+        {}
+      headers:
+        content-type: application/json

@@ -13,4 +13,4 @@ class UserSchema(ma.Schema):
     id = ObjectIdSchema()
     pseudo = ma.fields.Str(required=True)
     profileImage = ma.fields.Str(required=True)
-    rooms = ma.fields.List(ObjectIdSchema())
+    rooms = ma.fields.List(ma.fields.Str())
