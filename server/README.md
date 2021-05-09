@@ -86,6 +86,11 @@ Requirements:
 
 On ubuntu/debian, simply run : `sudo apt install curl jq`
 
+Get Swagger:
+```sh
+curl http://localhost:5000/swagger/
+```
+
 Get Room:
 ```sh
 curl http://localhost:5000/api/room/0  | jq
@@ -128,8 +133,7 @@ curl http://localhost:5000/api/user -H "Content-Type: application/json" --data '
 
 Update User:
 ```sh
-curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo", "profileImage": "link to profile image"}'
-
+curl -X PUT http://localhost:5000/api/user/607ae876f59d21d5a50ac3c9 -H "Content-Type: application/json" --data '{"pseudo":"un autre pseudo", "profileImage": "https://http.cat/202"}'
 ```
 
 Delete User:
@@ -149,7 +153,7 @@ curl http://localhost:5000/api/message -H "Content-Type: application/json" --dat
 
 Update Message:
 ```sh
-curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"content": "write what you want its your message and now"}'
+curl -X PUT http://localhost:5000/api/message/607ae94b589238d93e33715d -H "Content-Type: application/json" --data '{"author": "the new author id", "content": "write what you want its your message and now", "roomId": "the id of the new room you are in"}'
 ```
 
 Delete Message:
@@ -159,5 +163,5 @@ curl -X DELETE http://localhost:5000/api/message/0
 
 Get all messages for one RoomId:
 ```sh
-curl -v http:/localhost:5000/api/message?roomid=6043978fd68dc3fcbf6079d6
+curl -v http:/localhost:5000/api/message?roomid=6043978fd68dc3fcbf6079d6 # doesn't work here but it doesn't worked before need to open an issue
 ```
