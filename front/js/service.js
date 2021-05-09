@@ -37,22 +37,18 @@
     };
 
     this.deleteRoom = async function(roomID){
-
         const reponse = await axios.delete(apiUrl+'/room/'+roomID);
         return reponse.data;
     };
 
     this.getAllRooms = async function(){ // put the id between "" 
-
         let reponse = await axios.get(apiUrl+'/room'); // make the GET request;
-        // api.getAllRooms().then( (data) => console.log(data));
         return reponse.data;
     };
 
     this.getRoom = async function(roomID){ // put the id between "" 
             // Make a request for a user with a given ID
             let reponse = await axios.get(apiUrl+'/room/'+roomID);// make the GET request
-            // api.getRoom().then( (data) => console.log(data));
             return reponse.data;// return data JSON           
     };
 
