@@ -86,9 +86,14 @@ Requirements:
 
 On ubuntu/debian, simply run : `sudo apt install curl jq`
 
-Get Swagger:
+Get Raw Swagger:
 ```sh
 curl http://localhost:5000/swagger/
+```
+
+Get Swagger UI:
+```sh
+curl http://localhost:5000/swagger-ui/
 ```
 
 Get Room:
