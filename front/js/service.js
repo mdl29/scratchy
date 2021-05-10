@@ -181,6 +181,3 @@
         return reponse.data;
     };
 };
-
-var api = new ScratchyService("http://localhost:5000/api");
-api;
