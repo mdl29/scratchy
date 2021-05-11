@@ -1,50 +1,42 @@
 ---
 test_name: test the user most basic function
 
+includes:
+  - !include global.yaml
+
 # one stage for each request
 stages:
-  - name: Creating a user
-    request:
-      url: http://localhost:5000/api/user
-      json:
-        pseudo: jean
-        profileImage: https://http.cat/201
-      method: POST
-    response:
-      json:
-        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
-        pseudo: jean
-        profileImage: https://http.cat/201
-        rooms: []
-      save:
-        json:
-          userId: id  # saving the id for the other function
+  - type: ref
+    id: PostUser
 
-  - name: Get a user
+  - &get
+    name: Get a user
     request:
-      url: http://localhost:5000/api/user/{userId}
+      url: "{url}/user/{userId}"
       method: GET
     response:
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
-        pseudo: jean
+        pseudo: ali baba
         profileImage: https://http.cat/201
         rooms: []
 
-  - name: Get a user by pseudo
+  - &get_by_pseudo
+    name: Get a user by pseudo
     request:
-      url: http://localhost:5000/api/user?pseudo=jean
+      url: "{url}/user?pseudo=ali%20baba"
       method: GET
     response:
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
-        pseudo: jean
+        pseudo: ali baba
         profileImage: https://http.cat/201
         rooms: []
 
-  - name: Put a user
+  - &put
+    name: Put a user
     request:
-      url: http://localhost:5000/api/user/{userId}
+      url: "{url}/user/{userId}"
       json:
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
@@ -56,9 +48,11 @@ stages:
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
         rooms: []
-  - name: Delete a user
+
+  - &delete
+    name: Delete a user
     request:
-      url: http://localhost:5000/api/user/{userId}
+      url: "{url}/user/{userId}"
       method: DELETE
     response:
       json:
@@ -66,139 +60,109 @@ stages:
 
 ---
 test_name: test the 404 error
+
+includes:
+  - !include global.yaml
+
 stages:
-  - name: Get a user
+  - &404
+    <<: *get
     request:
-      url: http://localhost:5000/api/user/000000000000000000000000  # 24 zero same length as an object id but will never be one
+      url: "{url}/user/{24-zero}"  # 24 zero same length as an object id but will never be one
       method: GET
     response:
       status_code: 404
       json:
-        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+        message: "{404-message}"
 
-  - name: Put a user
+  - <<: *put
+    <<: *404
     request:
-      url: http://localhost:5000/api/user/000000000000000000000000
+      url: "{url}/user/{24-zero}"
       json:
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
-        rooms: []
       method: PUT
-    response:
-      status_code: 404
-      json:
-        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 
-  - name: Delete a user
+  - <<: *delete
+    <<: *404
     request:
-      url: http://localhost:5000/api/user/000000000000000000000000
+      url: "{url}/user/{24-zero}"
       method: DELETE
-    response:
-      status_code: 404
-      json:
-        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 
 ---
 test_name: test the user more advanced function
-stages:
-  - name: Creating a room
-    request:
-      url: http://localhost:5000/api/room
-      json:
-        title: la bg room
-        description: la best
-      method: POST
-    response:
-      json:
-        id: !re_fullmatch "[0-9a-f]{24}"
-        title: la bg room
-        description: la best
-        users: []
-      save:
-        json:
-          roomId1: id
 
-  - name: Creating another room
-    request:
-      url: http://localhost:5000/api/room
-      json:
-        title: the second room
-        description: the second room description
-      method: POST
-    response:
-      json:
-        id: !re_fullmatch "[0-9a-f]{24}"
-        title: the second room
-        description: the second room description
-        users: []
-      save:
-        json:
-          roomId2: id
+includes:
+  - !include global.yaml
+
+stages:
+  - type: ref
+    id: PostRoom
 
   - name: Creating a user
     request:
-      url: http://localhost:5000/api/user
+      url: "{url}/user"
       json:
         pseudo: jean
         profileImage: https://http.cat/201
-        rooms: ["{roomId1}"]
+        rooms: ["{roomId}"]
       method: POST
     response:
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
         pseudo: jean
         profileImage: https://http.cat/201
-        rooms: ["{roomId1}"]
+        rooms: ["{roomId}"]
       save:
         json:
           userId: id
 
-  - name: Get a user
+  - <<: *get
+    response:
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        pseudo: jean
+        profileImage: https://http.cat/201
+        rooms: ["{roomId}"]
+
+  - <<: *get_by_pseudo
     request:
-      url: http://localhost:5000/api/user/{userId}
+      url: "{url}/user?pseudo=jean"
       method: GET
     response:
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
         pseudo: jean
         profileImage: https://http.cat/201
-        rooms: ["{roomId1}"]
+        rooms: ["{roomId}"]
+
+  - <<: *delete
+    request:
+      url: "{url}/room/{roomId}"
+      method: DELETE
+
+  - type: ref
+    id: PostRoom
 
   - name: Put a user
     request:
-      url: http://localhost:5000/api/user/{userId}
+      url: "{url}/user/{userId}"
       json:
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
-        rooms: ["{roomId2}"]
+        rooms: ["{roomId}"]
       method: PUT
     response:
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
-        rooms: ["{roomId2}"]
+        rooms: ["{roomId}"]
 
-  - name: Delete a user
-    request:
-      url: http://localhost:5000/api/user/{userId}
-      method: DELETE
-    response:
-      json:
-        {}
+  - *delete
 
-  - name: Delete first room
+  - <<: *delete
     request:
-      url: http://localhost:5000/api/room/{roomId1}
+      url: "{url}/room/{roomId}"
       method: DELETE
-    response:
-      json:
-        {}
-
-  - name: Delete second room
-    request:
-      url: http://localhost:5000/api/room/{roomId2}
-      method: DELETE
-    response:
-      json:
-        {}

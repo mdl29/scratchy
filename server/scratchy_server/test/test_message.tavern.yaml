@@ -1,45 +1,20 @@
 ---
 test_name: test the message most basic function
 
+includes:
+  - !include global.yaml
+
 # one stage for each request
 stages:
-  - name: Creating a room
-    request:
-      url: http://localhost:5000/api/room
-      json:
-        title: my title
-        description: my description
-      method: POST
-    response:
-      json:
-        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
-        title: my title
-        description: my description
-        users: []
-      save:
-        json:
-          roomId: id  # saving the id for the other function
+  - type: ref
+    id: PostRoom
 
-  - name: Creating a user
-    request:
-      url: http://localhost:5000/api/user
-      json:
-        pseudo: C3PO
-        profileImage: https://http.cat/201
-      method: POST
-    response:
-      json:
-        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
-        pseudo: C3PO
-        profileImage: https://http.cat/201
-        rooms: []
-      save:
-        json:
-          userId: id  # saving the id for the other function
+  - type: ref
+    id: PostUser
 
   - name: Creating a message
     request:
-      url: http://localhost:5000/api/message
+      url: "{url}/message"
       json:
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
@@ -55,9 +30,10 @@ stages:
         json:
           messageId: id  # saving the id for the other function
 
-  - name: Get a message
+  - &get
+    name: Get a message
     request:
-      url: http://localhost:5000/api/message/{messageId}
+      url: "{url}/message/{messageId}"
       method: GET
     response:
       json:
@@ -66,9 +42,10 @@ stages:
         author: "{userId}"
         roomId: "{roomId}"
 
-  - name: Put a message
+  - &put
+    name: Put a message
     request:
-      url: http://localhost:5000/api/message/{messageId}
+      url: "{url}/message/{messageId}"
       json:
         content: I am repared. Yeaah !!! I am really happy
         author: "{userId}"
@@ -81,60 +58,54 @@ stages:
         author: "{userId}"
         roomId: "{roomId}"
 
-  - name: Delete a message
+  - &delete
+    name: Delete a message
     request:
-      url: http://localhost:5000/api/message/{messageId}
+      url: "{url}/message/{messageId}"
       method: DELETE
     response:
       json:
         {}
 
-  - name: Delete a room
+  - <<: *delete
     request:
-      url: http://localhost:5000/api/room/{roomId}
+      url: "{url}/room/{roomId}"
       method: DELETE
-    response:
-      json:
-        {}
 
-  - name: Delete a user
+  - <<: *delete
     request:
-      url: http://localhost:5000/api/user/{userId}
+      url: "{url}/user/{userId}"
       method: DELETE
-    response:
-      json:
-        {}
 
 ---
 test_name: test the 404 error
+
+includes:
+  - !include global.yaml
+
 stages:
-  - name: Get a message
+  - &404
+    <<: *get
     request:
-      url: http://localhost:5000/api/message/000000000000000000000000  # 24 zero same length as an object id but will never be one
+      url: "{url}/message/{24-zero}"  # 24 zero same length as an object id but will never be one
       method: GET
     response:
       status_code: 404
       json:
-        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+        message: "{404-message}"
 
-  - name: Put a message
+  - <<: *put
+    <<: *404
     request:
-      url: http://localhost:5000/api/message/000000000000000000000000
+      url: "{url}/message/{24-zero}"
       json:
         content: I am repared. Yeaah !!! I am really happy
-        author: "000000000000000000000000"
-        roomId: "000000000000000000000000"
+        author: "{24-zero}"
+        roomId: "{24-zero}"
       method: PUT
-    response:
-      status_code: 404
-      json:
-        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 
-  - name: Delete a message
+  - <<: *delete
+    <<: *404
     request:
-      url: http://localhost:5000/api/message/000000000000000000000000
+      url: "{url}/message/{24-zero}"
       method: DELETE
-    response:
-      status_code: 404
-      json:
-        message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
