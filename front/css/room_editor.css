@@ -5,9 +5,10 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     top:0;
     left: 0;
+    z-index: 10;
 }
 
 .room_editor_popup {
@@ -111,25 +112,4 @@ textarea.room_editor_input {
 
 .room_editor_cancel {
     background-color: rgb(145, 145, 145);
-}
-
-.room_editor_start {
-    cursor: pointer;
-    transition: 0.1s all;
-    width: 45px;
-    height: 45px;
-    background-color: var(--accent);
-    border-radius: var(--border-radius);
-}
-
-.room_editor_start:hover {
-    filter: brightness(0.9);
-}
-
-.room_editor_plus {
-    clip-path: polygon(52.5% 0, 47.5% 0, 47.5% 47.5%, 0 47.5%, 0 52.5%, 47.5% 52.5%, 47.5% 100%, 52.5% 100%, 52.5% 52.5%, 100% 52.5%, 100% 47.5%, 52.5% 47.5%);
-    background-color: white;
-    width: 45px;
-    height: 45px;
-    transform: scale(0.8);
 }
