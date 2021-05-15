@@ -32,12 +32,15 @@
 .message_editor_input:focus {
     color: white;
 }
+
 .message_editor_button {
     background-color: var(--accent);
     border: none;
     font-size: 20px;
     display: flex;
+
     --size: calc(var(--font-size) * 2);
+
     width: var(--size);
     height: var(--size);
     border-radius: var(--border-radius);
@@ -47,16 +50,19 @@
     transition: all 0.1s;
     font-weight: lighter;
 }
+
 .message_editor_button:hover {
     cursor: pointer;
     filter: brightness(0.8);
 }
+
 .message_editor_send_icon {
     background-color: white;
     clip-path: polygon(20% 47%, 12% 20%, 90% 50%, 12% 80%, 20% 53%, 50% 50%);
     width: 100%;
     height: 100%;
 }
+
 .message_editor_wrapper {
     display: flex;
     flex-direction: row;

@@ -29,6 +29,7 @@
     display: flex;
     flex-direction: column;
 }
+
 /*
  * :nth-child(2n+1) select every odd numbered child
  * (meaning the first and last in this instance,
