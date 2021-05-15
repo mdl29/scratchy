@@ -13,4 +13,4 @@ class RoomSchema(ma.Schema):
     id = ObjectIdSchema()
     description = ma.fields.Str(required=True)
     title = ma.fields.Str(required=True)
-    users = ma.fields.List(ObjectIdSchema())
+    users = ma.fields.List(ma.fields.Str())

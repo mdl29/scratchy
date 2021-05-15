@@ -1,0 +1,169 @@
+---
+test_name: test the user most basic function
+
+includes:
+  - !include global.yaml
+
+# one stage for each request
+stages:
+  - type: ref
+    id: PostUser
+
+  - &get
+    name: Get a user
+    request:
+      url: "{url}/user/{userId}"
+      method: GET
+    response:
+      json:
+        <<: &id-regex
+          id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        pseudo: ali baba
+        profileImage: https://http.cat/201
+        rooms: []
+
+  - &get_by_pseudo
+    name: Get a user by pseudo
+    request:
+      url: "{url}/user?pseudo=ali%20baba"
+      method: GET
+    response:
+      json:
+        <<: *id-regex
+        pseudo: ali baba
+        profileImage: https://http.cat/201
+        rooms: []
+
+  - &put
+    name: Put a user
+    request:
+      url: "{url}/user/{userId}"
+      json:
+        pseudo: toto le rigolo
+        profileImage: https://http.cat/418
+        rooms: []
+      method: PUT
+    response:
+      json:
+        <<: *id-regex
+        pseudo: toto le rigolo
+        profileImage: https://http.cat/418
+        rooms: []
+
+  - &delete
+    name: Delete a user
+    request:
+      url: "{url}/user/{userId}"
+      method: DELETE
+    response:
+      json:
+        {}
+
+---
+test_name: test the 404 error
+
+includes:
+  - !include global.yaml
+
+stages:
+  - &404
+    <<: *get
+    request:
+      url: "{url}/user/{24-zero}"  # 24 zero same length as an object id but will never be one
+      method: GET
+    response:
+      status_code: 404
+      json:
+        message: "{404-message}"
+
+  - <<: *put
+    <<: *404
+    request:
+      url: "{url}/user/{24-zero}"
+      json:
+        pseudo: toto le rigolo
+        profileImage: https://http.cat/418
+      method: PUT
+
+  - <<: *delete
+    <<: *404
+    request:
+      url: "{url}/user/{24-zero}"
+      method: DELETE
+
+---
+test_name: test the user more advanced function
+
+includes:
+  - !include global.yaml
+
+stages:
+  - type: ref
+    id: PostRoom
+
+  - name: Creating a user
+    request:
+      url: "{url}/user"
+      json:
+        pseudo: jean
+        profileImage: https://http.cat/201
+        rooms: ["{roomId}"]
+      method: POST
+    response:
+      json:
+        <<: *id-regex
+        pseudo: jean
+        profileImage: https://http.cat/201
+        rooms: ["{roomId}"]
+      save:
+        json:
+          userId: id
+
+  - <<: *get
+    response:
+      json:
+        <<: *id-regex
+        pseudo: jean
+        profileImage: https://http.cat/201
+        rooms: ["{roomId}"]
+
+  - <<: *get_by_pseudo
+    request:
+      url: "{url}/user?pseudo=jean"
+      method: GET
+    response:
+      json:
+        <<: *id-regex
+        pseudo: jean
+        profileImage: https://http.cat/201
+        rooms: ["{roomId}"]
+
+  - <<: *delete
+    request:
+      url: "{url}/room/{roomId}"
+      method: DELETE
+
+  - type: ref
+    id: PostRoom
+
+  - name: Put a user
+    request:
+      url: "{url}/user/{userId}"
+      json:
+        pseudo: toto le rigolo
+        profileImage: https://http.cat/418
+        rooms: ["{roomId}"]
+      method: PUT
+    response:
+      json:
+        <<: *id-regex
+        pseudo: toto le rigolo
+        profileImage: https://http.cat/418
+        rooms: ["{roomId}"]
+
+  - *delete
+
+  - <<: *delete
+    request:
+      url: "{url}/room/{roomId}"
+      method: DELETE

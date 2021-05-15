@@ -1,0 +1,48 @@
+---
+
+# Each file should have a name and description
+name: Common test information
+description: Global variables
+
+# Variables should just be a mapping of key: value pairs
+variables:
+  url: http://localhost:5000/api
+  24-zero: "000000000000000000000000"
+  404-message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+stages:
+  - id: PostRoom
+    name: Creating a room
+    request:
+      url: "{url}/room"
+      json:
+        title: my title
+        description: my description
+      method: POST
+    response:
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        title: my title
+        description: my description
+        users: []
+      save:
+        json:
+          roomId: id  # saving the id for the other function
+
+  - id: PostUser
+    name: Creating a user
+    request:
+      url: http://localhost:5000/api/user
+      json:
+        pseudo: ali baba
+        profileImage: https://http.cat/201
+      method: POST
+    response:
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"
+        pseudo: ali baba
+        profileImage: https://http.cat/201
+        rooms: []
+      save:
+        json:
+          userId: id  # saving the id for the other function

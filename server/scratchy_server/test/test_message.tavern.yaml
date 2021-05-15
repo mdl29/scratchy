@@ -1,0 +1,112 @@
+---
+test_name: test the message most basic function
+
+includes:
+  - !include global.yaml
+
+# one stage for each request
+stages:
+  - type: ref
+    id: PostRoom
+
+  - type: ref
+    id: PostUser
+
+  - name: Creating a message
+    request:
+      url: "{url}/message"
+      json:
+        content: <bip> <bop> <boup> kernel error
+        author: "{userId}"
+        roomId: "{roomId}"
+      method: POST
+    response:
+      json:
+        <<: &id-regex
+          id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        content: <bip> <bop> <boup> kernel error
+        author: "{userId}"
+        roomId: "{roomId}"
+      save:
+        json:
+          messageId: id  # saving the id for the other function
+
+  - &get
+    name: Get a message
+    request:
+      url: "{url}/message/{messageId}"
+      method: GET
+    response:
+      json:
+        <<: *id-regex
+        content: <bip> <bop> <boup> kernel error
+        author: "{userId}"
+        roomId: "{roomId}"
+
+  - &put
+    name: Put a message
+    request:
+      url: "{url}/message/{messageId}"
+      json:
+        content: I am repared. Yeaah !!! I am really happy
+        author: "{userId}"
+        roomId: "{roomId}"
+      method: PUT
+    response:
+      json:
+        <<: *id-regex
+        content: I am repared. Yeaah !!! I am really happy
+        author: "{userId}"
+        roomId: "{roomId}"
+
+  - &delete
+    name: Delete a message
+    request:
+      url: "{url}/message/{messageId}"
+      method: DELETE
+    response:
+      json:
+        {}
+
+  - <<: *delete
+    request:
+      url: "{url}/room/{roomId}"
+      method: DELETE
+
+  - <<: *delete
+    request:
+      url: "{url}/user/{userId}"
+      method: DELETE
+
+---
+test_name: test the 404 error
+
+includes:
+  - !include global.yaml
+
+stages:
+  - &404
+    <<: *get
+    request:
+      url: "{url}/message/{24-zero}"  # 24 zero same length as an object id but will never be one
+      method: GET
+    response:
+      status_code: 404
+      json:
+        message: "{404-message}"
+
+  - <<: *put
+    <<: *404
+    request:
+      url: "{url}/message/{24-zero}"
+      json:
+        content: I am repared. Yeaah !!! I am really happy
+        author: "{24-zero}"
+        roomId: "{24-zero}"
+      method: PUT
+
+  - <<: *delete
+    <<: *404
+    request:
+      url: "{url}/message/{24-zero}"
+      method: DELETE

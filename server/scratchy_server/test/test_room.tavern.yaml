@@ -1,0 +1,147 @@
+---
+test_name: test the room most basic function
+
+includes:
+  - !include global.yaml
+
+# one stage for each request
+stages:
+  - type: ref
+    id: PostRoom
+
+  - &get
+    name: Get a room
+    request:
+      url: "{url}/room/{roomId}"
+      method: GET
+    response:
+      json: 
+        <<: &id-regex
+          id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        title: my title
+        description: my description
+        users: []
+
+  - &put
+    name: Put a room
+    request:
+      url: "{url}/room/{roomId}"
+      json:
+        title: new title
+        description: new description
+      method: PUT
+    response:
+      json:
+        <<: *id-regex
+        title: new title
+        description: new description
+        users: []
+
+  - &delete
+    name: Delete a room
+    request:
+      url: "{url}/room/{roomId}"
+      method: DELETE
+    response:
+      json:
+        {}
+
+---
+test_name: test the 404 error
+
+includes:
+  - !include global.yaml
+
+stages:
+  - &404
+    <<: *get
+    request:
+      url: "{url}/room/{24-zero}"  # 24 zero same length as an object id but will never be one
+      method: GET
+    response:
+      status_code: 404
+      json:
+        message: "{404-message}"
+
+  - <<: *put
+    <<: *404
+    request:
+      url: "{url}/room/{24-zero}"
+      json:
+        title: new title
+        description: new description
+      method: PUT
+
+  - <<: *delete
+    <<: *404
+    request:
+      url: "{url}/room/{24-zero}"
+      method: DELETE
+
+
+---
+test_name: test the room more advanced function
+
+includes:
+  - !include global.yaml
+
+stages:
+  - type: ref
+    id: PostUser
+
+  - name: Creating a room
+    request:
+      url: "{url}/room"
+      json:
+        title: my title
+        description: my description
+        users: ["{userId}"]
+      method: POST
+    response:
+      json:
+        <<: *id-regex
+        title: my title
+        description: my description
+        users: ["{userId}"]
+      save:
+        json:
+          roomId: id
+
+  - <<: *get
+    response:
+      json:
+        <<: *id-regex
+        title: my title
+        description: my description
+        users: ["{userId}"]
+
+  - <<: *delete
+    request:
+      url: "{url}/user/{userId}"
+      method: DELETE
+
+  - type: ref
+    id: PostUser
+
+
+  - name: Put a room
+    request:
+      url: "{url}/room/{roomId}"
+      json:
+        title: new title
+        description: new description
+        users: ["{userId}"]
+      method: PUT
+    response:
+      json:
+        <<: *id-regex
+        title: new title
+        description: new description
+        users: ["{userId}"]
+
+  - *delete
+
+  - <<: *delete
+    request:
+      url: "{url}/user/{userId}"
+      method: DELETE
