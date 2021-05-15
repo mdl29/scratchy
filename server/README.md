@@ -7,6 +7,10 @@ Scratchy is composed of:
 * server: scratchy_server in Python
 * database: mongodb in docker
 
+## Swagger-ui
+
+You can go to http://localhost:5000/swagger-ui/ after launching the server to do your request
+
 ## Start Scratchy Stack
 
 Start mongodb:
