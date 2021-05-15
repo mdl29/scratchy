@@ -16,7 +16,8 @@ stages:
       method: GET
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: &id-regex
+          id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         pseudo: ali baba
         profileImage: https://http.cat/201
         rooms: []
@@ -28,7 +29,7 @@ stages:
       method: GET
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         pseudo: ali baba
         profileImage: https://http.cat/201
         rooms: []
@@ -44,7 +45,7 @@ stages:
       method: PUT
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
         rooms: []
@@ -110,7 +111,7 @@ stages:
       method: POST
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         pseudo: jean
         profileImage: https://http.cat/201
         rooms: ["{roomId}"]
@@ -121,7 +122,7 @@ stages:
   - <<: *get
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         pseudo: jean
         profileImage: https://http.cat/201
         rooms: ["{roomId}"]
@@ -132,7 +133,7 @@ stages:
       method: GET
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         pseudo: jean
         profileImage: https://http.cat/201
         rooms: ["{roomId}"]
@@ -155,7 +156,7 @@ stages:
       method: PUT
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
         rooms: ["{roomId}"]

@@ -22,7 +22,8 @@ stages:
       method: POST
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        <<: &id-regex
+          id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
         roomId: "{roomId}"
@@ -37,7 +38,7 @@ stages:
       method: GET
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
         roomId: "{roomId}"
@@ -53,7 +54,7 @@ stages:
       method: PUT
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         content: I am repared. Yeaah !!! I am really happy
         author: "{userId}"
         roomId: "{roomId}"

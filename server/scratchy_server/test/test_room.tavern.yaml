@@ -15,8 +15,9 @@ stages:
       url: "{url}/room/{roomId}"
       method: GET
     response:
-      json:
-        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+      json: 
+        <<: &id-regex
+          id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         title: my title
         description: my description
         users: []
@@ -31,7 +32,7 @@ stages:
       method: PUT
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        <<: *id-regex
         title: new title
         description: new description
         users: []
@@ -98,7 +99,7 @@ stages:
       method: POST
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         title: my title
         description: my description
         users: ["{userId}"]
@@ -109,7 +110,7 @@ stages:
   - <<: *get
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         title: my title
         description: my description
         users: ["{userId}"]
@@ -133,7 +134,7 @@ stages:
       method: PUT
     response:
       json:
-        id: !re_fullmatch "[0-9a-f]{24}"
+        <<: *id-regex
         title: new title
         description: new description
         users: ["{userId}"]
