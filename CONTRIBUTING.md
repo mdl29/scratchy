@@ -14,10 +14,10 @@
 
 ## There are the convention to respect for each programing language
 
-| Language | Convention                             |
-| -------- | -------------------------------------- |
-| Python   | [PEP8](https://pep8.org/)              |
-| YAML     | *(there is a linter but nobody cares)* |
+| Language | Convention                                            |
+| -------- | ----------------------------------------------------- |
+| Python   | [PEP8](https://pep8.org/)                             |
+| YAML     | [the linter](https://github.com/adrienverge/yamllint) |
 
 ## Other important notes
 
