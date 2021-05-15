@@ -77,7 +77,7 @@ scratchy-server
 <scratchy/docker>$ docker-compose up -d
 ```
 
-## how to run unitary test
+## how to run integration test
 ```sh
 <scratchy/server/scratchy-server/test>$ python test.py
 ```
