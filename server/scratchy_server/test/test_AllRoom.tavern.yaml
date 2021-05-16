@@ -1,0 +1,36 @@
+---
+test_name: test the AllRoomRes
+
+includes:
+  - !include global.yaml
+
+# one stage for each request
+stages:
+  - type: ref
+    id: PostRoom
+
+  - type: ref
+    id: PostRoom
+
+  - type: ref
+    id: PostRoom
+
+  - name: Get all room
+    request:
+      url: "{url}/room"
+      method: GET
+    response:
+      json:
+        rooms:
+          - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+            title: my title
+            description: my description
+            users: []
+          - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+            title: my title
+            description: my description
+            users: []
+          - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+            title: my title
+            description: my description
+            users: []
