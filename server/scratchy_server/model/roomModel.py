@@ -14,3 +14,6 @@ class RoomSchema(ma.Schema):
     description = ma.fields.Str(required=True)
     title = ma.fields.Str(required=True)
     users = ma.fields.List(ma.fields.Str())
+
+class AllRoomSchema(ma.Schema):
+    rooms = ma.fields.List(ma.fields.Nested(RoomSchema))
