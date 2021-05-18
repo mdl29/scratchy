@@ -1,8 +1,9 @@
-from scratchy_server.model.userModel import UserModel, UserSchema
-from mongoengine import NotUniqueError
-from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
+from flask_apispec.views import MethodResource
 from marshmallow import fields
+from mongoengine import NotUniqueError
+
+from scratchy_server.model.userModel import UserModel, UserSchema
 
 
 @doc(tags=['User'])

@@ -1,6 +1,7 @@
-from scratchy_server import db_scratchy
 import datetime
 import marshmallow as ma
+
+from scratchy_server import db_scratchy
 from scratchy_server.model.objectIdSchema import ObjectIdSchema
 
 

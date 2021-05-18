@@ -1,14 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
+from flask_apispec.extension import FlaskApiSpec
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+import logging
+
+from scratchy_server import db_scratchy
 from scratchy_server.resources.roomres import RoomRes, AllRoomRes
 from scratchy_server.resources.userres import UserRes, NoIdUserRes
 from scratchy_server.resources.messageres import MessageRes, NoIdMessageRes
-from scratchy_server import db_scratchy
-from flask_apispec.extension import FlaskApiSpec
-import logging
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
 
 
 logging.basicConfig(level=logging.DEBUG)

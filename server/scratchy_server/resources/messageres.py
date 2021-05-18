@@ -1,8 +1,8 @@
-from scratchy_server.model.messageModel import MessageModel, MessageSchema
-from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
+from flask_apispec.views import MethodResource
 from marshmallow import fields
-from flask_restful import request
+
+from scratchy_server.model.messageModel import MessageModel, MessageSchema
 
 
 @doc(tags=['Message'])

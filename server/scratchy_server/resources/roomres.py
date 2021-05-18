@@ -1,5 +1,6 @@
-from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
+from flask_apispec.views import MethodResource
+
 from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
 
 
