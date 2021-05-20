@@ -1,3 +1,8 @@
+/**
+ * @author Yannis Malgorn <yannismalgorn@gmail.com>
+ * @see {@link https://github.com/mdl29/scratchy|GitHub}
+ * @requires module:axios/axios
+ */
 /*
 - add axios cdn link in index.html :
      	<script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
@@ -9,7 +14,11 @@
 - call a function :
     api.function();|
 */
-
+/**
+ * 
+ * @constructor
+ * @param {string} apiUrl - api url , eg: http://localhost:5000/api
+ */
 function ScratchyService(apiUrl) {
     let _this = this;
     this.cacheUsers = []; // List of users, used as cache
@@ -18,6 +27,9 @@ function ScratchyService(apiUrl) {
 
 
     /**
+     *
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Room
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @param {string} roomTitle - title of a room , eg:my room
@@ -31,6 +43,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Room
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @param {string} roomTitle - title of a room, eg:my room
@@ -44,6 +58,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Room
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @returns {Room} room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example"}
@@ -57,6 +73,8 @@ function ScratchyService(apiUrl) {
     
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Room
      */
      this.deleteRoom = async function(roomID){
@@ -65,6 +83,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Room
      * @returns {array} - all rooms information 
      */
@@ -77,6 +97,8 @@ function ScratchyService(apiUrl) {
     
     /**
     * 
+    * @async
+    * @augments ScratchyService
     * @typedef {Object} User
     * @param {string} userPseudo - a user pseudo , eg:toto
     * @returns {User} - user information 
@@ -89,6 +111,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} User
      * @param {string} userID - user id , eg:60895dd62d1a706830c31f10
      * @returns {User} - user information
@@ -101,6 +125,8 @@ function ScratchyService(apiUrl) {
 
     /**
     * 
+    * @async
+    * @augments ScratchyService
     * @typedef {Object} User
     * @param {string} userPseudo - a user pseudo , eg:toto
     * @param {string} userProfileImage - profile image link , eg:https://myprofileimage.test/picture.png
@@ -113,6 +139,8 @@ function ScratchyService(apiUrl) {
 
     /**
     * 
+    * @async
+    * @augments ScratchyService
     * @typedef {Object} User
     */
     this.deleteUser = async function(userID){
@@ -121,6 +149,8 @@ function ScratchyService(apiUrl) {
 
    /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} User
      * @param {string} userID - user id , eg:60895dd62d1a706830c31f10
      * @param {string} userPseudo - user pseudo , eg:toto
@@ -135,6 +165,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Message
      * @param {string} messageID - message id , eg:60895dd62d1a706830c31f10
      * @returns {Message} message information 
@@ -148,6 +180,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Message
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @returns {array} message information
@@ -160,6 +194,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Message
      * @param {string} authorID - author id , eg:60895dd62d1a706830c31f10
      * @param {string} messageContent - message content , eg:my message content
@@ -173,6 +209,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Message
      * @param {string} messageID - message id , eg:60895dd62d1a706830c31f10
      * @param {string} messageContent - message content , eg:my message content 
@@ -185,6 +223,8 @@ function ScratchyService(apiUrl) {
 
     /**
      * 
+     * @async
+     * @augments ScratchyService
      * @typedef {Object} Message
      * @param {string} messageID - message id , eg:60895dd62d1a706830c31f10
      */
