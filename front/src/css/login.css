@@ -1,5 +1,5 @@
 .login_wrapper {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,11 +19,12 @@
     display: flex;
     justify-content: space-evenly;
     color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .login_popup > * {
     --margin: 10px;
+
     margin-top: var(--margin);
     margin-bottom: var(--margin);
 }

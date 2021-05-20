@@ -10,6 +10,7 @@
     --font-size: 25px;
     --border-radius: 6px;
 }
+
 body {
     background-color: var(--bg1);
     margin: 0;
