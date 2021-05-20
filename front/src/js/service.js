@@ -22,7 +22,7 @@ function ScratchyService(apiUrl) {
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @param {string} roomTitle - title of a room , eg:my room
      * @param {string} roomDescription - description of a room, eg:my room description
-     * @returns {string} - room id, title and description
+     * @returns {Room} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
     this.updateRoom = async function(roomId,roomTitle,roomDescription){
         const reponse = await axios.put(apiUrl+'/room/'+roomId, { title: roomTitle , description: roomDescription });
@@ -32,9 +32,10 @@ function ScratchyService(apiUrl) {
     /**
      * 
      * @typedef {Object} Room
+     * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @param {string} roomTitle - title of a room, eg:my room
      * @param {string} roomDescription - description of a room, eg:my room description
-     * @returns {string} - room id 
+     * @returns {Room} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
     this.createRoom = async function(roomTitle,roomDescription){
         const reponse = await axios.post(apiUrl+'/room', { title: roomTitle , description: roomDescription });
@@ -45,7 +46,7 @@ function ScratchyService(apiUrl) {
      * 
      * @typedef {Object} Room
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
-     * @returns {Room} room information , { oid:"60895dd62d1a706830c31f10" ,title:"example"}
+     * @returns {Room} room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example"}
      */
     this.getRoom = async function(roomID){ // put the id between "" 
             // Make a request for a user with a given ID
@@ -57,10 +58,9 @@ function ScratchyService(apiUrl) {
     /**
      * 
      * @typedef {Object} Room
-     * @param {string} roomID - room id, eg:60895dd62d1a706830c31f10
      */
      this.deleteRoom = async function(roomID){
-        const reponse = await axios.delete('http://localhost:5000/api/room/'+roomID);
+        const reponse = await axios.delete(apiUrl+'/room/'+roomID);
     };
 
     /**
@@ -90,7 +90,7 @@ function ScratchyService(apiUrl) {
     /**
      * 
      * @typedef {Object} User
-     * @param {string} userID , user id , eg:60895dd62d1a706830c31f10
+     * @param {string} userID - user id , eg:60895dd62d1a706830c31f10
      * @returns {User} - user information
      */
     this.getUserByid = async function(userID){ // put the id between "" 
@@ -114,7 +114,6 @@ function ScratchyService(apiUrl) {
     /**
     * 
     * @typedef {Object} User
-    * @param {string} userID - user id , eg:60895dd62d1a706830c31f10
     */
     this.deleteUser = async function(userID){
         const reponse = await axios.delete(apiUrl+'/user/'+userID);
@@ -165,7 +164,7 @@ function ScratchyService(apiUrl) {
      * @param {string} authorID - author id , eg:60895dd62d1a706830c31f10
      * @param {string} messageContent - message content , eg:my message content
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
-     * @returns {string} message id
+     * @returns {Message} message information, eg: author : 60895dd62d1a706830c31f10 , content : hello world , roomId : 60895dd56d1a706830c31f16 
      */
     this.createMessage = async function(authorID,messageContent,roomID){
         const reponse = await axios.post(apiUrl+'/message', { author : authorID , content : messageContent , roomId : roomID });
@@ -179,8 +178,8 @@ function ScratchyService(apiUrl) {
      * @param {string} messageContent - message content , eg:my message content 
      * @returns {string} message id
      */
-    this.updateMessage = async function(messageID,messageContent){
-        const reponse = await axios.put(apiUrl+'/message/'+messageID, { content: messageContent });
+    this.updateMessage = async function(messageID,messageAuthor,messageContent,roomID){
+        const reponse = await axios.put(apiUrl+'/message/'+messageID, { author: messageAuthor , content: messageContent , roomId : roomID });
         return reponse.data;
     };
 
