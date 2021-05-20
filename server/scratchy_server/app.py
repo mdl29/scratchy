@@ -39,13 +39,18 @@ docs = FlaskApiSpec(app)
 db_scratchy.init_app(app)
 api = Api(app)
 
-Res =    ( RoomRes,   UserRes,   MessageRes,   AllRoomRes,   NoIdUserRes,   NoIdMessageRes)
-ResStr = ("RoomRes", "UserRes", "MessageRes", "AllRoomRes", "NoIdUserRes", "NoIdMessageRes")
-ResUrl = ("/api/room/<string:roomId>", "/api/user/<string:userId>", "/api/message/<string:messageId>", "/api/room", "/api/user", "/api/message")
+ressource = (
+    {"name": "RoomRes", "ressource": RoomRes, "url": "/api/room/<string:roomId>"},
+    {"name": "UserRes", "ressource": UserRes, "url": "/api/user/<string:userId>"},
+    {"name": "MessageRes", "ressource": MessageRes, "url": "/api/message/<string:messageId>"},
+    {"name": "AllRoomRes", "ressource": AllRoomRes, "url": "/api/room"},
+    {"name": "NoIdUserRes", "ressource": NoIdUserRes, "url": "/api/user"},
+    {"name": "NoIdMessageRes", "ressource": NoIdMessageRes, "url": "/api/message"}
+)
 
-list(map(lambda res, url: api.add_resource(res, url), Res, ResUrl))
-list(map(lambda res, url, string: app.add_url_rule(url, view_func=res.as_view(string)), Res, ResUrl, ResStr))
-list(map(lambda res, string: docs.register(res, endpoint=string) , Res, ResStr))
+list(map(lambda res: api.add_resource(res["ressource"], res["url"]), ressource))
+list(map(lambda res: app.add_url_rule(res["url"], view_func=res["ressource"].as_view(res["name"])), ressource))
+list(map(lambda res: docs.register(res["ressource"], endpoint=res["name"]), ressource))
 
 
 logging.info("scratchy is up and ready")
