@@ -39,31 +39,13 @@ docs = FlaskApiSpec(app)
 db_scratchy.init_app(app)
 api = Api(app)
 
+Res =    ( RoomRes,   UserRes,   MessageRes,   AllRoomRes,   NoIdUserRes,   NoIdMessageRes)
+ResStr = ("RoomRes", "UserRes", "MessageRes", "AllRoomRes", "NoIdUserRes", "NoIdMessageRes")
+ResUrl = ("/api/room/<string:roomId>", "/api/user/<string:userId>", "/api/message/<string:messageId>", "/api/room", "/api/user", "/api/message")
 
-# database["messages"]["0"] = messageExemple
-
-api.add_resource(RoomRes, '/api/room/<string:roomId>')
-api.add_resource(AllRoomRes, '/api/room')
-api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
-api.add_resource(NoIdUserRes, '/api/user', '/api/user')
-api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
-api.add_resource(NoIdMessageRes, '/api/message', '/api/message')
-
-
-# path for the apispec you can have info there: https://flask-apispec.readthedocs.io/en/latest/usage.html
-app.add_url_rule('/api/room/<string:roomId>', view_func=RoomRes.as_view('RoomRes'))
-app.add_url_rule('/api/room', view_func=AllRoomRes.as_view('AllRoomRes'))
-app.add_url_rule('/api/user/<string:userId>', view_func=UserRes.as_view('UserRes'))
-app.add_url_rule('/api/user', view_func=NoIdUserRes.as_view('NoIdUserRes'))
-app.add_url_rule('/api/message/<string:messageId>', view_func=MessageRes.as_view('MessageRes'))
-app.add_url_rule('/api/message', view_func=NoIdMessageRes.as_view('NoIdMessageRes'))
-
-docs.register(RoomRes, endpoint='RoomRes')
-docs.register(AllRoomRes, endpoint='AllRoomRes')
-docs.register(UserRes, endpoint='UserRes')
-docs.register(NoIdUserRes, endpoint='NoIdUserRes')
-docs.register(MessageRes, endpoint='MessageRes')
-docs.register(NoIdMessageRes, endpoint='NoIdMessageRes')
+list(map(lambda res, url: api.add_resource(res, url), Res, ResUrl))
+list(map(lambda res, url, string: app.add_url_rule(url, view_func=res.as_view(string)), Res, ResUrl, ResStr))
+list(map(lambda res, string: docs.register(res, endpoint=string) , Res, ResStr))
 
 
 logging.info("scratchy is up and ready")
