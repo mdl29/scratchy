@@ -1,6 +1,7 @@
 from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
 from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
+from scratchy_server.resources import func
 
 
 @doc(tags=['Room'])
@@ -8,16 +9,16 @@ from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
 class RoomRes(MethodResource):
 
     def get(self, roomId):
-        return RoomModel.objects().get_or_404(id=roomId)
+        return func.get(RoomModel, roomId)
 
     @use_kwargs(RoomSchema)
     def put(self, roomId, **kwargs):
-        room = RoomModel.objects().get_or_404(id=roomId)
+        room = func.get(RoomModel, roomId)
         room.modify(**kwargs)
         return room
 
     def delete(self, roomId):
-        RoomModel.objects().get_or_404(id=roomId).delete()
+        func.get(RoomModel, roomId).delete()
         return None
 
 
