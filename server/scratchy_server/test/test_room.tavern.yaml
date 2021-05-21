@@ -78,6 +78,38 @@ stages:
       url: "{url}/room/{24-zero}"
       method: DELETE
 
+---
+test_name: test the 400 error
+
+includes:
+  - !include global.yaml
+
+stages:
+  - &400
+    <<: *get
+    request:
+      url: "{url}/room/0"
+      method: GET
+    response:
+      status_code: 400
+      json:
+        message: "{400-message}"
+
+  - <<: *put
+    <<: *400
+    request:
+      url: "{url}/room/0"
+      json:
+        title: new title
+        description: new description
+      method: PUT
+
+  - <<: *delete
+    <<: *400
+    request:
+      url: "{url}/room/0"
+      method: DELETE
+
 
 ---
 test_name: test the room more advanced function
