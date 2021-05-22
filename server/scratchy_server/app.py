@@ -8,7 +8,7 @@ import logging
 
 from scratchy_server import db_scratchy
 from scratchy_server.resources.roomres import RoomRes, AllRoomRes
-from scratchy_server.resources.userres import UserRes, NoIdUserRes
+from scratchy_server.resources.userres import UserRes, AllUserRes
 from scratchy_server.resources.messageres import MessageRes, NoIdMessageRes
 
 
@@ -44,7 +44,7 @@ ressource = (
     {"name": "UserRes", "ressource": UserRes, "url": "/api/user/<string:userId>"},
     {"name": "MessageRes", "ressource": MessageRes, "url": "/api/message/<string:messageId>"},
     {"name": "AllRoomRes", "ressource": AllRoomRes, "url": "/api/room"},
-    {"name": "NoIdUserRes", "ressource": NoIdUserRes, "url": "/api/user"},
+    {"name": "AllUserRes", "ressource": AllUserRes, "url": "/api/user"},
     {"name": "NoIdMessageRes", "ressource": NoIdMessageRes, "url": "/api/message"}
 )
 
