@@ -3,6 +3,7 @@
         <script src="https://unpkg.com/vue@next"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
+        <script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="css/app.css">
         <link rel="stylesheet" href="css/activity_bar.css">
@@ -41,12 +42,16 @@
         <script src="js/user-list.js"></script>
         <script src="js/message-list.js"></script>
         <script src="js/login.js"></script>
+        <script src="js/service.js"></script>
         <script>
             /*
              * this whole component should be mostly (or entirely re-written) 
              * when scratchy service will be done, to use the api instead of 
              * dummy data. (oh and the code mostly sucks)
              */
+             // THE TIME IS NOW
+             // and im not happy about it
+            const srv = new ScratchyService("http://localhost:5000/api");
             const app = Vue.createApp({
                 name: "app",
                 data: () => ({
@@ -55,66 +60,21 @@
                     loggedUser: null,
                     roomEditorHidden: true,
                     currentTypedMessage: "",
-                    rooms: [
-                        {
-                            "_id": {
-                                "$oid": "6071ac5176e5bd456a859d9d"
-                            },
-                            "description": "ma description",
-                            "title": "Room 1",
-                            "user": []
-                        },
-                        {
-                            "_id": {
-                                "$oid": "6071ac5176e5bd456a859d9f"
-                            },
-                            "description": "ma description",
-                            "title": "Room 2",
-                            "user": []
-                        },
-                        {
-                            "_id": {
-                                "$oid": "6071ac5176e5bd456a859d94"
-                            },
-                            "description": "ma description",
-                            "title": "Room 3",
-                            "user": []
-                        }
-                    ],
-                    users: [
-                        {
-                            "_id": {
-                                "$oid": "607ae876f59d21d5a50ac3c9"
-                            },
-                            "pseudo": "mon pseudo1",
-                            "roomsId": []
-                        },
-                        {
-                            "_id": {
-                                "$oid": "607ae876f59d21d5a50ac3c2"
-                            },
-                            "pseudo": "mon pseudo2",
-                            "roomsId": []
-                        }
-                    ],
-                    messages: [
-                        {_id : {$oid: "459I548383"},content: "Bonjour tata", author: "toto",  timestamp: 1618587750035},
-                        {_id : {$oid: "4459493924"},content: "Salut toto", author: "tata",  timestamp: 1618587750035 },
-                    ]
+                    rooms: [],
+                    users: [],
+                    messages: []
                 }),
+                mounted() {
+                    this.fetchRooms();
+                },
                 methods: {
+                    fetchRooms() {
+                        (async () => {
+                            this.rooms = (await srv.getAllRooms()).rooms;
+                        })();
+                    },
                     onMessageSend() {
-                        // TODO: implement something that calls the api and send the message
-                        console.debug(`message: ${this.currentTypedMessage}`);
-                        // add the message
-                        this.messages.push({
-                            _id: {
-                                $oid: new Date().getTime().toString(16)
-                            },
-                            author: this.loggedUser.pseudo,
-                            content: this.currentTypedMessage,
-                            timestamp: Math.floor(new Date().getTime())
-                        });
+                        srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
                         // reset
                         this.currentTypedMessage = "";
                     },
@@ -122,14 +82,13 @@
                     // (called when a room is selected)
                     displayRoom(roomInfo) {
                         const {room, index} = roomInfo;
-                        // TODO: do whatever
-                        console.debug(`selected ${room.title}: rooms[${index}]`);
                         this.selectedRoom = room;
+                        srv.getAllMessagesInRoom(room.id).then(v => this.messages = v.messages);
                     },
                     quitRoom(roomInfo) {
                         const {room, index} = roomInfo;
                         this.rooms.splice(index, 1);
-                        if(room._id.$oid == this.selectedRoom._id.$oid) {
+                        if(room.id == this.selectedRoom.id) {
                             if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
                                 this.selectedRoom = this.rooms[this.rooms.length-1];
                             } else { // or just go back to the default of there aren't any rooms
@@ -141,14 +100,9 @@
                         // TODO: do whatever
                         console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.rooms.push({
-                            _id: {
-                                $oid: new Date().getTime().toString(16)
-                            },
-                            title: roomData.title,
-                            description: roomData.description
-                        });
+                        srv.createRoom(roomData.title, roomData.description).then(this.fetchRooms);
                         this.roomEditorHidden = true;
+                        this.fetchRooms();
                     },
                     joinRoom(id) {
                         // TODO: do whatever
@@ -164,17 +118,9 @@
                         this.roomEditorHidden = true;
                     },
                     onLogin(pseudo) {
-                        // TODO: do whatever
-                        console.debug(`logged in as user '${pseudo}'`);
-                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.loggedUser = {
-                            "_id": {
-                                "$oid": new Date().getTime().toString(16)
-                            },
-                            "pseudo": pseudo,
-                            "roomsId": []
-                        };
-                        this.users.push(this.loggedUser);
+                        srv.getUserByPseudo(pseudo).catch(e => {
+                            srv.createUser(pseudo, "").then(v => this.loggedUser = v);
+                        }).then(v => this.loggedUser = v);
                     }
                 },
                 computed: {
