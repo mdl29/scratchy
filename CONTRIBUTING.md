@@ -14,8 +14,8 @@ You need to fork [scratchy repository](https://github.com/mdl29/scratchy)
 ## **Create your branch :**
 
  Create a new branch with the following name :
- `ISSUEID_TITLE-OF-ISSUE`
-  * **example :** `91_create-scratchy-service`
+ `ISSUEID-title_of_issue`
+  * **example :** `91-create_scratchy_service`
   
 ## **create a pull request :**  
 
@@ -25,10 +25,9 @@ Create a new pull request with the following name :
 
 when your pull request link to an issue :
 
-* **example :**` Resolves #ISSUEID : title of issue`.
+* **example :**` Resolves #ISSUEID : title of 
 
- If you want to make a pull request to add new features but you don't have an issue 
-
+ If you want to make a pull request to add new features but you don't have an issue, you can create an issue and in them explain your problem. Finally after resolve him you can push your pull request respecting issue and pull request template
  * **example :**`[TAG]title of new features`.
     > Tag are : Backend / Frontend / Tools / Doc / Bug / ... all labels in scratchy repository
   
