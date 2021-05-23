@@ -19,6 +19,7 @@ class UserRes(MethodResource):
         user.modify(**kwargs)
         return user
 
+    @marshal_with(None, code=204)
     def delete(self, userId):
         UserModel.objects().get_or_404(id=userId).delete()
         return None
