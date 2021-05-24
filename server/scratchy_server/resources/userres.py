@@ -24,9 +24,9 @@ class UserRes(MethodResource):
         return None
 
 
+@doc(tags=['User'])
 class AllUserRes(MethodResource):
 
-    @doc(tags=['AllUser'])
     @marshal_with(AllUserSchema)
     @use_kwargs({"pseudo": fields.String()}, location="query")
     def get(self, pseudo=None):
@@ -39,8 +39,6 @@ class AllUserRes(MethodResource):
         elif pseudo is not None:
             return {"users": [UserModel.objects().get_or_404(pseudo=pseudo)]}
 
-
-    @doc(tags=['User'])
     @marshal_with(UserSchema)
     @use_kwargs(UserSchema)
     def post(self, **kwargs):
