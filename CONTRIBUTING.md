@@ -73,7 +73,7 @@ when your pull request link to an issue :
   * in description you must to link issue with `#91` and write a description of new features. Then add labels , project and milestone
     ![example-pull-request](./doc/example/example-pr.png)
 if it's work in progress, set the [pull request status to draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
-After, set your pull request status to open, wait a reviewer who approve your code. If the reviewer request change make them and request review again. To finish if the revewier approve your code, the code owner will squash and merge
+After, set your pull request status to open, wait for a reviewer who approve your code. If the reviewer request change make them and request review again. To finish if the revewier approve your code, the code owner will squash and merge
 your commits in pull request to main branch 
 
 
