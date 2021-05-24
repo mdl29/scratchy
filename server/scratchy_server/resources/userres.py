@@ -3,7 +3,7 @@ from flask_apispec.views import MethodResource
 from marshmallow import fields
 from mongoengine import NotUniqueError
 
-from scratchy_server.model.userModel import UserModel, UserSchema
+from scratchy_server.model.userModel import UserModel, UserSchema, AllUserSchema
 
 
 @doc(tags=['User'])
@@ -24,16 +24,21 @@ class UserRes(MethodResource):
         return None
 
 
-class NoIdUserRes(MethodResource):
+@doc(tags=['User'])
+class AllUserRes(MethodResource):
 
-    @doc(tags=['User'])
-    @marshal_with(UserSchema)
+    @marshal_with(AllUserSchema)
     @use_kwargs({"pseudo": fields.String()}, location="query")
     def get(self, pseudo=None):
-        # get by pseudo
-        return UserModel.objects().get_or_404(pseudo=pseudo)
 
-    @doc(tags=['User'])
+        #get all users
+        if pseudo is None:
+            return {"users": UserModel.objects()}
+
+        # get by pseudo
+        elif pseudo is not None:
+            return {"users": [UserModel.objects().get_or_404(pseudo=pseudo)]}
+
     @marshal_with(UserSchema)
     @use_kwargs(UserSchema)
     def post(self, **kwargs):

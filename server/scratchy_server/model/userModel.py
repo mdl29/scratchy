@@ -15,3 +15,6 @@ class UserSchema(ma.Schema):
     pseudo = ma.fields.Str(required=True)
     profileImage = ma.fields.Str(required=True)
     rooms = ma.fields.List(ma.fields.Str())
+
+class AllUserSchema(ma.Schema):
+    users = ma.fields.List(ma.fields.Nested(UserSchema))
