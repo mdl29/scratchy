@@ -1,3 +1,4 @@
+from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
 from marshmallow import fields
@@ -22,7 +23,7 @@ class UserRes(MethodResource):
     @marshal_with(None, code=204)
     def delete(self, userId):
         UserModel.objects().get_or_404(id=userId).delete()
-        return None
+        return make_response('', 204)
 
 
 @doc(tags=['User'])
