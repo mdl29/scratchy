@@ -57,6 +57,7 @@ stages:
       url: "{url}/user/{userId}"
       method: DELETE
     response:
+      status_code: 204
       json:
         {}
 
