@@ -1,24 +1,25 @@
 from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
 from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
-from scratchy_server.resources import func
+from scratchy_server.filters.mongoexception import validation
 
 
 @doc(tags=['Room'])
 @marshal_with(RoomSchema)
 class RoomRes(MethodResource):
+    decorators = [validation]
 
     def get(self, roomId):
-        return func.get(RoomModel, roomId)
+        return RoomModel.objects().get_or_404(id=roomId)
 
     @use_kwargs(RoomSchema)
     def put(self, roomId, **kwargs):
-        room = func.get(RoomModel, roomId)
+        room = RoomModel.objects().get_or_404(id=roomId)
         room.modify(**kwargs)
         return room
 
     def delete(self, roomId):
-        func.get(RoomModel, roomId).delete()
+        RoomModel.objects().get_or_404(id=roomId).delete()
         return None
 
 
