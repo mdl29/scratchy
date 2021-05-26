@@ -9,7 +9,7 @@ variables:
   url: http://localhost:5000/api
   24-zero: "000000000000000000000000"
   404-message: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
-  400-message: "The id is not a valid ObjectId, it must be a 12-byte input or a 24-character hex string"
+  400-message: " is not a valid ObjectId, it must be a 12-byte input or a 24-character hex string"
 
 stages:
   - id: PostRoom
