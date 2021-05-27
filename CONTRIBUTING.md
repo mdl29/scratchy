@@ -8,12 +8,13 @@
   - [**Fork the project :**](#fork-the-project-)
   - [**Create your branch :**](#create-your-branch-)
   - [**Create an issue :**](#create-an-issue-)
-  - [**create a pull request :**](#create-a-pull-request-)
+  - [**Create a pull request :**](#create-a-pull-request-)
   - [**What are the requirement for proposing a pull request ?**](#what-are-the-requirement-for-proposing-a-pull-request-)
- 
+  
+  - [**What are the requirement for proposing a pull request ?**](#what-are-the-requirement-for-proposing-a-pull-request-)
+
      * [Language programming convention](##There-are-the-convention-to-respect-for-each-programing-language) 
      * [Other important notes](##Other-important-notes)
-
 
 ## **Choose a issue :**
 
@@ -34,11 +35,13 @@ You need to fork [scratchy repository](https://github.com/mdl29/scratchy)
 
 ## **Create an issue :**
 
+> ℹ️[Github issue guide](https://guides.github.com/features/issues/)
+
 1. Choose a implicite title (max ~ 13 words),
     your title must be begin by a tag.
     > tags have same name of labels (Front,Back,Doc,Bug,Help...)   
     * **example :** `[Front] Create scratchy service that contains methods for backend requests access`
-    ![example issue](doc/example/example-issue2.png)
+    ![example issue](doc/example/example-issue.png)
 2. write a good description with much details as possible 
 
 3. Assign your issue to yourself if you want to solve it or wait for someone to assign it
@@ -46,29 +49,36 @@ You need to fork [scratchy repository](https://github.com/mdl29/scratchy)
 4. Add labels, for example in scratchy service issue (picture) we use frontend and enchancement labels.
 **see all labels [here](https://github.com/mdl29/scratchy/labels) and their meaning**
 
-4. Add your issue to [V1 project](https://github.com/mdl29/scratchy/projects/1) or [V2 project](https://github.com/mdl29/scratchy/projects/2)
+4. Add your issue to a project the current one ([V1](https://github.com/mdl29/scratchy/projects/1)) if it is important or the next one if not
+because in the future we will go over [V2](https://github.com/mdl29/scratchy/projects/2)
  
-5. Finally add your issue to V1 or V2 milestone 
+5. Add your issue to the current one milestone if it is important or the next one.
   
 
-## **create a pull request :**  
+## **Create a pull request :**  
 
 When you think your code is ready to be merged to the project create a pull request.
 
-Create a new pull request with the following name :
+1. choose the title:
+    when your pull request link to an issue :
 
-when your pull request link to an issue :
+    * **example :**` Resolves #ISSUEID : title of the issue `
 
-* **example :**` Resolves #ISSUEID : title of the issue `
+    If you want to make a pull request to add new features but you don't have an issue, you must be create an issue and in them explain what you want add,resolves... Finally after have resolved him you can push your pull request respecting issue and pull request template. 
+ 
+2. make a great description :
+    
+    Please write a pull request description like this :
+      ![example](./doc/example/example-description.png)
+    The description must have
+    the id of the issue resolved and a message who say what you add or do in your pull request.
+    > ℹ️ [how to link a issue and use the keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)(Fixes,resolves...)
 
- If you want to make a pull request to add new features but you don't have an issue, you must be create an issue and in them explain what you want add,resolves... Finally after have resolved him you can push your pull request respecting issue and pull request template. Please write a pull request description like this :
-  ![example](./doc/example/example-description.png)
-
-   In description must be have the id of the issue resolved and a message who say what you add or do in your pull request. Add [labels](https://github.com/mdl29/scratchy/labels) (Frontend,Backend,documentation...), add to project your pull request(V1,V2) and milestone depending your issue.
+    Add [labels](https://github.com/mdl29/scratchy/labels) (Frontend,Backend,documentation...), add to project your pull request(V1,V2) and milestone depending your issue.
     
 * **Real Example :**   
    * if you want to solve #91 issue you should have named your pull request : `resolves #91 : Create a scratchy service` 
-  ![example-issue](./doc/example/example_issue.png)
+  ![example-issue](./doc/example/example_pr_title.png)
 
   * in description you must to link issue with `#91` and write a description of new features. Then add labels , project and milestone
     ![example-pull-request](./doc/example/example-pr.png)
