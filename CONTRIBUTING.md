@@ -60,11 +60,11 @@ because in the future we will go over [V2](https://github.com/mdl29/scratchy/pro
 When you think your code is ready to be merged to the project create a pull request.
 
 1. choose the title:
-    when your pull request link to an issue :
+    when your pull request is ready link to an issue :
 
     * **example :**` Resolves #ISSUEID : title of the issue `
 
-    If you want to make a pull request to add new features but you don't have an issue, you must be create an issue and in them explain what you want add,resolves... Finally after have resolved him you can push your pull request respecting issue and pull request template. 
+    If you want to make a pull request to add new features but you don't have an issue, you must be create an issue and in them explain what you want add,resolves...  Finally after you have resolved her you can push your pull request respecting issue and pull request template. 
  
 2. make a great description :
     
