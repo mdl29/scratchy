@@ -52,6 +52,30 @@
              // THE TIME IS NOW
              // and im not happy about it
             const srv = new ScratchyService("http://localhost:5000/api");
+            async function addUserToRoom(userId, roomId) {
+                try {
+                    const room = (await srv.getRoom(roomId));
+                    room.users.push(userId);
+                    srv.updateRoom(roomId, room.title, room.description, room.users);
+                } catch (e) {
+                    console.error("error when adding user to room:")
+                    console.error(e);
+                }
+            }
+
+            async function removeUserFromRoom(userId, roomId) {
+                try {
+                    const room = (await srv.getRoom(roomId));
+                    const index = room.users.indexOf(userId);
+                    // user isn't in room
+                    if(index === -1) return;
+                    room.users.splice(index, 1);
+                    srv.updateRoom(roomId, room.title, room.description, room.users);
+                } catch (e) {
+                    console.error("error when removing user from room:")
+                    console.error(e);
+                }
+            }
             const app = Vue.createApp({
                 name: "app",
                 data: () => ({
@@ -69,8 +93,11 @@
                 },
                 methods: {
                     fetchRooms() {
+                        if(this.loggedUser === null) return;
+                        console.log(this.loggedUser);
                         (async () => {
-                            this.rooms = (await srv.getAllRooms()).rooms;
+                            this.loggedUser = (await srv.getUserByid(this.loggedUser.id));
+                            this.rooms = this.loggedUser.rooms;
                         })();
                     },
                     onMessageSend() {
@@ -87,7 +114,7 @@
                     },
                     quitRoom(roomInfo) {
                         const {room, index} = roomInfo;
-                        srv.deleteRoom(room.id);
+                        removeUserFromRoom(this.loggedUser.id, room.id)
                         this.fetchRooms();
                         if(room.id == this.selectedRoom.id) {
                             if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
@@ -101,7 +128,11 @@
                         // TODO: do whatever
                         console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        srv.createRoom(roomData.title, roomData.description).then(this.fetchRooms);
+                        debugger;
+                        srv.createRoom(roomData.title, roomData.description).then(res => {
+                            addUserToRoom(this.loggedUser.id, res.id);
+                            this.fetchRooms()
+                        });
                         this.roomEditorHidden = true;
                         this.fetchRooms();
                     },
@@ -109,19 +140,19 @@
                         // TODO: do whatever
                         console.debug(`join room '${id}'`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.rooms.push({
-                            _id: {
-                                $oid: id
-                            },
-                            title: "title",
-                            description: ""
-                        });
+                        addUserToRoom(this.loggedUser.id, id);
+                        this.fetchRooms();
                         this.roomEditorHidden = true;
                     },
                     onLogin(pseudo) {
-                        srv.getUserByPseudo(pseudo).catch(e => {
-                            srv.createUser(pseudo, "").then(v => this.loggedUser = v);
-                        }).then(v => this.loggedUser = v);
+                        const self = this;
+                        srv.getUserByPseudo(pseudo).then(v => {
+                            this.loggedUser = v
+                        }).catch(e => {
+                            srv.createUser(pseudo, "").then(v => {
+                                self.loggedUser = v
+                            });
+                        });
                     }
                 },
                 computed: {
