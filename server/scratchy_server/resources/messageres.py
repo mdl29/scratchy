@@ -27,9 +27,10 @@ class MessageRes(MethodResource):
 @marshal_with(AllMessageSchema)
 class NoIdMessageRes(MethodResource):
 
+# HTTP GET /api/message?roomId=unevaleur
     @use_kwargs({"roomId": fields.String()}, location="query")
     def get(self, roomId):
-        print(roomId)
+        # print(roomId)
         return {"messages": MessageModel.objects().filter(roomId=roomId)}
 
     @marshal_with(MessageSchema)
