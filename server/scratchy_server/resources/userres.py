@@ -3,11 +3,12 @@ from mongoengine import NotUniqueError
 from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
 from marshmallow import fields
-
+from scratchy_server.filters.mongoexception import validation
 
 @doc(tags=['User'])
 @marshal_with(UserSchema)
 class UserRes(MethodResource):
+    decorators = [validation]
 
     @use_kwargs({"pseudo": fields.String()}, location="query")
     def get(self, userId=None, pseudo=None):

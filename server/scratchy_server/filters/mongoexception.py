@@ -3,12 +3,12 @@ from functools import wraps
 from mongoengine.errors import ValidationError
 import logging
 
-def validation(func): # not entirely satisfied by the name, hoping someone will find a better one
+def validation(ressource_method): # not entirely satisfied by the name, hoping someone will find a better one
 
-    @wraps(func)
-    def new_func(*args, **kwargs):
+    @wraps(ressource_method)
+    def mongo_safe_ressource_method(*args, **kwargs):
         try:
-        	return func(*args, **kwargs)
+        	return ressource_method(*args, **kwargs)
         except ValidationError as error:
             # checking if the error is about not being a valid ObjectId
             error = str(error)
@@ -18,4 +18,4 @@ def validation(func): # not entirely satisfied by the name, hoping someone will 
             else:
                 return ValidationError
 
-    return new_func
+    return mongo_safe_ressource_method

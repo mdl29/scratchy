@@ -3,11 +3,12 @@ from flask_apispec.views import MethodResource
 from flask_apispec import marshal_with, use_kwargs, doc
 from marshmallow import fields
 from flask_restful import request
-
+from scratchy_server.filters.mongoexception import validation
 
 @doc(tags=['Message'])
 @marshal_with(MessageSchema)
 class MessageRes(MethodResource):
+    decorators = [validation]
 
     @use_kwargs({"roomId": fields.String()}, location="query")
     def get(self, messageId=None, roomId=None):
