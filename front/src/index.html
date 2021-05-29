@@ -87,7 +87,8 @@
                     },
                     quitRoom(roomInfo) {
                         const {room, index} = roomInfo;
-                        this.rooms.splice(index, 1);
+                        srv.deleteRoom(room.id);
+                        this.fetchRooms();
                         if(room.id == this.selectedRoom.id) {
                             if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
                                 this.selectedRoom = this.rooms[this.rooms.length-1];
