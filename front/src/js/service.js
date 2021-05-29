@@ -66,8 +66,8 @@ function ScratchyService(apiUrl) {
      * @param {string} roomDescription - description of a room, eg:my room description
      * @returns {Promise<Room>} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
-    this.updateRoom = async function(roomId,roomTitle,roomDescription){
-        const reponse = await axios.put(apiUrl+'/room/'+roomId, { title: roomTitle , description: roomDescription });
+    this.updateRoom = async function(roomID,roomTitle,roomDescription,usersID){
+        const reponse = await axios.put(apiUrl+'/room/'+roomID, { title: roomTitle , description: roomDescription, users : usersID});
         return reponse.data;
     };
 
@@ -211,7 +211,7 @@ function ScratchyService(apiUrl) {
      */
     this.getAllMessagesInRoom = async function(roomID){ // put the id between "" 
         // Make a request for a user with a given ID
-        let reponse = await axios.get(apiUrl+'/message?roomid='+roomID) // make the GET request
+        let reponse = await axios.get(apiUrl+'/message?roomId='+roomID) // make the GET request
         return reponse.data;// return data JSON 
     };
 
