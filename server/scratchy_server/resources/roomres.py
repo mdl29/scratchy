@@ -1,5 +1,7 @@
-from flask_apispec.views import MethodResource
+from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
+from flask_apispec.views import MethodResource
+
 from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
 from scratchy_server.filters.mongoexception import validation
 
@@ -18,9 +20,10 @@ class RoomRes(MethodResource):
         room.modify(**kwargs)
         return room
 
+    @marshal_with(None, code=204)
     def delete(self, roomId):
         RoomModel.objects().get_or_404(id=roomId).delete()
-        return None
+        return make_response('', 204)
 
 
 class AllRoomRes(MethodResource):

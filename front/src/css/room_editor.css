@@ -1,12 +1,12 @@
 .room_editor_wrapper {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     z-index: 10;
 }
@@ -19,11 +19,13 @@
     flex-direction: column;
     justify-content: space-evenly;
     color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.room_editor_content_wrapper > *, .room_editor_popup > *:not(.room_editor_content_wrapper) {
+.room_editor_content_wrapper > *,
+.room_editor_popup > *:not(.room_editor_content_wrapper) {
     --margin: 15px;
+
     margin-top: var(--margin);
     margin-bottom: var(--margin);
 }
@@ -31,7 +33,7 @@
 .room_editor_tabs {
     display: flex;
     width: 100%;
-} 
+}
 
 .room_editor_tabs > * {
     flex-grow: 1;

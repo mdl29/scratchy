@@ -1,6 +1,6 @@
-from scratchy_server.model.messageModel import MessageModel, MessageSchema
-from flask_apispec.views import MethodResource
+from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
+from flask_apispec.views import MethodResource
 from marshmallow import fields
 from flask_restful import request
 from scratchy_server.filters.mongoexception import validation
@@ -10,13 +10,8 @@ from scratchy_server.filters.mongoexception import validation
 class MessageRes(MethodResource):
     decorators = [validation]
 
-    @use_kwargs({"roomId": fields.String()}, location="query")
-    def get(self, messageId=None, roomId=None):
-        print(roomId, messageId)
-        if messageId != None:
-            return MessageModel.objects().get_or_404(id=messageId)
-        else:
-            return MessageModel.objects().filter(roomId=roomId) # doesn't work here but it doesn't worked before need to open an issue
+    def get(self, messageId):
+        return MessageModel.objects().get_or_404(id=messageId)
 
     @use_kwargs(MessageSchema)
     def put(self, messageId, **kwargs):
@@ -24,14 +19,22 @@ class MessageRes(MethodResource):
         message.modify(**kwargs)
         return message
 
+    @marshal_with(None, code=204)
     def delete(self, messageId):
         MessageModel.objects().get_or_404(id=messageId).delete()
-        return None
+        return make_response('', 204)
 
 
+@doc(tags=['Message'])
+@marshal_with(AllMessageSchema)
 class NoIdMessageRes(MethodResource):
 
-    @doc(tags=['Message'])
+# HTTP GET /api/message?roomId=unevaleur
+    @use_kwargs({"roomId": fields.String()}, location="query")
+    def get(self, roomId):
+        # print(roomId)
+        return {"messages": MessageModel.objects().filter(roomId=roomId)}
+
     @marshal_with(MessageSchema)
     @use_kwargs(MessageSchema)
     def post(self, **kwargs):

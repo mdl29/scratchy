@@ -1,14 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
-from scratchy_server.resources.roomres import RoomRes, AllRoomRes
-from scratchy_server.resources.userres import UserRes, NoIdUserRes
-from scratchy_server.resources.messageres import MessageRes, NoIdMessageRes
-from scratchy_server import db_scratchy
 from flask_apispec.extension import FlaskApiSpec
-import logging
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
+import logging
+
+from scratchy_server import db_scratchy
+from scratchy_server.resources.roomres import RoomRes, AllRoomRes
+from scratchy_server.resources.userres import UserRes, AllUserRes
+from scratchy_server.resources.messageres import MessageRes, NoIdMessageRes
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -38,31 +39,18 @@ docs = FlaskApiSpec(app)
 db_scratchy.init_app(app)
 api = Api(app)
 
+ressource = (
+    {"name": "RoomRes", "ressource": RoomRes, "url": "/api/room/<string:roomId>"},
+    {"name": "UserRes", "ressource": UserRes, "url": "/api/user/<string:userId>"},
+    {"name": "MessageRes", "ressource": MessageRes, "url": "/api/message/<string:messageId>"},
+    {"name": "AllRoomRes", "ressource": AllRoomRes, "url": "/api/room"},
+    {"name": "AllUserRes", "ressource": AllUserRes, "url": "/api/user"},
+    {"name": "NoIdMessageRes", "ressource": NoIdMessageRes, "url": "/api/message"}
+)
 
-# database["messages"]["0"] = messageExemple
-
-api.add_resource(RoomRes, '/api/room/<string:roomId>')
-api.add_resource(AllRoomRes, '/api/room')
-api.add_resource(UserRes, '/api/user', '/api/user/<string:userId>')
-api.add_resource(NoIdUserRes, '/api/user', '/api/user')
-api.add_resource(MessageRes, '/api/message', '/api/message/<string:messageId>')
-api.add_resource(NoIdMessageRes, '/api/message', '/api/message')
-
-
-# path for the apispec you can have info there: https://flask-apispec.readthedocs.io/en/latest/usage.html
-app.add_url_rule('/api/room/<string:roomId>', view_func=RoomRes.as_view('RoomRes'))
-app.add_url_rule('/api/room', view_func=AllRoomRes.as_view('AllRoomRes'))
-app.add_url_rule('/api/user/<string:userId>', view_func=UserRes.as_view('UserRes'))
-app.add_url_rule('/api/user', view_func=NoIdUserRes.as_view('NoIdUserRes'))
-app.add_url_rule('/api/message/<string:messageId>', view_func=MessageRes.as_view('MessageRes'))
-app.add_url_rule('/api/message', view_func=NoIdMessageRes.as_view('NoIdMessageRes'))
-
-docs.register(RoomRes, endpoint='RoomRes')
-docs.register(AllRoomRes, endpoint='AllRoomRes')
-docs.register(UserRes, endpoint='UserRes')
-docs.register(NoIdUserRes, endpoint='NoIdUserRes')
-docs.register(MessageRes, endpoint='MessageRes')
-docs.register(NoIdMessageRes, endpoint='NoIdMessageRes')
+list(map(lambda res: api.add_resource(res["ressource"], res["url"]), ressource))
+list(map(lambda res: app.add_url_rule(res["url"], view_func=res["ressource"].as_view(res["name"])), ressource))
+list(map(lambda res: docs.register(res["ressource"], endpoint=res["name"]), ressource))
 
 
 logging.info("scratchy is up and ready")

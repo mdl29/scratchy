@@ -1,0 +1,50 @@
+---
+test_name: test the AllMessageRes
+
+includes:
+  - !include global.yaml
+
+# one stage for each request
+stages:
+  - &postMessage
+    name: Creating a message
+    request:
+      url: "{url}/message"
+      json:
+        content: <bip> <bop> <boup> kernel error
+        author: "{24-zero}"
+        roomId: "{24-zero}"
+      method: POST
+    response:
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        content: <bip> <bop> <boup> kernel error
+        author: "{24-zero}"
+        roomId: "{24-zero}"
+      save:
+        json:
+          messageId: id  # saving the id for the other function
+
+  - *postMessage
+
+  - *postMessage
+
+  - name: Get all messages in a room
+    request:
+      url: "{url}/message?roomId={24-zero}"
+      method: GET
+    response:
+      json:
+        messages:
+          - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+            content: <bip> <bop> <boup> kernel error
+            author: "{24-zero}"
+            roomId: "{24-zero}"
+          - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+            content: <bip> <bop> <boup> kernel error
+            author: "{24-zero}"
+            roomId: "{24-zero}"
+          - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+            content: <bip> <bop> <boup> kernel error
+            author: "{24-zero}"
+            roomId: "{24-zero}"

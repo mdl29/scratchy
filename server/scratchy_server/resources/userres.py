@@ -1,7 +1,6 @@
-from scratchy_server.model.userModel import UserModel, UserSchema
-from mongoengine import NotUniqueError
-from flask_apispec.views import MethodResource
+from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
+from flask_apispec.views import MethodResource
 from marshmallow import fields
 from scratchy_server.filters.mongoexception import validation
 
@@ -10,14 +9,8 @@ from scratchy_server.filters.mongoexception import validation
 class UserRes(MethodResource):
     decorators = [validation]
 
-    @use_kwargs({"pseudo": fields.String()}, location="query")
-    def get(self, userId=None, pseudo=None):
-        # basic case
-        if userId != None:
-            return UserModel.objects().get_or_404(id=userId)
-        # get by pseudo
-        elif pseudo:
-            return UserModel.objects().get_or_404(pseudo=pseudo)
+    def get(self, userId):
+        return UserModel.objects().get_or_404(id=userId)
 
     @use_kwargs(UserSchema)
     def put(self, userId, **kwargs):
@@ -25,14 +18,27 @@ class UserRes(MethodResource):
         user.modify(**kwargs)
         return user
 
+    @marshal_with(None, code=204)
     def delete(self, userId):
         UserModel.objects().get_or_404(id=userId).delete()
-        return None
+        return make_response('', 204)
 
 
-class NoIdUserRes(MethodResource):
+@doc(tags=['User'])
+class AllUserRes(MethodResource):
 
-    @doc(tags=['User'])
+    @marshal_with(AllUserSchema)
+    @use_kwargs({"pseudo": fields.String()}, location="query")
+    def get(self, pseudo=None):
+
+        #get all users
+        if pseudo is None:
+            return {"users": UserModel.objects()}
+
+        # get by pseudo
+        elif pseudo is not None:
+            return {"users": [UserModel.objects().get_or_404(pseudo=pseudo)]}
+
     @marshal_with(UserSchema)
     @use_kwargs(UserSchema)
     def post(self, **kwargs):

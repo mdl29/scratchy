@@ -29,10 +29,11 @@ stages:
       method: GET
     response:
       json:
-        <<: *id-regex
-        pseudo: ali baba
-        profileImage: https://http.cat/201
-        rooms: []
+        users:
+          - <<: *id-regex
+            pseudo: ali baba
+            profileImage: https://http.cat/201
+            rooms: []
 
   - &put
     name: Put a user
@@ -56,6 +57,7 @@ stages:
       url: "{url}/user/{userId}"
       method: DELETE
     response:
+      status_code: 204
       json:
         {}
 
@@ -133,10 +135,11 @@ stages:
       method: GET
     response:
       json:
-        <<: *id-regex
-        pseudo: jean
-        profileImage: https://http.cat/201
-        rooms: ["{roomId}"]
+        users:
+          - <<: *id-regex
+            pseudo: jean
+            profileImage: https://http.cat/201
+            rooms: ["{roomId}"]
 
   - <<: *delete
     request:
