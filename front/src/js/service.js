@@ -211,7 +211,7 @@ function ScratchyService(apiUrl) {
      */
     this.getAllMessagesInRoom = async function(roomID){ // put the id between "" 
         // Make a request for a user with a given ID
-        let reponse = await axios.get(apiUrl+'/message?roomid='+roomID) // make the GET request
+        let reponse = await axios.get(apiUrl+'/message?roomId='+roomID) // make the GET request
         return reponse.data;// return data JSON 
     };
 
