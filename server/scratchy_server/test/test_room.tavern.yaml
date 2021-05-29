@@ -43,6 +43,7 @@ stages:
       url: "{url}/room/{roomId}"
       method: DELETE
     response:
+      status_code: 204
       json:
         {}
 
