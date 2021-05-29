@@ -3,11 +3,13 @@ from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
 
 from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
+from scratchy_server.filters.mongoexception import validation
 
 
 @doc(tags=['Room'])
 @marshal_with(RoomSchema)
 class RoomRes(MethodResource):
+    decorators = [validation]
 
     def get(self, roomId):
         return RoomModel.objects().get_or_404(id=roomId)

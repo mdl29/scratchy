@@ -2,13 +2,13 @@ from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
 from marshmallow import fields
-
-from scratchy_server.model.messageModel import MessageModel, MessageSchema, AllMessageSchema
-
+from flask_restful import request
+from scratchy_server.filters.mongoexception import validation
 
 @doc(tags=['Message'])
 @marshal_with(MessageSchema)
 class MessageRes(MethodResource):
+    decorators = [validation]
 
     def get(self, messageId):
         return MessageModel.objects().get_or_404(id=messageId)

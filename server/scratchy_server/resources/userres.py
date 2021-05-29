@@ -2,14 +2,12 @@ from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
 from marshmallow import fields
-from mongoengine import NotUniqueError
-
-from scratchy_server.model.userModel import UserModel, UserSchema, AllUserSchema
-
+from scratchy_server.filters.mongoexception import validation
 
 @doc(tags=['User'])
 @marshal_with(UserSchema)
 class UserRes(MethodResource):
+    decorators = [validation]
 
     def get(self, userId):
         return UserModel.objects().get_or_404(id=userId)
