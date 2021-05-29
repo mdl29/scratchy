@@ -22,6 +22,11 @@ LPH.
 
 </div>
  
+
+# How to contribute : 
+
+  ℹ️ [contributing documentation](CONTRIBUTING.md)
+
 # Documentation index :
 
 > 📂 Documentation directory is [here](doc)
