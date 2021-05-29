@@ -35,17 +35,27 @@ LPH.
 ## Backend
 
  - 📂 Backend documentation's directory is [here](doc/backend) 
- - [📝 Backend Documentation](server/README.md)
- - [📝 API Documentation](server/README.md#how-to-play)
- - [📸 model picture](doc/backend/model.png)
+
+ - [📝 Backend README](server/README.md)
+  
+ - [ℹ️ Architecture Overview](server/README.md#Architecture-Overview)
+ - [ℹ️ Start Scratchy Stack](server/README.md#Start-Scratchy-Stack)
+ - [ℹ️ How to run package version](server/README.md#how-to-run-package-version)
+ - [ℹ️ how to delete the data base](server/README.md#how-to-delete-the-data-base)
+ - [ℹ️ how to run integration test](server/README.md#how-to-run-integration-test)
+ - [ℹ️ API Documentation](server/README.md#how-to-play)
+ - [📸 Model picture](doc/backend/model.png)
 
 
 ## Frontend
 
  - 📂 Frontend documentation's directory  is [here](doc/frontend)  
  - [📝 Frontend Documentation](doc/frontend/frontend.md)
-  - [📸 component sketch](doc/frontend/front.png)
-  - [📸 Frontend diagram](doc/front-uml-class-diagram.png)
+
+ - [ℹ️ How to start it ](doc/frontend/front.png#How-to-start-it-:)
+ - [ℹ️ How to start it ](doc/frontend/frontend.md#vuejs-components-:) 
+ - [📸 component sketch](doc/frontend/front.png)
+ - [📸 Frontend diagram](doc/front-uml-class-diagram.png)
 
 
 ## Tools
