@@ -21,7 +21,7 @@
  * @property {string} id - Room unique ID.
  * @property {string} description - The room description.
  * @property {string} title - The room title.
- * @property {string[]} users - List of users IDs.
+ * @property {string[]} usersID - List of users IDs.
  */
 
 /**
@@ -64,6 +64,7 @@ function ScratchyService(apiUrl) {
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @param {string} roomTitle - title of a room , eg:my room
      * @param {string} roomDescription - description of a room, eg:my room description
+     * @param {string[]} usersID - List of users IDs
      * @returns {Promise<Room>} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
     this.updateRoom = async function(roomID,roomTitle,roomDescription,usersID){
