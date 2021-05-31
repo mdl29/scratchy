@@ -3,8 +3,9 @@ const activityBar = {
     props: ["currentRoom", "isWriting"],
     methods:{
         share: function(currentRoom) { 
-            console.log("share id");
-            alert("id : idk how to pick the id");
+            id = this.currentRoom._id.$oid
+            console.log(id);
+            alert("id : " + id);
         }
     },
     template: `
