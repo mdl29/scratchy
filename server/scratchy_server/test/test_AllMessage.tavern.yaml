@@ -16,6 +16,7 @@ stages:
         roomId: "{24-zero}"
       method: POST
     response:
+      status_code: 201
       json:
         id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         content: <bip> <bop> <boup> kernel error
