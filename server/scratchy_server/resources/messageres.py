@@ -30,7 +30,7 @@ class MessageRes(MethodResource):
 
 
 @doc(tags=['Message'])
-class NoIdMessageRes(MethodResource):
+class AllMessageRes(MethodResource):
 
 # HTTP GET /api/message?roomId=unevaleur
     @marshal_with(AllMessageSchema, code=200)

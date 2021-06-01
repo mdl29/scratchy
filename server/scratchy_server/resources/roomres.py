@@ -27,14 +27,13 @@ class RoomRes(MethodResource):
         return make_response('', 204)
 
 
+@doc(tags=['Room'])
 class AllRoomRes(MethodResource):
 
-    @doc(tags=['AllRoom'])
     @marshal_with(AllRoomSchema, code=200)
     def get(self):
         return {"rooms": RoomModel.objects()}
 
-    @doc(tags=['Room'])
     @marshal_with(RoomSchema, code=201)
     @use_kwargs(RoomSchema)
     def post(self, **kwargs):
