@@ -11,10 +11,11 @@ class RoomModel(db_scratchy.Document):
 
 
 class RoomSchema(ma.Schema):
-    id = ObjectIdSchema()
+    id = ObjectIdSchema(dump_only=True)
     description = ma.fields.Str(required=True)
     title = ma.fields.Str(required=True)
     users = ma.fields.List(ma.fields.Str())
+
 
 class AllRoomSchema(ma.Schema):
     rooms = ma.fields.List(ma.fields.Nested(RoomSchema))

@@ -11,10 +11,11 @@ class UserModel(db_scratchy.Document):
 
 
 class UserSchema(ma.Schema):
-    id = ObjectIdSchema()
+    id = ObjectIdSchema(dump_only=True)
     pseudo = ma.fields.Str(required=True)
     profileImage = ma.fields.Str(required=True)
     rooms = ma.fields.List(ma.fields.Str())
+
 
 class AllUserSchema(ma.Schema):
     users = ma.fields.List(ma.fields.Nested(UserSchema))
