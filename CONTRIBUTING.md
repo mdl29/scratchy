@@ -66,11 +66,10 @@ When you think your code is ready to be merged to the project create a pull requ
     If you want to make a pull request to add new features but you don't have an issue, you must be create an issue and in them explain what you want add,resolves...  Finally after you have resolved her you can push your pull request respecting issue and pull request template. 
  
 2. Make a great description :
-    
-    Please write a pull request description like with :
-        - the id of the issue resolved with a keyword to link to the coresponding issues
-          > ℹ️ [how to link a issue and use the keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)(Fixes,resolves...)
-        - a message who say what you add or do in your pull request.
+Please write a pull request description like with :
+- the id of the issue resolved with a keyword to link to the coresponding issues
+    > ℹ️ [how to link a issue and use the keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)(Fixes,resolves...)
+- a message who say what you add or do in your pull request.
 
 3. Assign it to yourself
 
