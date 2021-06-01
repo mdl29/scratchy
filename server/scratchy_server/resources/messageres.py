@@ -7,14 +7,16 @@ from flask_restful import request
 from scratchy_server.model.messageModel import MessageModel, MessageSchema, AllMessageSchema
 from scratchy_server.filters.mongoexception import validation
 
+
 @doc(tags=['Message'])
-@marshal_with(MessageSchema)
 class MessageRes(MethodResource):
     decorators = [validation]
 
+    @marshal_with(MessageSchema, code=200)
     def get(self, messageId):
         return MessageModel.objects().get_or_404(id=messageId)
 
+    @marshal_with(MessageSchema, code=200)
     @use_kwargs(MessageSchema)
     def put(self, messageId, **kwargs):
         message = MessageModel.objects().get_or_404(id=messageId)
@@ -28,18 +30,18 @@ class MessageRes(MethodResource):
 
 
 @doc(tags=['Message'])
-@marshal_with(AllMessageSchema)
 class NoIdMessageRes(MethodResource):
 
 # HTTP GET /api/message?roomId=unevaleur
+    @marshal_with(AllMessageSchema, code=200)
     @use_kwargs({"roomId": fields.String()}, location="query")
     def get(self, roomId):
         # print(roomId)
         return {"messages": MessageModel.objects().filter(roomId=roomId)}
 
-    @marshal_with(MessageSchema)
+    @marshal_with(MessageSchema, code=201)
     @use_kwargs(MessageSchema)
     def post(self, **kwargs):
         message = MessageModel(**kwargs)
         message.save()
-        return message
+        return message, 201
