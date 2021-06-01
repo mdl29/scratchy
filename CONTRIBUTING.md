@@ -81,12 +81,12 @@ because in the future we will go over [V2](https://github.com/mdl29/scratchy/pro
 
 6. Add your issue to the current one milestone if it is important or the next one.
 
-* **Example :** `[example] Create scratchy service that contains methods for backend requests access`
-    ![example issue](doc/example/example_pr_title.png)
-
 7. If it's work in progress, set the [pull request status to draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 After, set your pull request status to open, wait for a reviewer who approve your code. If the reviewer request change make them and request review again. To finish if the revewier approve your code, the code owner will squash and merge
-your commits in pull request to main branch 
+your commits in pull request to main branch
+
+* **Example :** `[example] Create scratchy service that contains methods for backend requests access`
+    ![example issue](doc/example/example-pr.png)
 
 
 ## **What are the requirement for proposing a pull request ?**
