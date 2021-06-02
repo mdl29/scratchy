@@ -1,5 +1,8 @@
 
 .share_popup {
+    position: fixed;
+    top:30%;
+    transform: translate(80%);
     background-color: var(--bg3);
     border-radius: 7px;
     flex-direction: column;
