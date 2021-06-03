@@ -1,12 +1,6 @@
 const activityBar = {
     name: "activity-bar",
     props: ["currentRoom", "isWriting"],
-    methods:{
-        openPopup: function() { 
-            var popup = document.getElementById("popup");
-            popup.classList.toggle("shown")
-        }
-    },
     data: () => ({
         popup: false
     }),
