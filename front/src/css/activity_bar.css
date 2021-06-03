@@ -1,4 +1,10 @@
-
+.button_popup{
+    background-color:var(--bg2);
+    border-radius:12px;
+}
+#popup_icon{
+    size: 3px !important;
+}
 .share_popup {
     position: fixed;
     top: 50%;
