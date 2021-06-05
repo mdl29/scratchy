@@ -97,7 +97,8 @@ function ScratchyService(apiUrl) {
     this.getRoom = async function(roomID){ // put the id between "" 
             // Make a request for a user with a given ID
             let reponse = await axios.get(apiUrl+'/room/'+roomID);// make the GET request
-            return reponse.data; // return data JSON           
+            return reponse.data; // return data JSON    
+
     };
 
     
@@ -118,8 +119,9 @@ function ScratchyService(apiUrl) {
      * @augments ScratchyService
      * @returns {Promise<AllRoom>} - all rooms information 
      */
-    this.getAllRooms = async function(){ // put the id between "" 
-        let reponse = await axios.get(apiUrl+'/room'); // make the GET request;
+    this.getAllRooms = async function(user){ // put the id between "" 
+        let query = (user != undefined) ? "?userId="+user.id : "";
+        let reponse = await axios.get(apiUrl+'/room' + query); // make the GET request;
         return reponse.data;
     };
 
