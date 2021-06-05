@@ -11,7 +11,7 @@ class UserModel(db_scratchy.Document):
     rooms = db_scratchy.ListField(db_scratchy.ObjectIdField())
 
 
-class UserSchema(ma.Schema):
+class UserSchema(model.Schema):
     class Meta:
         model = UserModel
         model_build_obj = False
