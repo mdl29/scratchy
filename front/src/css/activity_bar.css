@@ -1,3 +1,83 @@
+.button_popup{
+    background-color:var(--bg2);
+    border-radius:12px;
+}
+#popup_icon{
+    size: 3px !important;
+}
+.share_popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 99;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg3);
+    border-radius: 7px;
+    flex-direction: column;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-evenly;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.share_popup > * {
+    --margin: 10px;
+
+    margin-top: var(--margin);
+    margin-bottom: var(--margin);
+}
+
+.share_title {
+    width: 100%;
+    text-align: center;
+    font-size: smaller;
+}
+
+.share_label {
+    color: rgb(189, 189, 189);
+    font-size: 0.9em;
+    margin-bottom: 0;
+}
+
+.share_input {
+    margin-top: 3px;
+    outline: 0;
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 0.9em;
+    color: rgb(173, 173, 173);
+    background-color: var(--bg2);
+    transition: 0.1s;
+}
+
+.share_input:focus {
+    color: white;
+}
+
+.share_submit_wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.share_submit {
+    border: none;
+    transition: 0.1s;
+    border-radius: 4px;
+    background-color: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.share_submit:hover {
+    filter: brightness(0.8);
+}
+.activity_bar_popup {
+    visibility: hidden ;
+}
 .activity_bar {
     width: 100%;
     display: flex;
