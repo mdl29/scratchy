@@ -30,6 +30,7 @@ class RoomRes(MethodResource):
 
 @doc(tags=['Room'])
 class AllRoomRes(MethodResource):
+    decorators = [validation]
 
     @marshal_with(AllRoomSchema, code=200)
     @use_kwargs({"userId": fields.String()}, location="query")

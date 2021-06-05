@@ -31,6 +31,7 @@ class MessageRes(MethodResource):
 
 @doc(tags=['Message'])
 class AllMessageRes(MethodResource):
+    decorators = [validation]
 
 # HTTP GET /api/message?roomId=unevaleur
     @marshal_with(AllMessageSchema, code=200)
