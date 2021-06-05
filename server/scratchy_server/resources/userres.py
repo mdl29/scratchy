@@ -30,6 +30,7 @@ class UserRes(MethodResource):
 
 @doc(tags=['User'])
 class AllUserRes(MethodResource):
+    decorators = [validation]
 
     @marshal_with(AllUserSchema, code=200)
     @use_kwargs({"pseudo": fields.String()}, location="query")
@@ -49,3 +50,8 @@ class AllUserRes(MethodResource):
         user = UserModel(**kwargs)
         user.save()
         return user, 201
+
+    @marshal_with(AllUserSchema, code=204)
+    def delete(self):
+        UserModel.objects().delete()
+        return make_response('', 204)

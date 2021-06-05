@@ -31,3 +31,46 @@ stages:
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
             description: my description
+
+  - name: Delete all room
+    request:
+      url: "{url}/room"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}
+
+---
+test_name: Search room containing specific user
+
+includes:
+  - !include global.yaml
+
+stages:
+  - type: ref
+    id: PostUser
+
+  - type: ref
+    id: PostRoomWithUser
+
+  - name: Get rooms of a specific user
+    request:
+      url: "{url}/room?userId={userId}"
+      method: GET
+    response:
+      json:
+        rooms:
+          - id: "{roomId}"  # the regex check if id is an objectId
+            title: room with user
+            description: room with user
+            users: ["{userId}"]
+          
+  - name: Delete a user
+    request:
+      url: "{url}/user/{userId}"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}

@@ -31,6 +31,7 @@ class MessageRes(MethodResource):
 
 @doc(tags=['Message'])
 class AllMessageRes(MethodResource):
+    decorators = [validation]
 
 # HTTP GET /api/message?roomId=unevaleur
     @marshal_with(AllMessageSchema, code=200)
@@ -45,3 +46,8 @@ class AllMessageRes(MethodResource):
         message = MessageModel(**kwargs)
         message.save()
         return message, 201
+
+    @marshal_with(AllMessageSchema, code=204)
+    def delete(self):
+        MessageModel.objects().delete()
+        return make_response('', 204)

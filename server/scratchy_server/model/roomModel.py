@@ -10,6 +10,8 @@ class RoomModel(db_scratchy.Document):
     title = db_scratchy.StringField(required=True)
     users = db_scratchy.ListField(db_scratchy.ObjectIdField())
 
+    meta = {'indexes': ['users']}
+
 
 class RoomSchema(ModelSchema):
     class Meta:
