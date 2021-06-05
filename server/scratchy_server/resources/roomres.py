@@ -1,6 +1,7 @@
 from flask import make_response
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
+from marshmallow import fields
 
 from scratchy_server.model.roomModel import RoomModel, RoomSchema, AllRoomSchema
 from scratchy_server.filters.mongoexception import validation
@@ -31,7 +32,11 @@ class RoomRes(MethodResource):
 class AllRoomRes(MethodResource):
 
     @marshal_with(AllRoomSchema, code=200)
-    def get(self):
+    @use_kwargs({"userId": fields.String()}, location="query")
+    def get(self, userId=None):
+        if not userId is None: # Search room by containing a specific userid
+            return {"rooms": RoomModel.objects(users=[ userId ])}
+        
         return {"rooms": RoomModel.objects()}
 
     @marshal_with(RoomSchema, code=201)
