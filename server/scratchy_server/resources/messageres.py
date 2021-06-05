@@ -45,3 +45,8 @@ class AllMessageRes(MethodResource):
         message = MessageModel(**kwargs)
         message.save()
         return message, 201
+
+    @marshal_with(AllMessageSchema, code=204)
+    def delete(self):
+        MessageModel.objects().delete()
+        return make_response('', 204)
