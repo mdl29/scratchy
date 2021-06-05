@@ -1,0 +1,34 @@
+---
+test_name: test the AllMessageRes
+
+includes:
+  - !include global.yaml
+
+# one stage for each request
+stages:
+  - name: Delete all rooms
+    request:
+      url: "{url}/room"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}
+
+  - name: Delete all users
+    request:
+      url: "{url}/user"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}
+
+  - name: Delete all messages
+    request:
+      url: "{url}/message"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}
