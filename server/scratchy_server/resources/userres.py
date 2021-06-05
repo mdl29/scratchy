@@ -30,6 +30,7 @@ class UserRes(MethodResource):
 
 @doc(tags=['User'])
 class AllUserRes(MethodResource):
+    decorators = [validation]
 
     @marshal_with(AllUserSchema, code=200)
     @use_kwargs({"pseudo": fields.String()}, location="query")
