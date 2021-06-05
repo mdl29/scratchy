@@ -124,6 +124,11 @@ Get all rooms:
 curl http://localhost:5000/api/room
 ```
 
+Delete all rooms:
+```sh
+curl -X DELETE http://localhost:5000/api/room
+```
+
 Get User By id:
 ```sh
 curl http://localhost:5000/api/user/0  | jq
@@ -149,6 +154,11 @@ Delete User:
 curl -X DELETE http://localhost:5000/api/user/0
 ```
 
+Delete all users:
+```sh
+curl -X DELETE http://localhost:5000/api/user
+```
+
 Get Message:
 ```sh
 curl http://localhost:5000/api/message/0  | jq
@@ -172,4 +182,9 @@ curl -X DELETE http://localhost:5000/api/message/0
 Get all messages for one RoomId:
 ```sh
 curl -v http:/localhost:5000/api/message?roomId=6043978fd68dc3fcbf6079d6
+```
+
+Delete all messages:
+```sh
+curl -X DELETE http://localhost:5000/api/message
 ```
