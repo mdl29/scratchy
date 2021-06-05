@@ -40,3 +40,8 @@ class AllRoomRes(MethodResource):
         room = RoomModel(**kwargs)
         room.save()
         return room, 201
+
+    @marshal_with(AllRoomSchema, code=204)
+    def delete(self):
+        RoomModel.objects().delete()
+        return make_response('', 204)

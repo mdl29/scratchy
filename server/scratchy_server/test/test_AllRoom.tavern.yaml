@@ -34,3 +34,12 @@ stages:
             title: my title
             description: my description
             users: []
+
+  - name: Delete all room
+    request:
+      url: "{url}/room"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}

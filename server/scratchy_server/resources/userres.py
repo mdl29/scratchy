@@ -49,3 +49,8 @@ class AllUserRes(MethodResource):
         user = UserModel(**kwargs)
         user.save()
         return user, 201
+
+    @marshal_with(AllUserSchema, code=204)
+    def delete(self):
+        UserModel.objects().delete()
+        return make_response('', 204)

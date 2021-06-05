@@ -49,3 +49,12 @@ stages:
             content: <bip> <bop> <boup> kernel error
             author: "{24-zero}"
             roomId: "{24-zero}"
+
+  - name: Delete all messages in a room
+    request:
+      url: "{url}/message"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}
