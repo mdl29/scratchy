@@ -34,8 +34,7 @@ class AllRoomRes(MethodResource):
     @marshal_with(AllRoomSchema, code=200)
     @use_kwargs({"userId": fields.String()}, location="query")
     def get(self, userId=None):
-        if userId != None: # Search room by containing a specific userid
-            # TODO Create index on users.
+        if not userId is None: # Search room by containing a specific userid
             return {"rooms": RoomModel.objects(users=[ userId ])}
         
         return {"rooms": RoomModel.objects()}
