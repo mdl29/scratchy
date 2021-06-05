@@ -2,6 +2,7 @@ import marshmallow as ma
 
 from scratchy_server import db_scratchy
 from scratchy_server.model.objectIdSchema import ObjectIdSchema
+from marshmallow_mongoengine import ModelSchema
 
 
 class RoomModel(db_scratchy.Document):
@@ -11,11 +12,9 @@ class RoomModel(db_scratchy.Document):
 
 
 class RoomSchema(ma.Schema):
-    id = ObjectIdSchema(dump_only=True)
-    description = ma.fields.Str(required=True)
-    title = ma.fields.Str(required=True)
-    users = ma.fields.List(ma.fields.Str())
-
+    class Meta:
+        model = RoomModel
+        model_build_obj = False
 
 class AllRoomSchema(ma.Schema):
     rooms = ma.fields.List(ma.fields.Nested(RoomSchema))

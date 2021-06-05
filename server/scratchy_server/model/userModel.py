@@ -2,6 +2,7 @@ import marshmallow as ma
 
 from scratchy_server import db_scratchy
 from scratchy_server.model.objectIdSchema import ObjectIdSchema
+from marshmallow_mongoengine import ModelSchema
 
 
 class UserModel(db_scratchy.Document):
@@ -11,10 +12,9 @@ class UserModel(db_scratchy.Document):
 
 
 class UserSchema(ma.Schema):
-    id = ObjectIdSchema(dump_only=True)
-    pseudo = ma.fields.Str(required=True)
-    profileImage = ma.fields.Str(required=True)
-    rooms = ma.fields.List(ma.fields.Str())
+    class Meta:
+        model = UserModel
+        model_build_obj = False
 
 
 class AllUserSchema(ma.Schema):
