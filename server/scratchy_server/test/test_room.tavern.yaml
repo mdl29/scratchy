@@ -131,6 +131,7 @@ stages:
         users: ["{userId}"]
       method: POST
     response:
+      status_code: 201
       json:
         <<: *id-regex
         title: my title

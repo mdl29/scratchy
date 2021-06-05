@@ -112,6 +112,7 @@ stages:
         rooms: ["{roomId}"]
       method: POST
     response:
+      status_code: 201
       json:
         <<: *id-regex
         pseudo: jean

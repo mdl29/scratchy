@@ -6,14 +6,16 @@ from marshmallow import fields
 from scratchy_server.model.userModel import UserModel, UserSchema, AllUserSchema
 from scratchy_server.filters.mongoexception import validation
 
+
 @doc(tags=['User'])
-@marshal_with(UserSchema)
 class UserRes(MethodResource):
     decorators = [validation]
 
+    @marshal_with(UserSchema, 200)
     def get(self, userId):
         return UserModel.objects().get_or_404(id=userId)
 
+    @marshal_with(UserSchema, 200)
     @use_kwargs(UserSchema)
     def put(self, userId, **kwargs):
         user = UserModel.objects().get_or_404(id=userId)
@@ -29,7 +31,7 @@ class UserRes(MethodResource):
 @doc(tags=['User'])
 class AllUserRes(MethodResource):
 
-    @marshal_with(AllUserSchema)
+    @marshal_with(AllUserSchema, code=200)
     @use_kwargs({"pseudo": fields.String()}, location="query")
     def get(self, pseudo=None):
 
@@ -41,9 +43,9 @@ class AllUserRes(MethodResource):
         elif pseudo is not None:
             return {"users": [UserModel.objects().get_or_404(pseudo=pseudo)]}
 
-    @marshal_with(UserSchema)
+    @marshal_with(UserSchema, code=201)
     @use_kwargs(UserSchema)
     def post(self, **kwargs):
         user = UserModel(**kwargs)
         user.save()
-        return user
+        return user, 201

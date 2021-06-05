@@ -21,6 +21,7 @@ stages:
         description: my description
       method: POST
     response:
+      status_code: 201
       json:
         id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         title: my title
@@ -39,6 +40,7 @@ stages:
         profileImage: https://http.cat/201
       method: POST
     response:
+      status_code: 201
       json:
         id: !re_fullmatch "[0-9a-f]{24}"
         pseudo: ali baba
