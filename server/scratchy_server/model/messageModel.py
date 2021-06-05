@@ -13,7 +13,7 @@ class MessageModel(db_scratchy.Document):
     roomId = db_scratchy.ObjectIdField(required=True)
 
 
-class MessageSchema(model.Schema):
+class MessageSchema(ModelSchema):
     class Meta:
         model = MessageModel
         model_build_obj = False
