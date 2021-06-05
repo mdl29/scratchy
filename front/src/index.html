@@ -95,10 +95,14 @@
                     fetchRooms() {
                         if(this.loggedUser === null) return;
                         console.log(this.loggedUser);
-                        (async () => {
-                            this.loggedUser = (await srv.getUserByid(this.loggedUser.id));
+                           debugger;
+                            srv.getUserByid(this.loggedUser.id).then(u=> {
+                                this.loggedUser = u;
+                                this.rooms = u.rooms;
+                                console.log("log:");
+                                console.log(this.rooms);                             
+                            });
                             this.rooms = this.loggedUser.rooms;
-                        })();
                     },
                     onMessageSend() {
                         srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
@@ -128,7 +132,6 @@
                         // TODO: do whatever
                         console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        debugger;
                         srv.createRoom(roomData.title, roomData.description).then(res => {
                             addUserToRoom(this.loggedUser.id, res.id);
                             this.fetchRooms()
