@@ -9,6 +9,8 @@ class RoomModel(db_scratchy.Document):
     title = db_scratchy.StringField(required=True)
     users = db_scratchy.ListField(db_scratchy.ObjectIdField())
 
+    meta = {'indexes': ['users']}
+
 
 class RoomSchema(ma.Schema):
     id = ObjectIdSchema(dump_only=True)
