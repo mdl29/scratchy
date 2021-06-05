@@ -22,6 +22,7 @@ stages:
         content: <bip> <bop> <boup> kernel error
         author: "{24-zero}"
         roomId: "{24-zero}"
+        timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
       save:
         json:
           messageId: id  # saving the id for the other function
@@ -41,11 +42,14 @@ stages:
             content: <bip> <bop> <boup> kernel error
             author: "{24-zero}"
             roomId: "{24-zero}"
+            timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             content: <bip> <bop> <boup> kernel error
             author: "{24-zero}"
             roomId: "{24-zero}"
+            timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             content: <bip> <bop> <boup> kernel error
             author: "{24-zero}"
             roomId: "{24-zero}"
+            timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"

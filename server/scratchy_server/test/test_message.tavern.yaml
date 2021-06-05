@@ -28,6 +28,7 @@ stages:
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
         roomId: "{roomId}"
+        timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
       save:
         json:
           messageId: id  # saving the id for the other function
@@ -43,6 +44,7 @@ stages:
         content: <bip> <bop> <boup> kernel error
         author: "{userId}"
         roomId: "{roomId}"
+        timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
 
   - &put
     name: Put a message
@@ -59,6 +61,7 @@ stages:
         content: I am repared. Yeaah !!! I am really happy
         author: "{userId}"
         roomId: "{roomId}"
+        timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
 
   - &delete
     name: Delete a message

@@ -25,12 +25,9 @@ stages:
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
             description: my description
-            users: []
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
             description: my description
-            users: []
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
             description: my description
-            users: []
