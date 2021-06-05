@@ -99,7 +99,6 @@
                             srv.getUserByid(this.loggedUser.id).then(u=> {
                                 this.loggedUser = u;
                                 this.rooms = u.rooms;
-                                console.log("log:");
                                 console.log(this.rooms);                             
                             });
                             this.rooms = this.loggedUser.rooms;
@@ -132,10 +131,7 @@
                         // TODO: do whatever
                         console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        srv.createRoom(roomData.title, roomData.description).then(res => {
-                            addUserToRoom(this.loggedUser.id, res.id);
-                            this.fetchRooms()
-                        });
+                        srv.createRoom(roomData.title, roomData.description,[this.loggedUser.id]);
                         this.roomEditorHidden = true;
                         this.fetchRooms();
                     },

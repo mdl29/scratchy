@@ -79,6 +79,7 @@ function ScratchyService(apiUrl) {
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
      * @param {string} roomTitle - title of a room, eg:my room
      * @param {string} roomDescription - description of a room, eg:my room description
+     * @param {string[]} usersID - List of users IDs
      * @returns {Promise<Room>} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
     this.createRoom = async function(roomTitle,roomDescription,usersID){
