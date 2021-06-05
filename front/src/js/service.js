@@ -81,8 +81,8 @@ function ScratchyService(apiUrl) {
      * @param {string} roomDescription - description of a room, eg:my room description
      * @returns {Promise<Room>} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
-    this.createRoom = async function(roomTitle,roomDescription){
-        const reponse = await axios.post(apiUrl+'/room', { title: roomTitle , description: roomDescription });
+    this.createRoom = async function(roomTitle,roomDescription,usersID){
+        const reponse = await axios.post(apiUrl+'/room', { title: roomTitle , description: roomDescription , users : usersID});
         return reponse.data;
     };
 
