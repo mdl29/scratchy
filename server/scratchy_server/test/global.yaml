@@ -47,3 +47,23 @@ stages:
       save:
         json:
           userId: id  # saving the id for the other function
+
+  - id: PostRoomWithUser
+    name: Creating a room containing a user
+    request:
+      url: "{url}/room"
+      json:
+        title: room with user
+        description: room with user
+        users: ["{userId}"]
+      method: POST
+    response:
+      status_code: 201
+      json:
+        id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
+        title: room with user
+        description: room with user
+        users: ["{userId}"]
+      save:
+        json:
+          roomId: id  # saving the id for the other function

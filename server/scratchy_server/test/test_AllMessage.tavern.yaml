@@ -53,3 +53,12 @@ stages:
             author: "{24-zero}"
             roomId: "{24-zero}"
             timestamp: !re_fullmatch "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}"
+
+  - name: Delete all messages in a room
+    request:
+      url: "{url}/message"
+      method: DELETE
+    response:
+      status_code: 204
+      json:
+        {}
