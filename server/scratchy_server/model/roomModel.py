@@ -1,7 +1,6 @@
 import marshmallow as ma
 
 from scratchy_server import db_scratchy
-from scratchy_server.model.objectIdSchema import ObjectIdSchema
 from marshmallow_mongoengine import ModelSchema
 
 
