@@ -53,7 +53,7 @@ LPH.
  - [📝 Frontend Documentation](doc/frontend/frontend.md)
 
  - [ℹ️ How to start it ](doc/frontend/front.png#How-to-start-it-:)
- - [ℹ️ How to start it ](doc/frontend/frontend.md#vuejs-components-:) 
+ - [ℹ️ vuejs components ](doc/frontend/frontend.md#vuejs-components-:) 
  - [📸 component sketch](doc/frontend/front.png)
  - [📸 Frontend diagram](doc/front-uml-class-diagram.png)
 
