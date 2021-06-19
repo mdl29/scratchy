@@ -2,7 +2,7 @@ import datetime
 import marshmallow as ma
 
 from scratchy_server import db_scratchy
-from scratchy_server.model.objectIdSchema import ObjectIdSchema
+from marshmallow_mongoengine import ModelSchema
 
 
 class MessageModel(db_scratchy.Document):
@@ -12,15 +12,10 @@ class MessageModel(db_scratchy.Document):
     roomId = db_scratchy.ObjectIdField(required=True)
 
 
-class MessageSchema(ma.Schema):
-    id = ObjectIdSchema(dump_only=True)
-    content = ma.fields.Str(required=True)
-    author = ObjectIdSchema(required=True)
-    roomId = ObjectIdSchema(required=True)
-    # timestamp is unuse for now
-    # because date seem not compatible with marshmallow datetime
-    # it will be added with marshallow mongo update
-
+class MessageSchema(ModelSchema):
+    class Meta:
+        model = MessageModel
+        model_build_obj = False
 
 class AllMessageSchema(ma.Schema):
     messages = ma.fields.List(ma.fields.Nested(MessageSchema))

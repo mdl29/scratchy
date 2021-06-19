@@ -15,12 +15,11 @@ stages:
       url: "{url}/room/{roomId}"
       method: GET
     response:
-      json: 
+      json:
         <<: &id-regex
           id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         title: my title
         description: my description
-        users: []
 
   - &put
     name: Put a room
@@ -35,7 +34,6 @@ stages:
         <<: *id-regex
         title: new title
         description: new description
-        users: []
 
   - &delete
     name: Delete a room

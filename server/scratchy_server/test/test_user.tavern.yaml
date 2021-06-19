@@ -20,7 +20,6 @@ stages:
           id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         pseudo: ali baba
         profileImage: https://http.cat/201
-        rooms: []
 
   - &get_by_pseudo
     name: Get a user by pseudo
@@ -33,7 +32,6 @@ stages:
           - <<: *id-regex
             pseudo: ali baba
             profileImage: https://http.cat/201
-            rooms: []
 
   - &put
     name: Put a user
@@ -49,7 +47,6 @@ stages:
         <<: *id-regex
         pseudo: toto le rigolo
         profileImage: https://http.cat/418
-        rooms: []
 
   - &delete
     name: Delete a user
