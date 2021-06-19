@@ -56,19 +56,49 @@ function ScratchyService(apiUrl) {
 
 //                               ROOM FUNCTIONS
 
-
     /**
      *
      * @async
      * @augments ScratchyService
-     * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
-     * @param {string} roomTitle - title of a room , eg:my room
-     * @param {string} roomDescription - description of a room, eg:my room description
-     * @param {string[]} usersID - List of users IDs
-     * @returns {Promise<Room>} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
+     * @param {Room} room - room in which
+     * @param {User} user - user to add in room 
+     * @returns {Promise<undefined>} - 
      */
-    this.updateRoom = async function(roomID,roomTitle,roomDescription,usersID){
-        const reponse = await axios.put(apiUrl+'/room/'+roomID, { title: roomTitle , description: roomDescription, users : usersID});
+    this.addUserToRoom = async function(room,user){
+        console.log(room);
+        debugger;
+        if ( !room.users.includes(user.id)) {
+            room.users.push(user.id);
+            this.updateRoom(room);
+        }else{
+            console.log("user is already in the room");
+        }
+    };
+    
+    /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {Room} room - room in which
+     * @param {User} user - user to add in room 
+     * @returns {Promise<undefined>} - 
+     */
+    this.removeUserInRoom = async function(room,user){
+        room.usersID = room.usersID.filter( uid => uid != user.id );
+        this.updateRoom(room);
+    }
+
+    
+    
+    /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {Room} room
+     * @returns {Promise<Room>} - room information , eg:{ id:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
+     */
+    this.updateRoom = async function(room){
+        const reponse = await axios.put(apiUrl+'/room/'+room.id, { title: room.title , description: room.description, users : room.users});
         return reponse.data;
     };
 
@@ -80,7 +110,7 @@ function ScratchyService(apiUrl) {
      * @param {string} roomTitle - title of a room, eg:my room
      * @param {string} roomDescription - description of a room, eg:my room description
      * @param {string[]} usersID - List of users IDs
-     * @returns {Promise<Room>} - room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
+     * @returns {Promise<Room>} - room information , eg:{ id:"60895dd62d1a706830c31f10" ,title:"example", description : "my description"}
      */
     this.createRoom = async function(roomTitle,roomDescription,usersID){
         const reponse = await axios.post(apiUrl+'/room', { title: roomTitle , description: roomDescription , users : usersID});
@@ -92,7 +122,7 @@ function ScratchyService(apiUrl) {
      * @async
      * @augments ScratchyService
      * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
-     * @returns {Promise<Room>} room information , eg:{ oid:"60895dd62d1a706830c31f10" ,title:"example"}
+     * @returns {Promise<Room>} room information , eg:{ id:"60895dd62d1a706830c31f10" ,title:"example"}
      */
     this.getRoom = async function(roomID){ // put the id between "" 
             // Make a request for a user with a given ID
@@ -117,12 +147,13 @@ function ScratchyService(apiUrl) {
      * 
      * @async
      * @augments ScratchyService
+     * @param {User} user - user to add in room 
      * @returns {Promise<AllRoom>} - all rooms information 
      */
     this.getAllRooms = async function(user){ // put the id between "" 
         let query = (user != undefined) ? "?userId="+user.id : "";
         let reponse = await axios.get(apiUrl+'/room' + query); // make the GET request;
-        return reponse.data;
+        return reponse.data.rooms;
     };
 
 //                               USER FUNCTIONS
@@ -137,7 +168,7 @@ function ScratchyService(apiUrl) {
     this.getUserByPseudo = async function(userPseudo){ // put the id between "" 
         // Make a request for a user with a given ID
         let reponse = await axios.get(apiUrl+'/user?pseudo='+userPseudo);// make the GET request
-        return reponse.data;// return data JSON         
+        return reponse.data.users[0];// return data JSON         
     };
 
     /**
@@ -190,6 +221,36 @@ function ScratchyService(apiUrl) {
         const reponse = await axios.put(apiUrl+'/user/'+userID, { pseudo: userPseudo , profileImage : userProfileImage});
         return reponse.data;
     };
+
+    /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {string} pseudo - loggue user pseudo , eg : "toto"
+     * @returns {Promise<undefined|User>} - 
+     */
+    this.userExistByPseudo = async function(pseudo){
+        try{
+            return await this.getUserByPseudo(pseudo);
+        }catch(e){
+            return undefined;
+        }
+    };
+
+    /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {string} pseudo - loggue user pseudo , eg : "toto"
+     * @returns {Promise<User>} - 
+     */
+    this.getOrCreateUser = async function(pseudo){
+       let user = await this.userExistByPseudo(pseudo);
+       if(user == undefined){
+         user = await this.createUser(pseudo,"");
+       }
+       return user ;
+    }
 //                               MESSAGE FUNCTIONS
 
     /**
@@ -210,13 +271,17 @@ function ScratchyService(apiUrl) {
      * 
      * @async
      * @augments ScratchyService
-     * @param {string} roomID - room id , eg:60895dd62d1a706830c31f10
+     * @param {Room} room - room id , eg:60895dd62d1a706830c31f10
      * @returns {Promise<Message[]>} message information. Might be a bug here.
      */
-    this.getAllMessagesInRoom = async function(roomID){ // put the id between "" 
+    this.getAllMessagesInRoom = async function(room){ // put the id between "" 
         // Make a request for a user with a given ID
-        let reponse = await axios.get(apiUrl+'/message?roomId='+roomID) // make the GET request
-        return reponse.data;// return data JSON 
+        let reponse = await axios.get(apiUrl+'/message?roomId='+room.id) // make the GET request
+        let messages = reponse.data.messages;
+        for(let msg of messages){
+            msg.author = await this.getUserByid(msg.author);
+        }
+        return messages;// return data JSON 
     };
 
     /**
