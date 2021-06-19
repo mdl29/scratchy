@@ -13,7 +13,7 @@ const activityBar = {
         <div v-if="isWriting" class='activity_bar_writing'> writing... </div>
             <div class="share_popup" v-show="popup">
                 <div class="share_title">Share room id</div>
-                <label class="share_label"> room id : {{currentRoom._id.$oid}}</label> <!-- replace "currentRoom._id.$oid" by currentRoom._id when 151 will be merge -->
+                <label class="share_label"> room id : {{currentRoom.id}}</label>
                 <div class="share_submit_wrapper">
                 <button class="share_submit" v-on:click="popup = false">close</button>
                 </div>

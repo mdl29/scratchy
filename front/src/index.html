@@ -52,30 +52,7 @@
              // THE TIME IS NOW
              // and im not happy about it
             const srv = new ScratchyService("http://localhost:5000/api");
-            async function addUserToRoom(userId, roomId) {
-                try {
-                    const room = (await srv.getRoom(roomId));
-                    room.users.push(userId);
-                    srv.updateRoom(roomId, room.title, room.description, room.users);
-                } catch (e) {
-                    console.error("error when adding user to room:")
-                    console.error(e);
-                }
-            }
 
-            async function removeUserFromRoom(userId, roomId) {
-                try {
-                    const room = (await srv.getRoom(roomId));
-                    const index = room.users.indexOf(userId);
-                    // user isn't in room
-                    if(index === -1) return;
-                    room.users.splice(index, 1);
-                    srv.updateRoom(roomId, room.title, room.description, room.users);
-                } catch (e) {
-                    console.error("error when removing user from room:")
-                    console.error(e);
-                }
-            }
             const app = Vue.createApp({
                 name: "app",
                 data: () => ({
@@ -90,35 +67,37 @@
                 }),
                 mounted() {
                     this.fetchRooms();
+                    setInterval(() => {
+                        this.fetchMessages();
+                    }, 1000);
                 },
                 methods: {
-                    fetchRooms() {
+                    async fetchRooms() {
                         if(this.loggedUser === null) return;
                         console.log(this.loggedUser);
-                           debugger;
-                            srv.getUserByid(this.loggedUser.id).then(u=> {
-                                this.loggedUser = u;
-                                this.rooms = u.rooms;
-                                console.log(this.rooms);                             
-                            });
-                            this.rooms = this.loggedUser.rooms;
+                        this.rooms = await srv.getAllRooms(this.loggedUser)
                     },
-                    onMessageSend() {
-                        srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
+                    async fetchMessages(){
+                        if(this.selectedRoom != undefined){
+                        this.messages = await srv.getAllMessagesInRoom(this.selectedRoom);
+                        };
+                    },
+                    async onMessageSend() {
+                        await srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
                         // reset
                         this.currentTypedMessage = "";
                     },
                     // this is just example code
                     // (called when a room is selected)
-                    displayRoom(roomInfo) {
+                    async displayRoom(roomInfo) {
                         const {room, index} = roomInfo;
                         this.selectedRoom = room;
-                        srv.getAllMessagesInRoom(room.id).then(v => this.messages = v.messages);
+                        this.messages = await srv.getAllMessagesInRoom(room);
                     },
-                    quitRoom(roomInfo) {
+                    async quitRoom(roomInfo) {
                         const {room, index} = roomInfo;
-                        removeUserFromRoom(this.loggedUser.id, room.id)
-                        this.fetchRooms();
+                        await srv.removeUserFromRoom(room,this.loggedUser);
+                        await this.fetchRooms();
                         if(room.id == this.selectedRoom.id) {
                             if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
                                 this.selectedRoom = this.rooms[this.rooms.length-1];
@@ -127,38 +106,36 @@
                             }
                         }
                     },
-                    createRoom(roomData) {
+                    async createRoom(roomData) {
                         // TODO: do whatever
                         console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        srv.createRoom(roomData.title, roomData.description,[this.loggedUser.id]);
+                        await srv.createRoom(roomData.title, roomData.description,[this.loggedUser.id]);
                         this.roomEditorHidden = true;
-                        this.fetchRooms();
+                        await this.fetchRooms();
                     },
-                    joinRoom(id) {
+                    async joinRoom(id) {
                         // TODO: do whatever
+                        debugger;
                         console.debug(`join room '${id}'`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        addUserToRoom(this.loggedUser.id, id);
-                        this.fetchRooms();
+                        const room = await srv.getRoom(id);
+                        await srv.addUserToRoom(room,this.loggedUser);
+                        await this.fetchRooms();
                         this.roomEditorHidden = true;
                     },
-                    onLogin(pseudo) {
+                    async onLogin(pseudo) {
                         const self = this;
-                        srv.getUserByPseudo(pseudo).then(v => {
-                            this.loggedUser = v
-                        }).catch(e => {
-                            srv.createUser(pseudo, "").then(v => {
-                                self.loggedUser = v
-                            });
-                        });
-                    }
+                        this.loggedUser = await srv.getOrCreateUser(pseudo);
+                        console.log(this.loggedUser);
+                        await this.fetchRooms();
+                    },
                 },
                 computed: {
                     isConnected() {
                         return this.loggedUser !== null;
                     }
-                },
+                }
             });
             app.component("activity-bar", activityBar);
             app.component("message-editor", messageEditor);
