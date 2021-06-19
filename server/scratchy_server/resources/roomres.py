@@ -36,7 +36,7 @@ class AllRoomRes(MethodResource):
     @use_kwargs({"userId": fields.String()}, location="query")
     def get(self, userId=None):
         if not userId is None: # Search room by containing a specific userid
-            return {"rooms": RoomModel.objects(users=[ userId ])}
+            return {"rooms": RoomModel.objects(users= userId)}
         
         return {"rooms": RoomModel.objects()}
 
