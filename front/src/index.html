@@ -116,13 +116,12 @@
                     },
                     async joinRoom(id) {
                         // TODO: do whatever
-                        debugger;
                         console.debug(`join room '${id}'`);
                         // temporary code to make it look like how it should behave but that really isn't how it'll be done
                         const room = await srv.getRoom(id);
                         await srv.addUserToRoom(room,this.loggedUser);
-                        await this.fetchRooms();
                         this.roomEditorHidden = true;
+                        await this.fetchRooms();
                     },
                     async onLogin(pseudo) {
                         const self = this;
