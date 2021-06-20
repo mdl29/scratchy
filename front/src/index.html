@@ -84,7 +84,7 @@
                     async displayRoom(roomInfo) {
                         const {room} = roomInfo;
                         this.selectedRoom = room;
-                        this.users = room.users
+                        this.users = await Promise.all(room.users.map(id => srv.getUserByid(id)));
                         this.messages = await srv.getAllMessagesInRoom(room);
                     },
                     async quitRoom(roomInfo) {
