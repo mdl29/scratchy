@@ -66,7 +66,6 @@ function ScratchyService(apiUrl) {
      */
     this.addUserToRoom = async function(room,user){
         console.log(room);
-        debugger;
         if ( !room.users.includes(user.id)) {
             room.users.push(user.id);
             this.updateRoom(room);
