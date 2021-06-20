@@ -69,7 +69,6 @@
                 methods: {
                     async fetchRooms() {
                         if(this.loggedUser === null) return;
-                        console.log(this.loggedUser);
                         this.rooms = await srv.getAllRooms(this.loggedUser)
                     },
                     async fetchMessages(){
@@ -113,7 +112,6 @@
                     },
                     async onLogin(pseudo) {
                         this.loggedUser = await srv.getOrCreateUser(pseudo);
-                        console.log(this.loggedUser);
                         await this.fetchRooms();
                     },
                 },
