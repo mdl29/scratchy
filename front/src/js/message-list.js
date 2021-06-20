@@ -3,17 +3,11 @@ const messages = {
     props: ['messages'],
     methods: {
         humanDate(ts,now){
-            console.log(ts);
             return moment(ts).fromNow();
         },
-        async getAuthor(id){
-            return await this.srv.getUserByid(id);
-        }
-
     },
     data: function(){
         return {
-            now: new Date(),
             srv: new ScratchyService("http://localhost:5000/api")
         };
     },
@@ -24,9 +18,9 @@ const messages = {
         moment.relativeTimeThreshold('d', 31);
         moment.relativeTimeThreshold('M', 12);
         moment.relativeTimeThreshold('y', 365);
-        var self = this
-        setInterval(function () {
-             self.now = new Date();
+
+        setInterval(() => {
+             this.now = new Date();
         }, 2000)
     },
     computed(){
