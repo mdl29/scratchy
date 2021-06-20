@@ -127,10 +127,8 @@ function ScratchyService(apiUrl) {
             // Make a request for a user with a given ID
             let reponse = await axios.get(apiUrl+'/room/'+roomID);// make the GET request
             return reponse.data; // return data JSON    
-
     };
-
-    
+  
     /**
      * 
      * @async
