@@ -82,7 +82,7 @@ function ScratchyService(apiUrl) {
      * @returns {Promise<undefined>} - 
      */
     this.removeUserInRoom = async function(room,user){
-        room.usersID = room.usersID.filter( uid => uid != user.id );
+        room.users = room.usersID.filter( uid => uid != user.id );
         this.updateRoom(room);
     }
 

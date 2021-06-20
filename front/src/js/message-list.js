@@ -6,6 +6,11 @@ const messages = {
             return moment(ts).fromNow();
         },
     },
+    data: function(){
+        return {
+            now: new Date()
+        };
+    },
     created() {
         moment.relativeTimeThreshold('s', 60);
         moment.relativeTimeThreshold('m', 60);
@@ -17,9 +22,6 @@ const messages = {
         setInterval(() => {
              this.now = new Date();
         }, 2000)
-    },
-    computed(){
-
     },
     template: `
     <ul class="messages_list_wrapper">
