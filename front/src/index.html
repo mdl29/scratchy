@@ -88,9 +88,9 @@
                     },
                     async quitRoom(roomInfo) {
                         const {room} = roomInfo;
-                        await srv.removeUserFromRoom(room,this.loggedUser);
+                        await srv.removeUserInRoom(room,this.loggedUser);
                         await this.fetchRooms();
-                        if(room.id == this.selectedRoom.id) {
+                        if(this.selectedRoom !== null && room.id == this.selectedRoom.id) {
                             if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
                                 this.selectedRoom = this.rooms[this.rooms.length-1];
                             } else { // or just go back to the default of there aren't any rooms
