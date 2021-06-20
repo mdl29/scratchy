@@ -6,11 +6,6 @@ const messages = {
             return moment(ts).fromNow();
         },
     },
-    data: function(){
-        return {
-            srv: new ScratchyService("http://localhost:5000/api")
-        };
-    },
     created() {
         moment.relativeTimeThreshold('s', 60);
         moment.relativeTimeThreshold('m', 60);
