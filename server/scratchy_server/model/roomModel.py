@@ -16,6 +16,8 @@ class RoomSchema(ModelSchema):
     class Meta:
         model = RoomModel
         model_build_obj = False
+        model_skip_values = ()  # iterable of skipped values
+
 
 class AllRoomSchema(ma.Schema):
     rooms = ma.fields.List(ma.fields.Nested(RoomSchema))

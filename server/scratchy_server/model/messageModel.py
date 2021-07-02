@@ -16,6 +16,8 @@ class MessageSchema(ModelSchema):
     class Meta:
         model = MessageModel
         model_build_obj = False
+        model_skip_values = ()  # iterable of skipped values
+
 
 class AllMessageSchema(ma.Schema):
     messages = ma.fields.List(ma.fields.Nested(MessageSchema))
