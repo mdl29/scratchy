@@ -26,6 +26,7 @@ stages:
         id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
         title: my title
         description: my description
+        users: []
       save:
         json:
           roomId: id  # saving the id for the other function
@@ -44,6 +45,7 @@ stages:
         id: !re_fullmatch "[0-9a-f]{24}"
         pseudo: ali baba
         profileImage: https://http.cat/201
+        rooms: []
       save:
         json:
           userId: id  # saving the id for the other function

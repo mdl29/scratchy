@@ -25,12 +25,15 @@ stages:
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
             description: my description
+            users: []
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
+            users: []
             description: my description
           - id: !re_fullmatch "[0-9a-f]{24}"  # the regex check if id is an objectId
             title: my title
             description: my description
+            users: []
 
   - name: Delete all room
     request:
@@ -65,7 +68,7 @@ stages:
             title: room with user
             description: room with user
             users: ["{userId}"]
-          
+
   - name: Delete a user
     request:
       url: "{url}/user/{userId}"
