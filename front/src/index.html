@@ -3,6 +3,7 @@
         <script src="https://unpkg.com/vue@next"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js "></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js"></script>
+        <script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="css/app.css">
         <link rel="stylesheet" href="css/activity_bar.css">
@@ -41,12 +42,12 @@
         <script src="js/user-list.js"></script>
         <script src="js/message-list.js"></script>
         <script src="js/login.js"></script>
+        <script src="js/service.js"></script>
         <script>
-            /*
-             * this whole component should be mostly (or entirely re-written) 
-             * when scratchy service will be done, to use the api instead of 
-             * dummy data. (oh and the code mostly sucks)
-             */
+
+
+            const srv = new ScratchyService("http://"+window.location.hostname+":5000/api");
+
             const app = Vue.createApp({
                 name: "app",
                 data: () => ({
@@ -55,133 +56,80 @@
                     loggedUser: null,
                     roomEditorHidden: true,
                     currentTypedMessage: "",
-                    rooms: [
-                        {
-                            "_id": {
-                                "$oid": "6071ac5176e5bd456a859d9d"
-                            },
-                            "description": "ma description",
-                            "title": "Room 1",
-                            "user": []
-                        },
-                        {
-                            "_id": {
-                                "$oid": "6071ac5176e5bd456a859d9f"
-                            },
-                            "description": "ma description",
-                            "title": "Room 2",
-                            "user": []
-                        },
-                        {
-                            "_id": {
-                                "$oid": "6071ac5176e5bd456a859d94"
-                            },
-                            "description": "ma description",
-                            "title": "Room 3",
-                            "user": []
-                        }
-                    ],
-                    users: [
-                        {
-                            "_id": {
-                                "$oid": "607ae876f59d21d5a50ac3c9"
-                            },
-                            "pseudo": "mon pseudo1",
-                            "roomsId": []
-                        },
-                        {
-                            "_id": {
-                                "$oid": "607ae876f59d21d5a50ac3c2"
-                            },
-                            "pseudo": "mon pseudo2",
-                            "roomsId": []
-                        }
-                    ],
-                    messages: [
-                        {_id : {$oid: "459I548383"},content: "Bonjour tata", author: "toto",  timestamp: 1618587750035},
-                        {_id : {$oid: "4459493924"},content: "Salut toto", author: "tata",  timestamp: 1618587750035 },
-                    ]
+                    rooms: [],
+                    users: [],
+                    messages: []
                 }),
+                mounted() {
+                    this.fetchRooms();
+                    setInterval(() => {
+                        this.fetchMessages();
+                        this.fetchCurrentRoomUsers();
+                    }, 1000);
+                },
                 methods: {
-                    onMessageSend() {
-                        // TODO: implement something that calls the api and send the message
-                        console.debug(`message: ${this.currentTypedMessage}`);
-                        // add the message
-                        this.messages.push({
-                            _id: {
-                                $oid: new Date().getTime().toString(16)
-                            },
-                            author: this.loggedUser.pseudo,
-                            content: this.currentTypedMessage,
-                            timestamp: Math.floor(new Date().getTime())
-                        });
+                    async fetchRooms() {
+                        if(this.loggedUser === null) return;
+                        this.rooms = await srv.getAllRooms(this.loggedUser)
+                    },
+                    async fetchMessages(){
+                        if(this.selectedRoom != undefined){
+                        this.messages = await srv.getAllMessagesInRoom(this.selectedRoom);
+                        };
+                    },
+                    async fetchCurrentRoomUsers(){
+                        if(this.selectedRoom != null  && this.selectedRoom != undefined){
+                            let room = await srv.getRoom(this.selectedRoom.id);
+                            this.selectedRoom = room;
+                            this.users = await Promise.all(room.users.map(id => srv.getUserByid(id)));
+                        }
+                    },
+                    async onMessageSend() {
+                        await srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
                         // reset
                         this.currentTypedMessage = "";
                     },
-                    // this is just example code
-                    // (called when a room is selected)
-                    displayRoom(roomInfo) {
-                        const {room, index} = roomInfo;
-                        // TODO: do whatever
-                        console.debug(`selected ${room.title}: rooms[${index}]`);
+                    async displayRoom(roomInfo) {
+                        const {room} = roomInfo;
                         this.selectedRoom = room;
+                        this.users = await Promise.all(room.users.map(id => srv.getUserByid(id)));
+                        this.messages = await srv.getAllMessagesInRoom(room);
                     },
-                    quitRoom(roomInfo) {
-                        const {room, index} = roomInfo;
-                        this.rooms.splice(index, 1);
-                        if(room._id.$oid == this.selectedRoom._id.$oid) {
+                    async quitRoom(roomInfo) {
+                        const {room} = roomInfo;
+                        await srv.removeUserInRoom(room,this.loggedUser);
+                        await this.fetchRooms();
+                        if(this.selectedRoom !== null && room.id == this.selectedRoom.id) {
                             if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
                                 this.selectedRoom = this.rooms[this.rooms.length-1];
                             } else { // or just go back to the default of there aren't any rooms
                                 this.selectedRoom = null
                             }
                         }
+                        this.messages = [];
+                        this.users = [];
                     },
-                    createRoom(roomData) {
-                        // TODO: do whatever
-                        console.debug(`create room\n title: ${roomData.title}\n desc: ${roomData.description}`);
-                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.rooms.push({
-                            _id: {
-                                $oid: new Date().getTime().toString(16)
-                            },
-                            title: roomData.title,
-                            description: roomData.description
-                        });
+                    async createRoom(roomData) {
+                        await srv.createRoom(roomData.title, roomData.description,[this.loggedUser.id]);
                         this.roomEditorHidden = true;
+                        await this.fetchRooms();
                     },
-                    joinRoom(id) {
-                        // TODO: do whatever
-                        console.debug(`join room '${id}'`);
-                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.rooms.push({
-                            _id: {
-                                $oid: id
-                            },
-                            title: "title",
-                            description: ""
-                        });
+                    async joinRoom(id) {
+                        const room = await srv.getRoom(id);
+                        await srv.addUserToRoom(room,this.loggedUser);
                         this.roomEditorHidden = true;
+                        await this.fetchRooms();
                     },
-                    onLogin(pseudo) {
-                        // TODO: do whatever
-                        console.debug(`logged in as user '${pseudo}'`);
-                        // temporary code to make it look like how it should behave but that really isn't how it'll be done
-                        this.loggedUser = {
-                            "_id": {
-                                "$oid": new Date().getTime().toString(16)
-                            },
-                            "pseudo": pseudo,
-                            "roomsId": []
-                        };
-                        this.users.push(this.loggedUser);
-                    }
+                    async onLogin(pseudo) {
+                        this.loggedUser = await srv.getOrCreateUser(pseudo);
+                        await this.fetchRooms();
+                    },
                 },
                 computed: {
                     isConnected() {
                         return this.loggedUser !== null;
                     }
-                },
+                }
             });
             app.component("activity-bar", activityBar);
             app.component("message-editor", messageEditor);

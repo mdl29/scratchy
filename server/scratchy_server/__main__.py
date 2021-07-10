@@ -9,7 +9,7 @@ from flask.cli import cli
 def main():
     os.environ['FLASK_APP'] = 'scratchy_server.app'
     os.environ['FLASK_ENV'] = 'development'
-    sys.exit(cli.main(args=['run'], prog_name="python -m flask"))
+    sys.exit(cli.main(args=['run', '--host=0.0.0.0'], prog_name="python -m flask"))
 
 
 if __name__ == '__main__':
