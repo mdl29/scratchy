@@ -14,6 +14,7 @@ class UserSchema(ModelSchema):
     class Meta:
         model = UserModel
         model_build_obj = False
+        model_skip_values = ()  # iterable of skipped values
 
 
 class AllUserSchema(ma.Schema):
