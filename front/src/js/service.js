@@ -1,5 +1,7 @@
 /**
  * @author Yannis Malgorn <yannismalgorn@gmail.com>
+ * @author Titouan Goulois
+ * @author Benjamin BERNARD
  * @see {@link https://github.com/mdl29/scratchy|GitHub}
  * @requires module:axios/axios
  */
@@ -52,7 +54,7 @@
  */
 function ScratchyService(apiUrl) {
     let _this = this;
-    this.cacheUsers = []; // List of users, used as cache
+    this.cacheUsers = new Map(); // List of users, used as cache
 
 //                               ROOM FUNCTIONS
 
@@ -175,8 +177,13 @@ function ScratchyService(apiUrl) {
      * @returns {Promise<User>} - user information
      */
     this.getUserByid = async function(userID){ // put the id between "" 
+        if(this.cacheUsers.has(userID)){
+            return this.cacheUsers.get(userID);
+        }
+
         // Make a request for a user with a given ID
         let reponse = await axios.get(apiUrl+'/user/'+userID) // make the GET request
+        this.cacheUsers.set(userID, reponse.data);
         return reponse.data;// return data JSON          
     };
 
