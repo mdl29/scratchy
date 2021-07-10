@@ -67,7 +67,7 @@ function ScratchyService(apiUrl) {
     this.addUserToRoom = async function(room,user){
         if ( !room.users.includes(user.id)) {
             room.users.push(user.id);
-            this.updateRoom(room);
+            await this.updateRoom(room);
         }else{
             console.log("user is already in the room");
         }
@@ -83,7 +83,7 @@ function ScratchyService(apiUrl) {
      */
     this.removeUserInRoom = async function(room,user){
         room.users = room.users.filter( uid => uid != user.id );
-        this.updateRoom(room);
+        await this.updateRoom(room);
     }
 
     

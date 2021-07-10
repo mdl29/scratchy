@@ -64,6 +64,7 @@
                     this.fetchRooms();
                     setInterval(() => {
                         this.fetchMessages();
+                        this.fetchCurrentRoomUsers();
                     }, 1000);
                 },
                 methods: {
@@ -75,6 +76,14 @@
                         if(this.selectedRoom != undefined){
                         this.messages = await srv.getAllMessagesInRoom(this.selectedRoom);
                         };
+                    },
+                    async fetchCurrentRoomUsers(){
+                        if(this.selectedRoom != null  && this.selectedRoom != undefined){
+                            debugger;
+                            let room = await srv.getRoom(this.selectedRoom.id);
+                            this.selectedRoom = room;
+                            this.users = await Promise.all(room.users.map(id => srv.getUserByid(id)));
+                        }
                     },
                     async onMessageSend() {
                         await srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
@@ -98,6 +107,8 @@
                                 this.selectedRoom = null
                             }
                         }
+                        this.messages = [];
+                        this.users = [];
                     },
                     async createRoom(roomData) {
                         await srv.createRoom(roomData.title, roomData.description,[this.loggedUser.id]);
