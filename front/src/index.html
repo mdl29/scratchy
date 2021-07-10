@@ -46,7 +46,7 @@
         <script>
 
 
-            const srv = new ScratchyService("http://localhost:5000/api");
+            const srv = new ScratchyService("http://"+window.location.hostname+":5000/api");
 
             const app = Vue.createApp({
                 name: "app",
@@ -79,7 +79,6 @@
                     },
                     async fetchCurrentRoomUsers(){
                         if(this.selectedRoom != null  && this.selectedRoom != undefined){
-                            debugger;
                             let room = await srv.getRoom(this.selectedRoom.id);
                             this.selectedRoom = room;
                             this.users = await Promise.all(room.users.map(id => srv.getUserByid(id)));
