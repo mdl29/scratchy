@@ -2,7 +2,7 @@
 
   - [📂 **front directory**](../../front/)
   
-  **How to start it :**
+## How to start it :
 
   > go in front/src directory
 
