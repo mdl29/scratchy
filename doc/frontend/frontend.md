@@ -4,12 +4,18 @@
   
   **How to start it :**
 
-  > run http server in front directory
+  > go in front/src directory
+
+  ```bash
+  cd front/src
+  ```
+
+  > launch python server
 
   ```bash
   python3 -m http.server
   ```
-> Open webbrowser at http://localhost:5000
+  > Open webbrowser at http://localhost:8000
 
 
 
