@@ -1,0 +1,10 @@
+{
+    "MONGODB_SETTINGS": {
+        "db": "scratchy",
+        "username": "root",
+        "password": "example",
+        "host": "localhost",
+        "port": 27017,
+        "authentication_source": "admin"
+    }
+}
