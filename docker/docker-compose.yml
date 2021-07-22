@@ -10,3 +10,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - ./data:/data/db
+
+  scratchy:
+    image: scratchy-server:latest
+    ports:
+      - "5000:5000"
+    links:
+      - "mongodb"
+
