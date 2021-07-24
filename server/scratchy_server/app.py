@@ -6,6 +6,8 @@ from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 import logging
 
+from prometheus_flask_exporter import PrometheusMetrics
+
 from scratchy_server import db_scratchy
 from scratchy_server.resources.roomres import RoomRes, AllRoomRes
 from scratchy_server.resources.userres import UserRes, AllUserRes
@@ -38,6 +40,12 @@ app.config.update({
 docs = FlaskApiSpec(app)
 db_scratchy.init_app(app)
 api = Api(app)
+
+## Add Metrics for Scratchy
+metrics = PrometheusMetrics(app)
+# metrics.register_endpoint('/metrics')
+# static information as metric
+metrics.info('app_info', 'Application info', version='2.0.0')
 
 ressource = (
     {"name": "RoomRes", "ressource": RoomRes, "url": "/api/room/<string:roomId>"},
