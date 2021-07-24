@@ -1,0 +1,15 @@
+---
+version: '3.7'
+services:
+  mongodb:
+    image: 'mongo:4.4.3'
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - devdb:/data/db
+# volume is deleted
+volumes:
+  devdb:
