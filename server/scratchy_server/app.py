@@ -12,11 +12,19 @@ from scratchy_server.resources.roomres import RoomRes, AllRoomRes
 from scratchy_server.resources.userres import UserRes, AllUserRes
 from scratchy_server.resources.messageres import MessageRes, AllMessageRes
 
+import yaml
+import logging
+import logging.config
+
+with open('logging.yaml', 'r') as logging_file:
+    config_logging = yaml.load(logging_file, Loader=yaml.FullLoader)
+
+logging.config.dictConfig(config_logging)
+
 # load scratchy configuration from file
 with open('config.json', 'r') as config_file:
     config_data = json.load(config_file)
 
-logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 CORS(app)
 
