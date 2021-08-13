@@ -4,6 +4,8 @@
     background-color: var(--bg3);
     padding: 10px 0 10px 0;
     width: 130px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .room_list_item {

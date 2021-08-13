@@ -5,6 +5,7 @@ from flask_apispec.extension import FlaskApiSpec
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 import logging
+import json
 
 from scratchy_server import db_scratchy
 from scratchy_server.resources.roomres import RoomRes, AllRoomRes
@@ -20,17 +21,15 @@ with open('logging.yaml', 'r') as logging_file:
 
 logging.config.dictConfig(config_logging)
 
+# load scratchy configuration from file
+with open('config.json', 'r') as config_file:
+    config_data = json.load(config_file)
+
 app = Flask(__name__)
 CORS(app)
 
-app.config['MONGODB_SETTINGS'] = {
-    'db': 'scratchy',
-    'username': 'root',
-    'password': 'example',
-    'host': 'localhost',
-    'port': 27017,
-    'authentication_source': 'admin'
-}
+# main configuration from config data (file)
+app.config.update(config_data)
 
 app.config.update({
     'APISPEC_SPEC': APISpec(
