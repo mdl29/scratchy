@@ -13,6 +13,7 @@ from scratchy_server.resources.messageres import MessageRes, AllMessageRes
 
 import yaml
 import logging
+import logging.config
 
 with open('logging.yaml', 'r') as logging_file:
     config_logging = yaml.load(logging_file, Loader=yaml.FullLoader)
