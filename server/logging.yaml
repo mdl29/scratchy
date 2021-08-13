@@ -1,3 +1,4 @@
+---
 version: 1
 formatters:
   default:
@@ -11,7 +12,7 @@ loggers:
   werkzeug:
     level: DEBUG
     handlers: [console]
-    propagate: no
+    propagate: false
 root:
   level: DEBUG
   handlers: [console]
