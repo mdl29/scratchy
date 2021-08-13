@@ -17,4 +17,6 @@ services:
       - "5000:5000"
     links:
       - "mongodb"
+    volumes:
+      - ./etc/scratchy/config.json:/app/config.json
 
