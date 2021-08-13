@@ -11,6 +11,8 @@
     padding: 5px;
     margin: 0;
     max-width: 130px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .user_list_item {
