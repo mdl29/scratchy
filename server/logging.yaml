@@ -1,3 +1,4 @@
+---
 version: 1
 formatters:
   default:
@@ -6,12 +7,12 @@ handlers:
   console:
     class: logging.StreamHandler
     formatter: default
-    stream: ext://sys.stdout"
+    stream: ext://sys.stdout
 loggers:
   werkzeug:
     level: DEBUG
     handlers: [console]
-    propagate: no
+    propagate: false
 root:
   level: DEBUG
   handlers: [console]
