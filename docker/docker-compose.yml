@@ -20,3 +20,12 @@ services:
     volumes:
       - ./etc/scratchy/config.json:/app/config.json
 
+  fluentd:
+    build: ./fluentd
+    volumes:
+      - ./etc/fluentd:/fluentd/etc
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
