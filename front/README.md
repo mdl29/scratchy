@@ -1,4 +1,6 @@
-# vfront
+# scratchy front
+
+> see [frontend.md](../doc/frontend/frontend.md) for additional information.
 
 ## Project setup
 ```

@@ -37,6 +37,7 @@ import UserList from './components/UserList.vue';
 import RoomList from './components/RoomList.vue';
 import Login from './components/Login.vue';
 
+// note: this assumes port 5000 isn't that bad ?
 const srv = new ScratchyService("http://"+window.location.hostname+":5000/api");
 
 interface RoomData {
@@ -58,15 +59,20 @@ export default defineComponent({
     data: () => ({
         selectedRoom: null      as null | Room,
         isWriting: false        as boolean,
+        // current user
         loggedUser: null        as null | User,
         roomEditorHidden: true  as boolean,
         currentTypedMessage: "" as string,
+        // displayed rooms -> RoomList.vue
         rooms: []               as Room[],
+        // displayed users -> UserList.vue
         users: []               as User[],
+        // displayed messages -> MessageList.vue
         messages: []            as Message[]
     }),
     mounted() {
         this.fetchRooms();
+        // polling
         setInterval(() => {
             this.fetchMessages();
             this.fetchCurrentRoomUsers();
@@ -77,19 +83,17 @@ export default defineComponent({
             if(this.loggedUser === null) return;
             this.rooms = await srv.getAllRooms(this.loggedUser)
         },
-        async fetchMessages(){
-            if(this.selectedRoom != undefined){
+        async fetchMessages() {
+            if(this.selectedRoom === null) return;
             this.messages = await srv.getAllMessagesInRoom(this.selectedRoom);
-            }
         },
-        async fetchCurrentRoomUsers(){
-            if(this.selectedRoom != null  && this.selectedRoom != undefined){
-                let room = await srv.getRoom(this.selectedRoom.id);
-                this.selectedRoom = room;
-                this.users = await Promise.all(room.users.map((id: string) => srv.getUserByid(id)));
-            }
+        async fetchCurrentRoomUsers() {
+            if(this.selectedRoom === null) return;
+            let room = await srv.getRoom(this.selectedRoom.id);
+            this.selectedRoom = room;
+            this.users = await Promise.all(room.users.map((id: string) => srv.getUserByid(id)));
         },
-        async onMessageSend() {
+        async onMessageSend() { // as name suggest, this is called when the message send button is pressed
             if(this.selectedRoom === null) return;
             // shouldn't happen, in theory.
             if (this.loggedUser === null) {
@@ -97,10 +101,10 @@ export default defineComponent({
                 return;
             }
             await srv.createMessage(this.loggedUser.id, this.currentTypedMessage, this.selectedRoom.id);
-            // reset
+            // clear message field
             this.currentTypedMessage = "";
         },
-        async displayRoom(room: Room) {
+        async displayRoom(room: Room) { // called when selecting a room in RoomList
             this.selectedRoom = room;
             this.users = await Promise.all(room.users.map(id => srv.getUserByid(id)));
             this.messages = await srv.getAllMessagesInRoom(room);
@@ -110,17 +114,20 @@ export default defineComponent({
                 console.warn("trying to quit room without being logged in.")
                 return;
             }
+            // remove current user from the room
             await srv.removeUserInRoom(room, this.loggedUser);
+            // update the rooms
             await this.fetchRooms();
+            // select another room if we quit the selected one
             if(this.selectedRoom !== null && room.id == this.selectedRoom.id) {
                 if(this.rooms.length > 0) { // default to the last room when quitting the currently selected room
                     this.selectedRoom = this.rooms[this.rooms.length-1];
-                } else { // or just go back to the default of there aren't any rooms
+                } else { // or just go back to the default if there aren't any rooms
                     this.selectedRoom = null
                 }
             }
-            this.messages = [];
-            this.users = [];
+            this.messages = []; // reset displayed messages, this will be overwritten by the polling
+            this.users = []; // same
         },
         async createRoom(roomData: RoomData) {
             if (this.loggedUser === null) {
@@ -129,6 +136,7 @@ export default defineComponent({
             }
             await srv.createRoom(roomData.title, roomData.description,[this.loggedUser.id]);
             this.roomEditorHidden = true;
+            // update room list
             await this.fetchRooms();
         },
         async joinRoom(id: string) {
@@ -137,6 +145,7 @@ export default defineComponent({
                 return;
             }
             const room = await srv.getRoom(id);
+            // add current user to the room
             await srv.addUserToRoom(room,this.loggedUser);
             this.roomEditorHidden = true;
             await this.fetchRooms();
@@ -147,6 +156,7 @@ export default defineComponent({
         },
     },
     computed: {
+        // is this really necessary ?
         isConnected() {
             return this.loggedUser !== null;
         }
@@ -155,6 +165,7 @@ export default defineComponent({
 </script>
 
 <style>
+/* a wise man once said, "there's nothing as permanent than a temporary solution" */
 /*
     probably not final style, just a kind of draft
 */
