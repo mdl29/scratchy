@@ -18,6 +18,8 @@ Start mongodb:
   * install docker: see [Install Docker Engine](https://docs.docker.com/engine/install/)
   * install docker-compose: see [Install Docker-compose](https://docs.docker.com/compose/install/) or use the package management of your GNU/Linux distribution (Ubuntu for example)
 
+##### NB : if you have a error, retry with the SUDO prefix ( on some computer we need the SUDO privileges for use this commands)
+
 * build images in server directory
 ```sh
 <scratchy/server>$ make build 
