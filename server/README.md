@@ -20,7 +20,7 @@ Start mongodb:
 
 * build images in server directory
 ```sh
-<scratchy/server>$ sudo make install 
+<scratchy/server>$ make build 
 ```
 * go to docker directory
 ```sh
@@ -28,7 +28,7 @@ Start mongodb:
 ```
 * start mongodb using docker-compose:
 ```sh
-<scratchy/docker>$ sudo docker-compose up -d
+<scratchy/docker>$ docker-compose up -d
 ```
 
 ---
@@ -36,7 +36,7 @@ Start mongodb:
 
 For stopping mongodb, use:
 ```sh
-<scratchy/docker root>$ sudo docker-compose down
+<scratchy/docker>$ docker-compose down
 ```
 ---
 
@@ -68,7 +68,7 @@ scratchy-server
 
 * Stop mongodb using docker-compose:
 ```sh
-<scratchy/docker>$ sudo docker-compose down
+<scratchy/docker>$ docker-compose down
 ```
 
 * Remove data file:
@@ -83,7 +83,7 @@ scratchy-server
 
 * Restart mongodb using docker-compose:
 ```sh
-<scratchy/docker>$ sudo docker-compose up -d
+<scratchy/docker>$ docker-compose up -d
 ```
 
 ## how to run integration test
