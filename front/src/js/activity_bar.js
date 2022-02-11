@@ -2,8 +2,17 @@ const activityBar = {
     name: "activity-bar",
     props: ["currentRoom", "isWriting"],
     data: () => ({
-        popup: false
+        popup: false,
     }),
+    methods: {
+        copy(){
+            let input = document.querySelector('.room_id_input');
+            input.focus();
+            input.select();
+            document.execCommand('copy');
+            
+        }
+    },
     template: `
     <div class='activity_bar'>
     <template v-if="currentRoom !== null">
@@ -17,12 +26,13 @@ const activityBar = {
                 <div class="share_title">Share room id</div>
                 <div class="room_id">
                     <label class="share_label"> room id: &nbsp;</label>
-                    <span>
-                        {{currentRoom.id}}
-                    </span>
+                    <input class="room_id_input" :value="currentRoom.id" readonly ></input>
+                </div>
+                <div class="copy_wrapper">
+                    <button class="copy_button gradient" @click="copy"> Copy ! </button>
                 </div>
                 <div class="share_submit_wrapper">
-                <button class="share_submit" v-on:click="popup = false">close</button>
+                    <button class="share_submit" v-on:click="popup = false">close</button>
                 </div>
             </div>
         </div>

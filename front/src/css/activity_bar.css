@@ -131,3 +131,51 @@
 .activity_bar_writing::before {
     content: "|";
 }
+.room_id_input{
+    text-align: left;
+    color : white ;
+    font-size: 25px ;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden ;
+    border-bottom-style: hidden;
+    background-color:var(--bg3);
+}
+.room_id_input:focus{
+    outline: none;
+}
+
+.copy_button {
+    width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    height: 30px;
+    text-align:center;
+    border: none;
+    background-size: 300% 100%;
+
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.copy_button:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.copy_button:focus {
+    outline: none;
+}
+
+.copy_button.gradient {
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
