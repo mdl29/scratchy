@@ -1,25 +1,26 @@
 <template>
-<div class='activity_bar'>
-<template v-if="currentRoom !== null">
-    <div class='activity_bar_room'>
-        {{currentRoom.title}}    
-    </div>
-    <button v-on:click="popup = true" class="button_popup"><img src="../assets/share-icon-white.svg" id="popup_icon"></button>
-    <div v-if="isWriting" class='activity_bar_writing'> writing... </div>
-    <div class="share_popup_background" v-if="popup">
-        <div class="share_popup">
-            <div class="share_title">Share room id</div>
-            <div class="room_id">
-                <label class="share_label"> room id: &nbsp;</label>
-                <span>
-                    {{currentRoom.id}}
-                </span>
-            </div>
-            <div class="share_submit_wrapper">
-            <button class="share_submit" v-on:click="popup = false">close</button>
+    <div class='activity_bar'>
+    <template v-if="currentRoom !== null">
+        <div class='activity_bar_room'>
+            {{currentRoom.title}}    
+        </div>
+        <button v-on:click="popup = true" class="button_popup"><img src="../assets/share-icon-white.svg" id="popup_icon"></button>
+        <div v-if="isWriting" class='activity_bar_writing'> writing... </div>
+        <div class="share_popup_background" v-if="popup">
+            <div class="share_popup">
+                <div class="share_title">Share room id</div>
+                <div class="room_id">
+                    <label class="share_label"> room id: &nbsp;</label>
+                    <input class="room_id_input" :value="currentRoom.id" readonly >
+                </div>
+                <div class="copy_wrapper">
+                    <button class="copy_button gradient" @click="copy"> Copy ! </button>
+                </div>
+                <div class="share_submit_wrapper">
+                <button class="share_submit" v-on:click="popup = false">close</button>
+                </div>
             </div>
         </div>
-    </div>
 
 </template>
 <!-- to keep the activity bar rendering correctly even when no room is provided -->
@@ -28,14 +29,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "activity-bar",
     props: ["currentRoom", "isWriting"],
     data: () => ({
         popup: false
-    })
+    }),
+    methods: {
+        copy(){
+            let input = document.querySelector('.room_id_input') as HTMLInputElement;
+            input.focus();
+            input.select();
+            document.execCommand('copy');
+
+        }
+    },
 });
 </script>
 
@@ -172,5 +182,57 @@ export default defineComponent({
 
 .activity_bar_writing::before {
     content: "|";
+}
+.room_id_input{
+    text-align: left;
+    color : white ;
+    font-size: 25px ;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden ;
+    border-bottom-style: hidden;
+    background-color:var(--bg3);
+}
+.room_id_input:focus{
+    outline: none;
+}
+
+.copy_button {
+    width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    height: 30px;
+    margin: auto;
+    text-align:center;
+    border: none;
+    background-size: 300% 100%;
+
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.copy_button:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.copy_button:focus {
+    outline: none;
+}
+
+.copy_button.gradient {
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+.copy_wrapper {
+  display: flex;
 }
 </style>
