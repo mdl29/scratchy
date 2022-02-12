@@ -18,7 +18,7 @@ LPH.
 <img src="https://img.shields.io/github/issues/mdl29/scratchy">
 <img src="https://img.shields.io/github/commit-activity/m/mdl29/scratchy">
 <img src="https://img.shields.io/github/last-commit/mdl29/scratchy">
-<img src="https://img.shields.io/github/milestones/progress/mdl29/scratchy/1">
+<img src="https://img.shields.io/github/milestones/progress/mdl29/scratchy/2">
 
 </div>
  
