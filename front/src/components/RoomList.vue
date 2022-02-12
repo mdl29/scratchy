@@ -1,3 +1,25 @@
+<template>
+<div class='room_list_wrapper'>
+    <template v-for="(room) in rooms" :key="room.id">
+        <div class="room_list_item">
+            <div class="room_list_room" @click="$emit('roomSelected', room)"> {{room.title}} </div>
+            <div class="room_list_quit" @click="$emit('roomQuit', room)"><div></div></div>
+        </div>
+    </template>
+</div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    name: "room-list",
+    props: ["rooms"],
+    emits: ["roomSelected", "roomQuit"],
+});
+</script>
+
+<style scoped>
 .room_list_wrapper {
     display: flex;
     flex-direction: column;
@@ -63,3 +85,4 @@
     background-color: var(--bg2);
     color: var(--accent);
 }
+</style>
