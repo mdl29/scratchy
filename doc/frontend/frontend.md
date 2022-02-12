@@ -1,61 +1,81 @@
 # Frontend documentation
 
   - [📂 **front directory**](../../front/)
-  
-## How to start it :
 
-  > go in front/src directory
+## Setup
 
-  ```bash
-  cd front/src
-  ```
+install dependencies
 
-  > launch python server
+```bash
+npm ci
+```
 
-  ```bash
-  python3 -m http.server
-  ```
-  > Open webbrowser at http://localhost:8000
+## Build
 
+build the frontend
 
+```bash
+npm run build
+```
 
-## Frontend sketch :
+this will build in `front/dist`, you then need to start a server there
+
+> ex. with python
+
+```bash
+cd dist
+python -m http.server
+```
+
+scratchy should then be on [http://localhost:8000/index.html](http://localhost:8000/index.html)
+
+## Development server
+
+to run the development server
+
+```bash
+npm run serve
+```
+
+### Lint
+
+if you plan on contributing, we'll ask you to lint your code, this should already happen on the development server, but to run only the linter :
+
+```bash
+npm run lint
+```
+
+## Preview
 
 ![frontend-sketch](front.png)
 
 ## vuejs components :
 
-- activity-navbar :
-  > display description room and if a user wrinting in the input
+- [activity-bar](../../front/src/components/ActivityBar.vue)
 
-  ![html emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/html.png) [html file](../../front/activity_bar.html)
+  > display the current room's name and allows room sharing
 
-- messages :
-  > Display a list of messages
+- [login](../../front/src/components/Login.vue)
 
-  ![html emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/html.png) [html file](../../front/messages-list.html)
+  > login popup
 
-- room-list :
+- [message-list](../../front/src/components/MessageList.vue)
+
+  > display all the messages of a room (or any array of messages really). this takes up most of the document's area.
+
+- [room-list](../../front/src/components/RoomList.vue)
+
   > display all joined room
 
-  ![html emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/html.png) [html file](../../front/room_list.html)
+- [room-editor](../../front/src/components/RoomEditor.vue)
 
-  
-   
-   --> room-entry :
-    > when the user click on the room, he can change it name and description
+  > popup used to create / join rooms
 
-- room-editor : 
-  > when the user click on it, he can create a room
-      
-  ![html emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/html.png) [html file](../../front/room_editor.html)
+- [message-editor](../../front/src/components/MessageEditor.vue)
 
-- message-editor :
-  > user can type the message in this input and send when he click on sending button 
+  > message input field
 
-    ![html emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/html.png) [html file](../../front/message_editor.html)
+- [user-list](../../front/src/components/UserList.vue)
 
-- user-list :
-   > display users who wrote in the current room
+   > display the current room's users (broken right now because of never expiring caching)
 
-    ![html emoji](https://yannis-mlgrn.github.io/codmoji/src/emoji/html.png) [html file](../../front/user-list.html)

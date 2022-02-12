@@ -1,3 +1,19 @@
+<template>
+<ul class="user_list_wrapper">
+    <li class="user_list_item" v-for="user in users" :key="user.id"> {{user.pseudo}} </li>
+</ul>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    name: 'user-list',
+    props: ['users'],
+});
+</script>
+
+<style scoped>
 /*
  * not sure how this is supposed to look (on the final thing) so not much rn
  */
@@ -25,3 +41,4 @@
     padding-left: 10px;
     box-sizing: border-box;
 }
+</style>

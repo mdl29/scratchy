@@ -1,22 +1,10 @@
 /**
  * @author Yannis Malgorn <yannismalgorn@gmail.com>
- * @author Titouan Goulois
+ * @author vndx
  * @author Benjamin BERNARD
  * @see {@link https://github.com/mdl29/scratchy|GitHub}
  * @requires module:axios/axios
  */
-
-/*
-- add axios cdn link in index.html :
-     	<script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
-- call service.js in index.html :
-    <script src="/front/js/service.js"></script>
-- start scratchy service : 
-    const api = new ScratchyService("http://localhost:5000/api");
-    api;
-- call a function :
-    api.function();|
-*/
 
 // NOTE: the cache here breaks the pulling of the users that keeps the user list updated
 // and while this code could keep a timestamp of when some data has been obtained and 
@@ -28,6 +16,8 @@
 // PS: it doesn't break the pulling of the messages as those are not cached because they change
 // too often.
 
+import axios from 'axios';
+
 /**
  * @typedef {Object} Room
  * @property {string} id - Room unique ID.
@@ -35,7 +25,7 @@
  * @property {string} title - The room title.
  * @property {string[]} usersID - List of users IDs.
  */
-
+// ^ usersID should be users
 /**
  * @typedef {Object} AllRoom
  * @property {Room[]} List of rooms.
@@ -57,14 +47,49 @@
  * @property {string[]} rooms - List of room IDs the user belongs to.
  */
 
+// kinda not DRY but tbh idk what to do here so code dupe with minor format changes it is.
 
-class ScratchyService {
+// yes that is stupid, but its what the api gives us.
+export interface RoomList {
+    rooms: Room[]
+}
+
+export interface Room {
+    id: string,
+    description: string,
+    title: string,
+    // jsdoc is wrong here for some reason.
+    users: string[]
+}
+
+export interface Message {
+    id: string,
+    authorID: string,
+    content: string,
+    roomID: string
+}
+
+export interface User {
+    id: string,
+    pseudo: string,
+    profileImage: string,
+    rooms: string[]
+}
+
+
+export class ScratchyService {
     /**
      *
      * @constructor
      * @param {string} apiUrl - api url, eg: http://localhost:5000/api
      */
-    constructor(apiUrl) {
+    apiUrl: string;
+    userCache: Map<string, User>;
+    roomCache: Map<string, Room>;
+    messageCache: Map<string, Message>;
+    userPseudoMap: Map<string, string>;
+
+    constructor(apiUrl: string) {
         this.apiUrl = apiUrl;
         this.userCache = new Map();
         this.roomCache = new Map();
@@ -83,7 +108,7 @@ class ScratchyService {
      * @param {User} user - user to be added
      * @returns {Promise<undefined>} -
      */
-    async addUserToRoom(room, user) {
+    async addUserToRoom(room: Room, user: User): Promise<void> {
         if (!room.users.includes(user.id)) {
             room.users.push(user.id);
             await this.updateRoom(room);
@@ -100,8 +125,8 @@ class ScratchyService {
      * @param {User} user - user to be removed
      * @returns {Promise<undefined>} -
      */
-    async removeUserInRoom(room, user) {
-        room.users = room.users.filter((uid) => uid != user.id);
+    async removeUserInRoom(room: Room, user: User): Promise<void> {
+        room.users = room.users.filter((uid: string) => uid != user.id);
         await this.updateRoom(room);
     }
 
@@ -112,7 +137,7 @@ class ScratchyService {
      * @param {Room} room room to be updated
      * @returns {Promise<Room>} - room information, eg: `{ id: "60895dd62d1a706830c31f10", title: "example", description: "my description" }`
      */
-    async updateRoom(room) {
+    async updateRoom(room: Room): Promise<Room> {
         const response = await axios.put(this.apiUrl + "/room/" + room.id, {
             title: room.title,
             description: room.description,
@@ -126,13 +151,12 @@ class ScratchyService {
      *
      * @async
      * @augments ScratchyService
-     * @param {string} roomID - room id
      * @param {string} roomTitle - title the room
      * @param {string} roomDescription - description of the room
      * @param {string[]} usersID - List of users IDs
      * @returns {Promise<Room>} - room information, eg: `{ id: "60895dd62d1a706830c31f10", title: "example", description: "my description" }`
      */
-    async createRoom(roomTitle, roomDescription, usersID) {
+    async createRoom(roomTitle: string, roomDescription: string, usersID: string[]): Promise<Room> {
         const response = await axios.post(this.apiUrl + "/room", {
             title: roomTitle,
             description: roomDescription,
@@ -149,8 +173,8 @@ class ScratchyService {
      * @param {string} roomID - room id
      * @returns {Promise<Room>} - room information, eg: `{ id: "60895dd62d1a706830c31f10", title: "example", description: "my description" }`
      */
-    async getRoom(roomID) {
-        if(this.roomCache.has(roomID)) return this.roomCache.get(roomID);
+    async getRoom(roomID: string): Promise<Room> {
+        if (this.roomCache.has(roomID)) return this.roomCache.get(roomID) as Room;
         const response = await axios.get(this.apiUrl + "/room/" + roomID);
         this.roomCache.set(roomID, response.data);
         return response.data;
@@ -162,7 +186,7 @@ class ScratchyService {
      * @augments ScratchyService
      * @return {Promise} promise that will be resolved when room is deleted.
      */
-    async deleteRoom(roomID) {
+    async deleteRoom(roomID: string): Promise<void> {
         this.roomCache.delete(roomID);
         await axios.delete(this.apiUrl + "/room/" + roomID);
     }
@@ -175,7 +199,8 @@ class ScratchyService {
      * @param {User} user - user to add in room
      * @returns {Promise<AllRoom>} - all rooms information
      */
-    async getAllRooms(user) {
+    // jsdoc wrong ?
+    async getAllRooms(user: User): Promise<Room[]> {
         const response = await axios.get(this.apiUrl + "/room?userId=" + user.id);
         return response.data.rooms;
     }
@@ -189,10 +214,10 @@ class ScratchyService {
      * @param {string} userPseudo - a user's pseudo
      * @returns {Promise<User>} - user information
      */
-    async getUserByPseudo(userPseudo) {
-        if(this.userPseudoMap.has(userPseudo)) {
+    async getUserByPseudo(userPseudo: string): Promise<User> {
+        if (this.userPseudoMap.has(userPseudo)) {
             // userPseudoMap.has(userPseudo) implies userCache.has(user)
-            return this.userCache.get(this.userPseudoMap.get(userPseudo));
+            return this.userCache.get(this.userPseudoMap.get(userPseudo) as string) as User;
         }
         const response = await axios.get(this.apiUrl + "/user?pseudo=" + userPseudo); // make the GET request
         this.userPseudoMap.set(userPseudo, response.data.id);
@@ -207,9 +232,9 @@ class ScratchyService {
      * @param {string} userID - user id , eg:60895dd62d1a706830c31f10
      * @returns {Promise<User>} - user information
      */
-    async getUserByid(userID) {
+    async getUserByid(userID: string): Promise<User> {
         if (this.userCache.has(userID)) {
-            return this.userCache.get(userID);
+            return this.userCache.get(userID) as User;
         }
         // Make a request for a user with a given ID
         const response = await axios.get(this.apiUrl + "/user/" + userID); // make the GET request
@@ -226,7 +251,7 @@ class ScratchyService {
      * @param {string} userProfileImage - profile image link
      * @returns {Promise<User>} - user id
      */
-    async createUser(userPseudo, userProfileImage) {
+    async createUser(userPseudo: string, userProfileImage: string): Promise<User> {
         const response = await axios.post(this.apiUrl + "/user", {
             pseudo: userPseudo,
             profileImage: userProfileImage,
@@ -242,9 +267,11 @@ class ScratchyService {
      * @augments ScratchyService
      * @return {Promise} Empty promise.
      */
-    async deleteUser(userID) {
-        if(this.userCache.has(userID)) {
-            const pseudo = this.userCache.get(userID).pseudo;
+    async deleteUser(userID: string): Promise<void> {
+        if (this.userCache.has(userID)) {
+            // userCache.get(userID) can't be undefined because userCache.has(userID) is true.
+            // unless race condition ofc but that shouldn't happen.
+            const pseudo = (this.userCache.get(userID) as User).pseudo;
             this.userCache.delete(userID);
             this.userPseudoMap.delete(pseudo);
         }
@@ -260,18 +287,17 @@ class ScratchyService {
      * @param {string} userProfileImage - profile image link
      * @returns {Promise<User>} - user information
      */
-    async updateUser(userID, userPseudo, userProfileImage) {
+    async updateUser(userID: string, userPseudo: string, userProfileImage: string): Promise<User> {
         // update cache
-        if(this.userCache.has(userID)) {
-            const user = this.userCache.get(userID);
+        if (this.userCache.has(userID)) {
+            const user = this.userCache.get(userID) as User;
             // update pseudo map if pseudo has changed
-            if(user.pseudo !== userPseudo) {
-                this.userPseudoMap.delete(pseudo);
+            if (user.pseudo !== userPseudo) {
                 this.userPseudoMap.set(userPseudo, userID);
             }
             user.pseudo = userPseudo;
             user.profileImage = userProfileImage;
-            this.userCache.set(usersID, user);
+            this.userCache.set(userID, user);
         }
         const response = await axios.put(this.apiUrl + "/user/" + userID, {
             pseudo: userPseudo,
@@ -287,7 +313,7 @@ class ScratchyService {
      * @param {string} pseudo - the pseudo that will be checked
      * @returns {Promise<undefined|User>} - the user or undefined if none exist
      */
-    async userExistByPseudo(pseudo) {
+    async userExistByPseudo(pseudo: string): Promise<User | undefined> {
         try {
             return await this.getUserByPseudo(pseudo);
         } catch (e) {
@@ -302,7 +328,7 @@ class ScratchyService {
      * @param {string} pseudo - the pseudo
      * @returns {Promise<User>} -
      */
-    async getOrCreateUser(pseudo) {
+    async getOrCreateUser(pseudo: string): Promise<User> {
         let user = await this.userExistByPseudo(pseudo);
         if (user === undefined) {
             user = await this.createUser(pseudo, "");
@@ -318,8 +344,8 @@ class ScratchyService {
      * @param {string} messageID - message id
      * @returns {Promise<Message>} message information
      */
-    async getMessage(messageID) {
-        if(this.messageCache.has(messageID)) return this.messageCache.get(messageID);
+    async getMessage(messageID: string): Promise<Message> {
+        if (this.messageCache.has(messageID)) return this.messageCache.get(messageID) as Message;
 
         const response = await axios.get(this.apiUrl + "/message/" + messageID); // make the GET request
         this.messageCache.set(messageID, response.data);
@@ -334,10 +360,10 @@ class ScratchyService {
      * @param {Room} room - room id
      * @returns {Promise<Message[]>} message information
      */
-    async getAllMessagesInRoom(room) {
-        let response = await axios.get(this.apiUrl + "/message?roomId=" + room.id); // make the GET request
-        let messages = response.data.messages;
-        for (let msg of messages) {
+    async getAllMessagesInRoom(room: Room): Promise<Message[]> {
+        const response = await axios.get(this.apiUrl + "/message?roomId=" + room.id); // make the GET request
+        const messages = response.data.messages;
+        for (const msg of messages) {
             msg.author = await this.getUserByid(msg.author);
         }
         return messages; // return data JSON
@@ -352,7 +378,7 @@ class ScratchyService {
      * @param {string} roomID - room id
      * @returns {Promise<Message>} message information, eg: author : 60895dd62d1a706830c31f10 , content : hello world , roomId : 60895dd56d1a706830c31f16
      */
-    async createMessage(authorID, messageContent, roomID) {
+    async createMessage(authorID: string, messageContent: string, roomID: string): Promise<Message> {
         const response = await axios.post(this.apiUrl + "/message", {
             author: authorID,
             content: messageContent,
@@ -372,7 +398,7 @@ class ScratchyService {
      * @param {string} roomID - Id of the room the message belongs to.
      * @returns {Promise<Message>} message id
      */
-    async updateMessage(messageID, messageAuthor, messageContent, roomID) {
+    async updateMessage(messageID: string, messageAuthor: string, messageContent: string, roomID: string): Promise<Message> {
         const response = await axios.put(this.apiUrl + "/message/" + messageID, {
             author: messageAuthor,
             content: messageContent,
@@ -389,7 +415,7 @@ class ScratchyService {
      * @param {string} messageID - message id , eg:60895dd62d1a706830c31f10
      * @return {Promise} Empty promise.
      */
-    async deleteMessage(messageID) {
+    async deleteMessage(messageID: string): Promise<void> {
         const response = await axios.delete(this.apiUrl + "/message/" + messageID);
         this.messageCache.delete(messageID);
         return response.data;
