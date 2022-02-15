@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
+from flask_socketio import SocketIO
 from flask_apispec.extension import FlaskApiSpec
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
@@ -29,6 +30,7 @@ with open('config.json', 'r') as config_file:
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app)
 
 # main configuration from config data (file)
 app.config.update(config_data)
@@ -66,5 +68,8 @@ list(map(lambda res: api.add_resource(res["ressource"], res["url"]), ressource))
 list(map(lambda res: app.add_url_rule(res["url"], view_func=res["ressource"].as_view(res["name"])), ressource))
 list(map(lambda res: docs.register(res["ressource"], endpoint=res["name"]), ressource))
 
+socketio.on_namespace(RoomRes('/room/<string:roomId>'))
+
+socketio.run(app, port=5000, host='0.0.0.0')
 
 logging.info("scratchy is up and ready")
