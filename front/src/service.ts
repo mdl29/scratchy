@@ -17,6 +17,8 @@
 // too often.
 
 import axios from 'axios';
+import { io, Socket } from "socket.io-client";
+const socket = io("http://localhost:5000/wsk");
 
 /**
  * @typedef {Object} Room
@@ -205,8 +207,7 @@ export class ScratchyService {
         return response.data.rooms;
     }
 
-    //                               USER FUNCTIONS
-
+    //              tu fais r quand ils se connectent
     /**
      *
      * @async
@@ -420,4 +421,71 @@ export class ScratchyService {
         this.messageCache.delete(messageID);
         return response.data;
     }
+
+/* Call server with Websocket */
+
+     /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {Room} room - affected room
+     * @returns {Promise<undefined>} -
+     */
+    async joinRoomWebsocket(room: Room): Promise<void> {
+        socket.on("join", (socket) => {  
+            socket.join(room.id);
+        });
+    }
+
+     /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {Room} room - affected room
+     * @returns {Promise<undefined>} -
+     */
+      async quitRoomWebsocket(room: Room): Promise<void> {
+        socket.on("quit", (socket) => {  
+            socket.leave(room.id);
+        });
+    }
+
+    /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @returns {Promise<Message>} - message data
+     */
+     async newMessageWebsocket(): Promise<void> {
+        socket.on("newMessage", (data) => {
+            return data;
+        });      
+     }   
+
+    /**
+     * 
+     *
+     * @async
+     * @param {string} userId - id of the user
+     * @param {Room} room - affected room
+     * @augments ScratchyService
+     * @returns {Promise} - message data
+     */
+     async start_writing(userId : string ,room: Room): Promise<void> {
+                socket.emit("writingState",{userId : userId, status: "start_writing" });     
+     } 
+
+    /**
+     *
+     * @async
+     * @augments ScratchyService
+     * @param {string} userId - id of the user
+     * @param {Room} room - affected room
+     * @returns {Promise} - message data
+     */
+      async stop_writing(userId : string ,room: Room): Promise<void> {
+            socket.emit("writingState",{userId : userId, status: "stop_writing" });     
+      } 
 }
+
+
