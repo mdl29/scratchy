@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-# Merci Sam & Max : http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/
+# Merci Sam & Max : http://sametmax2.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/
 
 setup(
     name='scratchy_server',

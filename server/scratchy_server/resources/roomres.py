@@ -1,4 +1,5 @@
 from flask import make_response
+from flask_socketio import Namespace
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
 from marshmallow import fields
@@ -8,7 +9,7 @@ from scratchy_server.filters.mongoexception import validation
 
 
 @doc(tags=['Room'])
-class RoomRes(MethodResource):
+class RoomRes(MethodResource, Namespace):
     decorators = [validation]
 
     @marshal_with(RoomSchema, code=200)
@@ -26,6 +27,9 @@ class RoomRes(MethodResource):
     def delete(self, roomId):
         RoomModel.objects().get_or_404(id=roomId).delete()
         return make_response('', 204)
+
+    def on_get(self, *args, **kwargs):
+        self.get(*args, **kwargs)
 
 
 @doc(tags=['Room'])
