@@ -73,8 +73,8 @@ export default defineComponent({
     padding: 10px 15px;
     display: flex;
     justify-content: space-evenly;
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: var(--font-text);
+    box-shadow: 0 0 10px var(--bg0);
 }
 
 .room_id {
@@ -82,14 +82,14 @@ export default defineComponent({
 }
 
 .room_id > span {
-    color:white;
+    color:var(--font-text);
 }
 
 .share_popup_background {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--bg0);
     position: fixed;
     top: 0;
     left: 0;
@@ -114,7 +114,7 @@ export default defineComponent({
 }
 
 .share_label {
-    color: rgb(189, 189, 189);
+    color: var(--light-text);
     font-size: 0.9em;
     margin-bottom: 0;
 }
@@ -126,13 +126,13 @@ export default defineComponent({
     border-radius: 4px;
     padding: 5px;
     font-size: 0.9em;
-    color: rgb(173, 173, 173);
+    color: var(--dark-text);
     background-color: var(--bg2);
     transition: 0.1s;
 }
 
 .share_input:focus {
-    color: white;
+    color: var(--text-font);
 }
 
 .share_submit_wrapper {
@@ -145,7 +145,7 @@ export default defineComponent({
     transition: 0.1s;
     border-radius: 4px;
     background-color: var(--accent);
-    color: white;
+    color: var(--font-text);
     padding: 4px 8px;
     cursor: pointer;
     font-size: 0.8em;
@@ -162,7 +162,7 @@ export default defineComponent({
     display: flex;
     background-color: var(--bg3);
     margin: 0;
-    color: white;
+    color: var(--font-text);
     padding: 10px;
     align-items: center;
     padding-left: 20px;
@@ -172,12 +172,12 @@ export default defineComponent({
 .activity_bar_writing {
     padding-left: 10px;
     font-size: smaller;
-    color: rgb(168, 168, 168);
+    color: var(--dark-text);
 }
 
 .activity_bar_room::before {
     content: "# ";
-    color: rgb(172, 172, 172);
+    color: var(--font-text);
 }
 
 .activity_bar_writing::before {
@@ -185,7 +185,7 @@ export default defineComponent({
 }
 .room_id_input{
     text-align: left;
-    color : white ;
+    color : var(--font-text) ;
     font-size: 25px ;
     border-top-style: hidden;
     border-right-style: hidden;
@@ -201,7 +201,7 @@ export default defineComponent({
     width: 100px;
     font-size: 16px;
     font-weight: 600;
-    color: #fff;
+    color: var(--font-text);
     cursor: pointer;
     height: 30px;
     margin: auto;
@@ -229,7 +229,7 @@ export default defineComponent({
 }
 
 .copy_button.gradient {
-    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, var(--accent));
     box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
 }
 .copy_wrapper {

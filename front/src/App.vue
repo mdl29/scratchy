@@ -170,12 +170,20 @@ export default defineComponent({
     probably not final style, just a kind of draft
 */
 * {
+    /* background colors */
+    --bg0 : rgba(0, 0, 0, 0.2);
     --bg1: #1e1d24;
     --bg2: #4c4953;
     --bg3: #393842;
     --bg4: #2a2931;
     --accent: rgb(14, 247, 149);
+    /* text fonts */
+    --font-text: white ;
+    --light-text:rgb(189, 189, 189);
+    --dark-text: rgb(158, 158, 158);
+    /* size */
     --font-size: 25px;
+    --small-font-size : 0.8em;
     --border-radius: 6px;
 }
 

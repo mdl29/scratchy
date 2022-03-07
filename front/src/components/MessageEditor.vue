@@ -41,7 +41,7 @@ export default defineComponent({
     border-radius: var(--border-radius);
     font-size: calc(var(--font-size) - 5px);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(158, 158, 158);
+    color: var(--dark-text);
     transition: all 0.2s;
     height: calc(var(--font-size) * 2);
     resize: none;
@@ -65,13 +65,13 @@ export default defineComponent({
 }
 
 .message_editor_input:focus {
-    color: white;
+    color: var(--font-text);
 }
 
 .message_editor_button {
     background-color: var(--accent);
     border: none;
-    font-size: 20px;
+    font-size: var(--font-size);
     display: flex;
 
     --size: calc(var(--font-size) * 2);
@@ -92,7 +92,7 @@ export default defineComponent({
 }
 
 .message_editor_send_icon {
-    background-color: white;
+    background-color: var(--font-text);
     clip-path: polygon(20% 47%, 12% 20%, 90% 50%, 12% 80%, 20% 53%, 50% 50%);
     width: 100%;
     height: 100%;

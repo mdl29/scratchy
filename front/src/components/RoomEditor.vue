@@ -53,7 +53,7 @@ export default defineComponent({
 
 <style scoped>
 .room_editor_wrapper {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--bg0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,8 +72,8 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: var(--font-text);
+    box-shadow: 0 0 10px var(--bg0);
 }
 
 .room_editor_content_wrapper > *,
@@ -97,7 +97,7 @@ export default defineComponent({
 }
 
 .room_editor_selected_tab {
-    border-bottom: solid white 2px;
+    border-bottom: solid var(--font-text) 2px;
 }
 
 .room_editor_content_wrapper {
@@ -114,8 +114,8 @@ export default defineComponent({
 }
 
 .room_editor_label {
-    color: rgb(189, 189, 189);
-    font-size: 0.8em;
+    color: var(--light-text);
+    font-size: var(--small-font-size);
     margin-bottom: 0;
 }
 
@@ -125,8 +125,8 @@ export default defineComponent({
     border: none;
     border-radius: 4px;
     padding: 5px;
-    font-size: 0.9em;
-    color: rgb(173, 173, 173);
+    font-size: var(--small-font-size);
+    color: var(--light-text);
     background-color: var(--bg2);
     transition: 0.1s;
     width: 30vw;
@@ -134,7 +134,7 @@ export default defineComponent({
 }
 
 .room_editor_input:focus {
-    color: white;
+    color: var(--font-text);
 }
 
 textarea.room_editor_input {
@@ -152,10 +152,10 @@ textarea.room_editor_input {
     border: none;
     transition: 0.1s;
     border-radius: 4px;
-    color: white;
+    color: var(--font-text);
     padding: 8px 12px;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: var(--small-font-size);
 }
 
 .room_editor_button:hover {
@@ -167,6 +167,6 @@ textarea.room_editor_input {
 }
 
 .room_editor_cancel {
-    background-color: rgb(145, 145, 145);
+    background-color: var(--dark-text);
 }
 </style>
