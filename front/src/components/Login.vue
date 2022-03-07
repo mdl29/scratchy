@@ -25,7 +25,7 @@ export default defineComponent({
 
 <style scoped>
 .login_wrapper {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--bg0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,8 +44,8 @@ export default defineComponent({
     padding: 10px 15px;
     display: flex;
     justify-content: space-evenly;
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: var(--font-text);
+    box-shadow: 0 0 10px var(--bg0);
 }
 
 .login_popup > * {
@@ -62,7 +62,7 @@ export default defineComponent({
 }
 
 .login_label {
-    color: rgb(189, 189, 189);
+    color: var(light-text);
     font-size: 0.9em;
     margin-bottom: 0;
 }
@@ -74,13 +74,13 @@ export default defineComponent({
     border-radius: 4px;
     padding: 5px;
     font-size: 0.9em;
-    color: rgb(173, 173, 173);
+    color: var(--dark-text);
     background-color: var(--bg2);
     transition: 0.1s;
 }
 
 .login_input:focus {
-    color: white;
+    color: var(--font-text);
 }
 
 .login_submit_wrapper {
@@ -93,7 +93,7 @@ export default defineComponent({
     transition: 0.1s;
     border-radius: 4px;
     background-color: var(--accent);
-    color: white;
+    color: var(--font-text);
     padding: 4px 8px;
     cursor: pointer;
     font-size: 0.8em;

@@ -32,7 +32,7 @@ export default defineComponent({
 }
 
 .user_list_item {
-    color: white;
+    color: var(--font-text);
     margin-top: 5px;
     white-space: nowrap;
     text-overflow: ellipsis;

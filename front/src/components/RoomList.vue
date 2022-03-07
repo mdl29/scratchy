@@ -41,7 +41,7 @@ export default defineComponent({
     margin: 3px;
     padding: 5px;
     margin-left: 0;
-    color: rgb(146, 146, 146);
+    color: var(--dark-text);
     transition: all 0.1s;
     cursor: pointer;
     border-radius: 4px;
@@ -62,15 +62,15 @@ export default defineComponent({
     cursor: pointer;
     width: 0;
 
-    --room_list_quit: rgb(145, 145, 145);
+    --room_list_quit: var(--dark-text);
 }
 
 .room_list_quit:hover {
-    --room_list_quit: white;
+    --room_list_quit: var(--font-text);
 }
 
 .room_list_room:hover {
-    color: white;
+    color: var(--font-text);
 }
 
 .room_list_item:hover > .room_list_quit {

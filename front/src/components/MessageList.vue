@@ -76,12 +76,12 @@ export default defineComponent({
 .messages_timestamp {
     color: var(--bg2);
     filter: brightness(1.5);
-    font-size: 0.6em;
+    font-size: var(--small-font-size);
 }
 
 .messages_content {
     margin-top: 5px;
-    color: #ddd;
+    color: var(--font-text);
     font-size: smaller;
 }
 </style>
